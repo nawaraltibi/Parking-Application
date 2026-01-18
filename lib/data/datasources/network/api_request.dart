@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../repositories/auth_local_repository.dart';
 import 'api_config.dart';
 import 'dio_provider.dart';
 
@@ -88,12 +89,9 @@ class APIRequest {
   /// The save path for the downloaded file.
   String? savePath;
 
-  /// Token getter - should be implemented to retrieve auth token
-  /// Override this in your implementation to provide actual token retrieval
+  /// Token getter - retrieves auth token from local storage
   Future<String> get token async {
-    // TODO: Implement token retrieval from your auth service
-    // Example: return await AuthService.getToken();
-    return "";
+    return await AuthLocalRepository.retrieveToken();
   }
 
   /// Whether to send app version in query parameters

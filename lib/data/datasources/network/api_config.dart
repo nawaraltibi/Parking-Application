@@ -9,15 +9,15 @@ import 'package:flutter/foundation.dart';
 /// - Helper methods for URL construction
 class APIConfig {
   // Production and Debug hosts
-  // TODO: Update these with your actual API endpoints
-  static const String _prodHost = "api.parkingapp.com";
-  static const String _debugHost = "api-dev.parkingapp.com";
+  // Backend API endpoints
+  static const String _prodHost = "127.0.0.1:8000";
+  static const String _debugHost = "127.0.0.1:8000";
 
   /// Get the current host based on build mode
   static String get host => kDebugMode ? _debugHost : _prodHost;
 
   /// Base URL for the API
-  static String get baseUrl => "https://$host";
+  static String get baseUrl => "http://$host";
 
   /// Full API endpoint URL
   static String get appAPI => "$baseUrl/api";
