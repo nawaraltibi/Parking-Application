@@ -75,18 +75,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           loginRequest: state.request,
         );
         
-        // Check user status and handle inactive users
-        final statusMessage = loginResponse.getStatusMessage();
-        if (statusMessage != null) {
-          // User is inactive - throw exception to be caught in onError
-          throw AppException(
-            statusCode: 403,
-            errorCode: 'inactive_user',
-            message: statusMessage,
-          );
-        }
-        
-        // User is active - save token and user data
+        // API returned 200 OK with token - login is successful
+        // Save token and user data regardless of status
+        // The API is the source of truth - if it allows login, we allow it
         await AuthLocalRepository.saveToken(loginResponse.token);
         final userJson = loginResponse.user.toJson();
         // Ensure user_type is saved from loginResponse (it may differ from user object)
@@ -108,8 +99,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (!emit.isDone) {
           String errorMessage = '';
           int statusCode = 500;
-          bool isInactiveUser = false;
-          String? userType;
 
           if (error is AppException) {
             errorMessage = error.message;
@@ -128,13 +117,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             
             // Handle 401 specifically (Invalid Email or Password)
             // Error message will be translated in UI layer based on statusCode
-            
-            // Handle inactive user
-            if (error.statusCode == 403) {
-              isInactiveUser = true;
-              // Try to get user type from the response if available
-              userType = loginRunner.currentValue?.userType;
-            }
           } else {
             errorMessage = error.toString();
           }
@@ -143,8 +125,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             request: state.request,
             error: errorMessage,
             statusCode: statusCode,
-            isInactiveUser: isInactiveUser,
-            userType: userType,
+            isInactiveUser: false, // No longer blocking based on status
+            userType: null,
           ));
         }
       },

@@ -251,6 +251,110 @@
   "placeholderComingSoon": "قريباً",
   "@placeholderComingSoon": {
     "description": "Placeholder text for pages under development"
+  },
+  "profileEditButton": "تعديل الملف الشخصي",
+  "@profileEditButton": {
+    "description": "Button to edit profile"
+  },
+  "profileSaveButton": "حفظ التغييرات",
+  "@profileSaveButton": {
+    "description": "Button to save profile changes"
+  },
+  "profileCancelButton": "إلغاء",
+  "@profileCancelButton": {
+    "description": "Button to cancel profile editing"
+  },
+  "profileUpdatePasswordButton": "تحديث كلمة المرور",
+  "@profileUpdatePasswordButton": {
+    "description": "Button to update password"
+  },
+  "profileDeleteAccountButton": "حذف الحساب",
+  "@profileDeleteAccountButton": {
+    "description": "Button to delete account"
+  },
+  "profileNumberOfVehicles": "عدد المركبات",
+  "@profileNumberOfVehicles": {
+    "description": "Label for number of vehicles"
+  },
+  "profileCurrentPasswordLabel": "كلمة المرور الحالية",
+  "@profileCurrentPasswordLabel": {
+    "description": "Label for current password field"
+  },
+  "profileCurrentPasswordHint": "أدخل كلمة المرور الحالية",
+  "@profileCurrentPasswordHint": {
+    "description": "Hint for current password field"
+  },
+  "profileNewPasswordLabel": "كلمة المرور الجديدة",
+  "@profileNewPasswordLabel": {
+    "description": "Label for new password field"
+  },
+  "profileNewPasswordHint": "أدخل كلمة المرور الجديدة (8 أحرف على الأقل)",
+  "@profileNewPasswordHint": {
+    "description": "Hint for new password field"
+  },
+  "profileConfirmNewPasswordLabel": "تأكيد كلمة المرور الجديدة",
+  "@profileConfirmNewPasswordLabel": {
+    "description": "Label for confirm new password field"
+  },
+  "profileConfirmNewPasswordHint": "أعد إدخال كلمة المرور الجديدة",
+  "@profileConfirmNewPasswordHint": {
+    "description": "Hint for confirm new password field"
+  },
+  "profileDeleteAccountPasswordLabel": "كلمة المرور",
+  "@profileDeleteAccountPasswordLabel": {
+    "description": "Label for password field in delete account dialog"
+  },
+  "profileDeleteAccountPasswordHint": "أدخل كلمة المرور للتأكيد",
+  "@profileDeleteAccountPasswordHint": {
+    "description": "Hint for password field in delete account dialog"
+  },
+  "profileUpdatePasswordDialogTitle": "تحديث كلمة المرور",
+  "@profileUpdatePasswordDialogTitle": {
+    "description": "Title for update password dialog"
+  },
+  "profileDeleteAccountDialogTitle": "حذف الحساب",
+  "@profileDeleteAccountDialogTitle": {
+    "description": "Title for delete account dialog"
+  },
+  "profileDeleteAccountDialogMessage": "هل أنت متأكد من رغبتك في حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@profileDeleteAccountDialogMessage": {
+    "description": "Message for delete account confirmation dialog"
+  },
+  "profileDeleteAccountDialogConfirm": "حذف",
+  "@profileDeleteAccountDialogConfirm": {
+    "description": "Confirm button in delete account dialog"
+  },
+  "profileSuccessUpdate": "تم تحديث الملف الشخصي بنجاح",
+  "@profileSuccessUpdate": {
+    "description": "Success message after profile update"
+  },
+  "profileSuccessPasswordUpdate": "تم تحديث كلمة المرور بنجاح. الرجاء تسجيل الدخول مرة أخرى.",
+  "@profileSuccessPasswordUpdate": {
+    "description": "Success message after password update"
+  },
+  "profileSuccessDeleteAccount": "تم حذف الحساب بنجاح",
+  "@profileSuccessDeleteAccount": {
+    "description": "Success message after account deletion"
+  },
+  "profileErrorIncorrectPassword": "كلمة المرور غير صحيحة",
+  "@profileErrorIncorrectPassword": {
+    "description": "Error message for incorrect password"
+  },
+  "profileErrorPasswordMismatch": "كلمات المرور غير متطابقة",
+  "@profileErrorPasswordMismatch": {
+    "description": "Error message for password mismatch"
+  },
+  "profileErrorEmailExists": "البريد الإلكتروني موجود بالفعل",
+  "@profileErrorEmailExists": {
+    "description": "Error message for duplicate email"
+  },
+  "profileLoading": "جاري تحميل الملف الشخصي...",
+  "@profileLoading": {
+    "description": "Loading message for profile"
+  },
+  "profileRetryButton": "إعادة المحاولة",
+  "@profileRetryButton": {
+    "description": "Retry button text for profile error state"
   }
 }
 

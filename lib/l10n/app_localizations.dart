@@ -475,6 +475,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coming soon'**
   String get placeholderComingSoon;
+
+  /// Button to edit profile
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get profileEditButton;
+
+  /// Button to save profile changes
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get profileSaveButton;
+
+  /// Button to cancel profile editing
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get profileCancelButton;
+
+  /// Button to update password
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get profileUpdatePasswordButton;
+
+  /// Button to delete account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get profileDeleteAccountButton;
+
+  /// Label for number of vehicles
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Vehicles'**
+  String get profileNumberOfVehicles;
+
+  /// Label for current password field
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get profileCurrentPasswordLabel;
+
+  /// Hint for current password field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get profileCurrentPasswordHint;
+
+  /// Label for new password field
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get profileNewPasswordLabel;
+
+  /// Hint for new password field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password (min 8 characters)'**
+  String get profileNewPasswordHint;
+
+  /// Label for confirm new password field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get profileConfirmNewPasswordLabel;
+
+  /// Hint for confirm new password field
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your new password'**
+  String get profileConfirmNewPasswordHint;
+
+  /// Label for password field in delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get profileDeleteAccountPasswordLabel;
+
+  /// Hint for password field in delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password to confirm'**
+  String get profileDeleteAccountPasswordHint;
+
+  /// Title for update password dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get profileUpdatePasswordDialogTitle;
+
+  /// Title for delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get profileDeleteAccountDialogTitle;
+
+  /// Message for delete account confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action cannot be undone.'**
+  String get profileDeleteAccountDialogMessage;
+
+  /// Confirm button in delete account dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get profileDeleteAccountDialogConfirm;
+
+  /// Success message after profile update
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get profileSuccessUpdate;
+
+  /// Success message after password update
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated successfully. Please login again.'**
+  String get profileSuccessPasswordUpdate;
+
+  /// Success message after account deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully'**
+  String get profileSuccessDeleteAccount;
+
+  /// Error message for incorrect password
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password'**
+  String get profileErrorIncorrectPassword;
+
+  /// Error message for password mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get profileErrorPasswordMismatch;
+
+  /// Error message for duplicate email
+  ///
+  /// In en, this message translates to:
+  /// **'Email already exists'**
+  String get profileErrorEmailExists;
+
+  /// Loading message for profile
+  ///
+  /// In en, this message translates to:
+  /// **'Loading profile...'**
+  String get profileLoading;
+
+  /// Retry button text for profile error state
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get profileRetryButton;
 }
 
 class _AppLocalizationsDelegate

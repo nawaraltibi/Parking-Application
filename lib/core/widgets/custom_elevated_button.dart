@@ -39,6 +39,7 @@ class CustomElevatedButton extends StatelessWidget {
     final bool isButtonDisabled = disabled || isLoading || onPressed == null;
 
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
         gradient: isButtonDisabled || !useGradient || backgroundColor != null
             ? null
@@ -72,6 +73,7 @@ class CustomElevatedButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius.r),
           ),
           padding: padding ?? EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
+          minimumSize: Size(0, 0),
         ),
         child: isLoading
             ? SizedBox(
@@ -90,12 +92,17 @@ class CustomElevatedButton extends StatelessWidget {
                     icon!,
                     SizedBox(width: 8.w),
                   ],
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: fontSize?.sp ?? 16.sp,
-                      fontWeight: fontWeight ?? FontWeight.w600,
+                  Flexible(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: fontSize?.sp ?? 16.sp,
+                        fontWeight: fontWeight ?? FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],

@@ -209,4 +209,85 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get placeholderComingSoon => 'قريباً';
+
+  @override
+  String get profileEditButton => 'تعديل الملف الشخصي';
+
+  @override
+  String get profileSaveButton => 'حفظ التغييرات';
+
+  @override
+  String get profileCancelButton => 'إلغاء';
+
+  @override
+  String get profileUpdatePasswordButton => 'تحديث كلمة المرور';
+
+  @override
+  String get profileDeleteAccountButton => 'حذف الحساب';
+
+  @override
+  String get profileNumberOfVehicles => 'عدد المركبات';
+
+  @override
+  String get profileCurrentPasswordLabel => 'كلمة المرور الحالية';
+
+  @override
+  String get profileCurrentPasswordHint => 'أدخل كلمة المرور الحالية';
+
+  @override
+  String get profileNewPasswordLabel => 'كلمة المرور الجديدة';
+
+  @override
+  String get profileNewPasswordHint =>
+      'أدخل كلمة المرور الجديدة (8 أحرف على الأقل)';
+
+  @override
+  String get profileConfirmNewPasswordLabel => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get profileConfirmNewPasswordHint => 'أعد إدخال كلمة المرور الجديدة';
+
+  @override
+  String get profileDeleteAccountPasswordLabel => 'كلمة المرور';
+
+  @override
+  String get profileDeleteAccountPasswordHint => 'أدخل كلمة المرور للتأكيد';
+
+  @override
+  String get profileUpdatePasswordDialogTitle => 'تحديث كلمة المرور';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'حذف الحساب';
+
+  @override
+  String get profileDeleteAccountDialogMessage =>
+      'هل أنت متأكد من رغبتك في حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get profileDeleteAccountDialogConfirm => 'حذف';
+
+  @override
+  String get profileSuccessUpdate => 'تم تحديث الملف الشخصي بنجاح';
+
+  @override
+  String get profileSuccessPasswordUpdate =>
+      'تم تحديث كلمة المرور بنجاح. الرجاء تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get profileSuccessDeleteAccount => 'تم حذف الحساب بنجاح';
+
+  @override
+  String get profileErrorIncorrectPassword => 'كلمة المرور غير صحيحة';
+
+  @override
+  String get profileErrorPasswordMismatch => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get profileErrorEmailExists => 'البريد الإلكتروني موجود بالفعل';
+
+  @override
+  String get profileLoading => 'جاري تحميل الملف الشخصي...';
+
+  @override
+  String get profileRetryButton => 'إعادة المحاولة';
 }

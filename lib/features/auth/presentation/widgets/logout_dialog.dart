@@ -21,63 +21,77 @@ class LogoutDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Title
-            Text(
-              l10n.authLogoutDialogTitle,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryText,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 400.w,
+              maxHeight: MediaQuery.of(context).size.height * 0.9,
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(24.w),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Title
+                    Text(
+                      l10n.authLogoutDialogTitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryText,
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    // Content
+                    Text(
+                      l10n.authLogoutDialogMessage,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: AppColors.secondaryText,
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
+                    // Actions
+                    Row(
+                      children: [
+                        // Cancel Button
+                        Expanded(
+                          child: CustomElevatedButton(
+                            title: l10n.authLogoutDialogCancel,
+                            onPressed: () => Navigator.of(context).pop(),
+                            backgroundColor: AppColors.surface,
+                            foregroundColor: AppColors.primary,
+                            useGradient: false,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        // Logout Button
+                        Expanded(
+                          child: CustomElevatedButton(
+                            title: l10n.authLogoutDialogConfirm,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              onConfirm();
+                            },
+                            backgroundColor: AppColors.error,
+                            foregroundColor: AppColors.textOnPrimary,
+                            useGradient: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16.h),
-            // Content
-            Text(
-              l10n.authLogoutDialogMessage,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.secondaryText,
-              ),
-            ),
-            SizedBox(height: 24.h),
-            // Actions
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Cancel Button
-                Expanded(
-                  child: CustomElevatedButton(
-                    title: l10n.authLogoutDialogCancel,
-                    onPressed: () => Navigator.of(context).pop(),
-                    backgroundColor: AppColors.surface,
-                    foregroundColor: AppColors.primary,
-                    useGradient: false,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                // Logout Button
-                Expanded(
-                  child: CustomElevatedButton(
-                    title: l10n.authLogoutDialogConfirm,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      onConfirm();
-                    },
-                    backgroundColor: AppColors.error,
-                    foregroundColor: AppColors.textOnPrimary,
-                    useGradient: false,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

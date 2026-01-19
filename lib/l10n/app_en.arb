@@ -251,6 +251,110 @@
   "placeholderComingSoon": "Coming soon",
   "@placeholderComingSoon": {
     "description": "Placeholder text for pages under development"
+  },
+  "profileEditButton": "Edit Profile",
+  "@profileEditButton": {
+    "description": "Button to edit profile"
+  },
+  "profileSaveButton": "Save Changes",
+  "@profileSaveButton": {
+    "description": "Button to save profile changes"
+  },
+  "profileCancelButton": "Cancel",
+  "@profileCancelButton": {
+    "description": "Button to cancel profile editing"
+  },
+  "profileUpdatePasswordButton": "Update Password",
+  "@profileUpdatePasswordButton": {
+    "description": "Button to update password"
+  },
+  "profileDeleteAccountButton": "Delete Account",
+  "@profileDeleteAccountButton": {
+    "description": "Button to delete account"
+  },
+  "profileNumberOfVehicles": "Number of Vehicles",
+  "@profileNumberOfVehicles": {
+    "description": "Label for number of vehicles"
+  },
+  "profileCurrentPasswordLabel": "Current Password",
+  "@profileCurrentPasswordLabel": {
+    "description": "Label for current password field"
+  },
+  "profileCurrentPasswordHint": "Enter your current password",
+  "@profileCurrentPasswordHint": {
+    "description": "Hint for current password field"
+  },
+  "profileNewPasswordLabel": "New Password",
+  "@profileNewPasswordLabel": {
+    "description": "Label for new password field"
+  },
+  "profileNewPasswordHint": "Enter your new password (min 8 characters)",
+  "@profileNewPasswordHint": {
+    "description": "Hint for new password field"
+  },
+  "profileConfirmNewPasswordLabel": "Confirm New Password",
+  "@profileConfirmNewPasswordLabel": {
+    "description": "Label for confirm new password field"
+  },
+  "profileConfirmNewPasswordHint": "Re-enter your new password",
+  "@profileConfirmNewPasswordHint": {
+    "description": "Hint for confirm new password field"
+  },
+  "profileDeleteAccountPasswordLabel": "Password",
+  "@profileDeleteAccountPasswordLabel": {
+    "description": "Label for password field in delete account dialog"
+  },
+  "profileDeleteAccountPasswordHint": "Enter your password to confirm",
+  "@profileDeleteAccountPasswordHint": {
+    "description": "Hint for password field in delete account dialog"
+  },
+  "profileUpdatePasswordDialogTitle": "Update Password",
+  "@profileUpdatePasswordDialogTitle": {
+    "description": "Title for update password dialog"
+  },
+  "profileDeleteAccountDialogTitle": "Delete Account",
+  "@profileDeleteAccountDialogTitle": {
+    "description": "Title for delete account dialog"
+  },
+  "profileDeleteAccountDialogMessage": "Are you sure you want to delete your account? This action cannot be undone.",
+  "@profileDeleteAccountDialogMessage": {
+    "description": "Message for delete account confirmation dialog"
+  },
+  "profileDeleteAccountDialogConfirm": "Delete",
+  "@profileDeleteAccountDialogConfirm": {
+    "description": "Confirm button in delete account dialog"
+  },
+  "profileSuccessUpdate": "Profile updated successfully",
+  "@profileSuccessUpdate": {
+    "description": "Success message after profile update"
+  },
+  "profileSuccessPasswordUpdate": "Password updated successfully. Please login again.",
+  "@profileSuccessPasswordUpdate": {
+    "description": "Success message after password update"
+  },
+  "profileSuccessDeleteAccount": "Account deleted successfully",
+  "@profileSuccessDeleteAccount": {
+    "description": "Success message after account deletion"
+  },
+  "profileErrorIncorrectPassword": "Incorrect password",
+  "@profileErrorIncorrectPassword": {
+    "description": "Error message for incorrect password"
+  },
+  "profileErrorPasswordMismatch": "Passwords do not match",
+  "@profileErrorPasswordMismatch": {
+    "description": "Error message for password mismatch"
+  },
+  "profileErrorEmailExists": "Email already exists",
+  "@profileErrorEmailExists": {
+    "description": "Error message for duplicate email"
+  },
+  "profileLoading": "Loading profile...",
+  "@profileLoading": {
+    "description": "Loading message for profile"
+  },
+  "profileRetryButton": "Retry",
+  "@profileRetryButton": {
+    "description": "Retry button text for profile error state"
   }
 }
 

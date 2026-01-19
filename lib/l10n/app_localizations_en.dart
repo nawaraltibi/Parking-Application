@@ -209,4 +209,86 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get placeholderComingSoon => 'Coming soon';
+
+  @override
+  String get profileEditButton => 'Edit Profile';
+
+  @override
+  String get profileSaveButton => 'Save Changes';
+
+  @override
+  String get profileCancelButton => 'Cancel';
+
+  @override
+  String get profileUpdatePasswordButton => 'Update Password';
+
+  @override
+  String get profileDeleteAccountButton => 'Delete Account';
+
+  @override
+  String get profileNumberOfVehicles => 'Number of Vehicles';
+
+  @override
+  String get profileCurrentPasswordLabel => 'Current Password';
+
+  @override
+  String get profileCurrentPasswordHint => 'Enter your current password';
+
+  @override
+  String get profileNewPasswordLabel => 'New Password';
+
+  @override
+  String get profileNewPasswordHint =>
+      'Enter your new password (min 8 characters)';
+
+  @override
+  String get profileConfirmNewPasswordLabel => 'Confirm New Password';
+
+  @override
+  String get profileConfirmNewPasswordHint => 'Re-enter your new password';
+
+  @override
+  String get profileDeleteAccountPasswordLabel => 'Password';
+
+  @override
+  String get profileDeleteAccountPasswordHint =>
+      'Enter your password to confirm';
+
+  @override
+  String get profileUpdatePasswordDialogTitle => 'Update Password';
+
+  @override
+  String get profileDeleteAccountDialogTitle => 'Delete Account';
+
+  @override
+  String get profileDeleteAccountDialogMessage =>
+      'Are you sure you want to delete your account? This action cannot be undone.';
+
+  @override
+  String get profileDeleteAccountDialogConfirm => 'Delete';
+
+  @override
+  String get profileSuccessUpdate => 'Profile updated successfully';
+
+  @override
+  String get profileSuccessPasswordUpdate =>
+      'Password updated successfully. Please login again.';
+
+  @override
+  String get profileSuccessDeleteAccount => 'Account deleted successfully';
+
+  @override
+  String get profileErrorIncorrectPassword => 'Incorrect password';
+
+  @override
+  String get profileErrorPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get profileErrorEmailExists => 'Email already exists';
+
+  @override
+  String get profileLoading => 'Loading profile...';
+
+  @override
+  String get profileRetryButton => 'Retry';
 }

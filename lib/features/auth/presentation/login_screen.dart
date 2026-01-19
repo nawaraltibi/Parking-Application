@@ -99,17 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
             } else if (state is LoginFailure) {
               String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
               
-              // Handle inactive user messages with appropriate styling
-              if (state.isInactiveUser) {
-                // Show warning for inactive users (owner pending approval or user blocked)
-                UnifiedSnackbar.warning(
-                  context,
-                  message: errorMessage,
-                );
-              } else {
-                // Show error for other login failures
-                UnifiedSnackbar.error(context, message: errorMessage);
-              }
+              // Show error for login failures
+              // API is the source of truth - if API returns error, we show it
+              UnifiedSnackbar.error(context, message: errorMessage);
             }
           },
           builder: (context, state) {
