@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
-import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
-import '../../../core/widgets/custom_dropdown_field.dart';
 import '../../../l10n/app_localizations.dart';
 import '../bloc/register/register_bloc.dart';
+import 'utils/auth_error_handler.dart';
+import 'widgets/register_form_fields.dart';
 
 /// Register Screen
 /// UI component for user registration
@@ -42,12 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  /// Translate error messages based on known error codes or messages
-  String _translateErrorMessage(BuildContext context, String error, int statusCode) {
-    // Return original error message if not recognized
-    // Most validation errors from API should already be in the error message
-    return error;
-  }
 
   void _handleRegister() {
     if (formKey.currentState!.validate()) {
@@ -101,7 +95,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 }
               });
             } else if (state is RegisterFailure) {
-              String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
+              final l10n = AppLocalizations.of(context)!;
+              final errorMessage = AuthErrorHandler.handleRegisterError(
+                state.error,
+                state.statusCode,
+                l10n,
+              );
               UnifiedSnackbar.error(context, message: errorMessage);
             }
           },
@@ -109,6 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             final l10n = AppLocalizations.of(context)!;
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Form(
@@ -125,10 +125,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           icon: const Icon(Icons.arrow_back),
                           onPressed: () => context.pop(),
                           color: AppColors.primaryText,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
                         ),
                       ),
 
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 24.h),
 
                       // Register Title
                       Text(
@@ -137,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontSize: 28.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
+                          height: 1.2,
                         ),
                       ),
                       SizedBox(height: 8.h),
@@ -145,115 +148,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.secondaryText,
+                          height: 1.4,
                         ),
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: 40.h),
 
-                      // Full Name Field
-                      CustomTextField(
-                        label: l10n.authFullNameLabel,
-                        hintText: l10n.authFullNameHint,
-                        controller: fullNameController,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.authValidationFullNameRequired;
-                          }
-                          if (value.length > 255) {
-                            return l10n.authValidationFullNameLong;
-                          }
-                          return null;
+                      // Register Form Fields
+                      RegisterFormFields(
+                        fullNameController: fullNameController,
+                        emailController: emailController,
+                        phoneController: phoneController,
+                        passwordController: passwordController,
+                        passwordConfirmationController: passwordConfirmationController,
+                        selectedUserType: selectedUserType,
+                        onUserTypeChanged: (value) {
+                          setState(() {
+                            selectedUserType = value;
+                          });
                         },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Email Field
-                      CustomTextField(
-                        label: l10n.authEmailLabel,
-                        hintText: l10n.authEmailHint,
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.authValidationEmailRequired;
-                          }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(value)) {
-                            return l10n.authValidationEmailInvalid;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Phone Field
-                      CustomTextField(
-                        label: l10n.authPhoneLabel,
-                        hintText: l10n.authPhoneHint,
-                        controller: phoneController,
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.authValidationPhoneRequired;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // User Type Dropdown
-                      CustomDropdownField<String>(
-                        label: l10n.authUserTypeLabel,
-                        items: userTypes,
-                        selectedValue: selectedUserType,
-                        getLabel: (value) => value == 'user'
-                            ? l10n.authUserTypeRegular
-                            : l10n.authUserTypeOwner,
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              selectedUserType = value;
-                            });
-                          }
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Password Field
-                      CustomTextField(
-                        label: l10n.authPasswordLabel,
-                        hintText: l10n.authPasswordRegisterHint,
-                        controller: passwordController,
-                        isPassword: true,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordRequired;
-                          }
-                          if (value.length < 8) {
-                            return l10n.authValidationPasswordShort;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Password Confirmation Field
-                      CustomTextField(
-                        label: l10n.authConfirmPasswordLabel,
-                        hintText: l10n.authConfirmPasswordHint,
-                        controller: passwordConfirmationController,
-                        isPassword: true,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordConfirmationRequired;
-                          }
-                          if (value != passwordController.text) {
-                            return l10n.authValidationPasswordMismatch;
-                          }
-                          return null;
-                        },
+                        userTypes: userTypes,
                       ),
                       SizedBox(height: 32.h),
 
@@ -283,6 +196,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onPressed: () => context.pushReplacement(
                               Routes.loginPath,
                             ),
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 4.w,
+                                vertical: 4.h,
+                              ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
                             child: Text(
                               l10n.authLoginButton,
                               style: TextStyle(
@@ -294,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: 40.h),
                     ],
                   ),
                 ),

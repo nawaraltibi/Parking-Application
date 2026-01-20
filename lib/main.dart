@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'l10n/app_localizations.dart';
 import 'core/core.dart';
 import 'core/routes/app_pages.dart';
+import 'core/services/language_service.dart';
 import 'data/datasources/network/api_config.dart';
 import 'features/splash/bloc/splash_routing_bloc.dart';
 
@@ -21,6 +22,7 @@ void main() async {
     print('   Base URL: ${APIConfig.baseUrl}');
     print('   API Endpoint: ${APIConfig.appAPI}');
     print('   Host: ${APIConfig.host}');
+    print('   Default Language: ${LanguageService.getLanguage()}');
     print('');
   }
 
@@ -39,18 +41,26 @@ class ParkingApp extends StatelessWidget {
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
+            // Locale Cubit for language management - must be provided at app level
+            BlocProvider(create: (_) => LocaleCubit()),
             // Splash routing BLoC for authentication status checking
             BlocProvider(create: (_) => SplashRoutingBloc()),
             // Add other BLoCs here as needed
           ],
-          child: MaterialApp.router(
-            title: 'Parking Application',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            routerConfig: appPages,
-            // Localization support
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
+          child: BlocBuilder<LocaleCubit, LocaleState>(
+            builder: (context, localeState) {
+              return MaterialApp.router(
+                title: 'Parking Application',
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                routerConfig: appPages,
+                // Localization support with language persistence
+                // Locale is controlled by LocaleCubit - MaterialApp rebuilds when state changes
+                locale: localeState.locale,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+              );
+            },
           ),
         );
       },

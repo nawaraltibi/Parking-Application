@@ -161,6 +161,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authErrorAccountPending => 'حسابك في انتظار موافقة المدير';
 
   @override
+  String get authErrorOwnerPendingApproval =>
+      'حسابك في انتظار موافقة المدير. يرجى الانتظار حتى يتم تفعيل حسابك.';
+
+  @override
   String get authErrorAccountBlocked => 'تم حظر حسابك. الرجاء التواصل مع الدعم';
 
   @override
@@ -290,4 +294,233 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileRetryButton => 'إعادة المحاولة';
+
+  @override
+  String get profileChangeLanguageButton => 'تغيير اللغة';
+
+  @override
+  String get parkingTitle => 'مواقفي';
+
+  @override
+  String get parkingCreateTitle => 'إنشاء موقف';
+
+  @override
+  String get parkingUpdateTitle => 'تحديث موقف';
+
+  @override
+  String get parkingDashboardTitle => 'لوحة التحكم';
+
+  @override
+  String get parkingLotNameLabel => 'اسم الموقف';
+
+  @override
+  String get parkingLotNameHint => 'أدخل اسم الموقف';
+
+  @override
+  String get parkingAddressLabel => 'العنوان';
+
+  @override
+  String get parkingAddressHint => 'أدخل عنوان الموقف';
+
+  @override
+  String get parkingLatitudeLabel => 'خط العرض';
+
+  @override
+  String get parkingLatitudeHint => 'أدخل خط العرض (-90 إلى 90)';
+
+  @override
+  String get parkingLongitudeLabel => 'خط الطول';
+
+  @override
+  String get parkingLongitudeHint => 'أدخل خط الطول (-180 إلى 180)';
+
+  @override
+  String get parkingSelectLocationLabel => 'اختر موقع موقف السيارات';
+
+  @override
+  String get parkingChooseLocationButton => 'اختر الموقع على الخريطة';
+
+  @override
+  String get parkingLocationNotSelected => 'لم يتم اختيار الموقع';
+
+  @override
+  String get parkingMapScreenTitle => 'اختر موقع موقف السيارات';
+
+  @override
+  String get parkingConfirmLocationButton => 'تأكيد الموقع';
+
+  @override
+  String get parkingLocationPermissionDenied =>
+      'إذن الموقع مطلوب لتحديد موقعك الحالي';
+
+  @override
+  String get parkingLocationError =>
+      'تعذر الحصول على موقعك. يرجى اختيار موقع على الخريطة.';
+
+  @override
+  String get parkingTotalSpacesLabel => 'إجمالي المساحات';
+
+  @override
+  String get parkingTotalSpacesHint => 'أدخل إجمالي مساحات الوقوف';
+
+  @override
+  String get parkingHourlyRateLabel => 'السعر بالساعة';
+
+  @override
+  String get parkingHourlyRateHint => 'أدخل السعر بالساعة';
+
+  @override
+  String get parkingCreateButton => 'إنشاء موقف';
+
+  @override
+  String get parkingUpdateButton => 'تحديث موقف';
+
+  @override
+  String get parkingStatusPending => 'قيد الانتظار';
+
+  @override
+  String get parkingStatusApproved => 'موافق عليه';
+
+  @override
+  String get parkingStatusRejected => 'مرفوض';
+
+  @override
+  String get parkingStatusActive => 'نشط';
+
+  @override
+  String get parkingStatusInactive => 'غير نشط';
+
+  @override
+  String get parkingEmptyState => 'لا توجد مواقف بعد';
+
+  @override
+  String get parkingEmptyStateSubtitle => 'أنشئ موقفك الأول للبدء';
+
+  @override
+  String get parkingUpdateRequiresApproval =>
+      'سيحتاج تحديث هذا الموقف إلى موافقة المدير مرة أخرى';
+
+  @override
+  String get parkingUpdateConfirmTitle => 'تأكيد التحديث';
+
+  @override
+  String get parkingUpdateConfirmMessage =>
+      'سيتم إرسال هذا التحديث إلى المدير للموافقة. المتابعة؟';
+
+  @override
+  String get parkingSuccessCreate =>
+      'تم إنشاء الموقف بنجاح. في انتظار موافقة المدير.';
+
+  @override
+  String get parkingSuccessUpdate =>
+      'تم إرسال طلب تحديث الموقف. في انتظار موافقة المدير.';
+
+  @override
+  String get parkingErrorUnauthorized => 'غير مصرح لك بتنفيذ هذا الإجراء';
+
+  @override
+  String get parkingErrorNotFound => 'الموقف غير موجود';
+
+  @override
+  String get parkingRetryButton => 'إعادة المحاولة';
+
+  @override
+  String get parkingLoading => 'جاري تحميل المواقف...';
+
+  @override
+  String get parkingCreating => 'جاري إنشاء الموقف...';
+
+  @override
+  String get parkingUpdating => 'جاري تحديث الموقف...';
+
+  @override
+  String get parkingDashboardLoading => 'جاري تحميل لوحة التحكم...';
+
+  @override
+  String get parkingValidationLotNameRequired => 'اسم الموقف مطلوب';
+
+  @override
+  String get parkingValidationAddressRequired => 'العنوان مطلوب';
+
+  @override
+  String get parkingValidationLatitudeInvalid =>
+      'يجب أن يكون خط العرض بين -90 و 90';
+
+  @override
+  String get parkingValidationLongitudeInvalid =>
+      'يجب أن يكون خط الطول بين -180 و 180';
+
+  @override
+  String get parkingValidationTotalSpacesInvalid =>
+      'يجب أن يكون إجمالي المساحات على الأقل 1';
+
+  @override
+  String get parkingValidationHourlyRateInvalid =>
+      'يجب أن يكون السعر بالساعة 0 أو أكبر';
+
+  @override
+  String get parkingDashboardSummary => 'ملخص';
+
+  @override
+  String get parkingDashboardOccupancy => 'الإشغال';
+
+  @override
+  String get parkingDashboardFinancial => 'المالية';
+
+  @override
+  String get parkingDashboardBookings => 'الحجوزات';
+
+  @override
+  String get parkingDashboardTotalParkings => 'إجمالي المواقف';
+
+  @override
+  String get parkingDashboardActiveParkings => 'نشطة';
+
+  @override
+  String get parkingDashboardPendingParkings => 'قيد الانتظار';
+
+  @override
+  String get parkingDashboardRejectedParkings => 'مرفوضة';
+
+  @override
+  String get parkingDashboardTotalSpaces => 'إجمالي المساحات';
+
+  @override
+  String get parkingDashboardAvailableSpaces => 'متاحة';
+
+  @override
+  String get parkingDashboardOccupiedSpaces => 'مشغولة';
+
+  @override
+  String get parkingDashboardOccupancyRate => 'معدل الإشغال';
+
+  @override
+  String get parkingDashboardTotalRevenue => 'إجمالي الإيرادات';
+
+  @override
+  String get parkingDashboardSuccessfulPayments => 'الدفعات الناجحة';
+
+  @override
+  String get parkingDashboardAverageHourlyRate => 'متوسط السعر بالساعة';
+
+  @override
+  String get parkingDashboardRevenueToday => 'اليوم';
+
+  @override
+  String get parkingDashboardRevenueThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get parkingDashboardRevenueThisMonth => 'هذا الشهر';
+
+  @override
+  String get parkingDashboardTotalBookings => 'إجمالي الحجوزات';
+
+  @override
+  String get parkingDashboardActiveBookings => 'الحجوزات النشطة';
+
+  @override
+  String get parkingDashboardCancelledBookings => 'ملغاة';
+
+  @override
+  String get parkingDashboardActiveBookingsNow => 'نشطة الآن';
 }

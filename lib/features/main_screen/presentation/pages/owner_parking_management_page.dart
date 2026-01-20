@@ -1,38 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/utils/app_icons.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../parking/bloc/parking_cubit.dart';
+import '../../../parking/presentation/pages/parking_list_screen.dart';
+import '../../../parking/presentation/pages/parking_dashboard_screen.dart';
 
 /// Owner Parking Management Page
-/// Placeholder page for parking management features
-class OwnerParkingManagementPage extends StatelessWidget {
+/// Main page for parking management with tabs for list and dashboard
+class OwnerParkingManagementPage extends StatefulWidget {
   const OwnerParkingManagementPage({super.key});
+
+  @override
+  State<OwnerParkingManagementPage> createState() =>
+      _OwnerParkingManagementPageState();
+}
+
+class _OwnerParkingManagementPageState
+    extends State<OwnerParkingManagementPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.ownerTabParkingManagement),
-      ),
-      body: Center(
+
+    return BlocProvider(
+      create: (context) => ParkingCubit(),
+      child: DefaultTabController(
+        length: 2,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.local_parking,
-              size: 64,
-              color: Theme.of(context).colorScheme.primary,
+            TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  icon: const Icon(AppIcons.myParkings),
+                  text: l10n.parkingTitle,
+                ),
+                Tab(
+                  icon: const Icon(AppIcons.dashboard),
+                  text: l10n.parkingDashboardTitle,
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.ownerTabParkingManagement,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.placeholderComingSoon,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  ParkingListScreen(),
+                  ParkingDashboardScreen(),
+                ],
+              ),
             ),
           ],
         ),
@@ -40,4 +70,3 @@ class OwnerParkingManagementPage extends StatelessWidget {
     );
   }
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/app_icons.dart';
 import '../../../../l10n/app_localizations.dart';
 
 /// Owner bottom navigation tabs
@@ -11,9 +12,18 @@ extension OwnerTabX on OwnerTab {
   IconData get icon {
     switch (this) {
       case OwnerTab.parkingManagement:
-        return Icons.local_parking;
+        return AppIcons.parkings;
       case OwnerTab.profile:
-        return Icons.person_outline;
+        return AppIcons.profile;
+    }
+  }
+
+  IconData get activeIcon {
+    switch (this) {
+      case OwnerTab.parkingManagement:
+        return AppIcons.parkingsSolid;
+      case OwnerTab.profile:
+        return AppIcons.profileSolid;
     }
   }
 

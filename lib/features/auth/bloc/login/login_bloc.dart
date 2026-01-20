@@ -5,13 +5,14 @@ import '../../models/login_request.dart';
 import '../../models/login_response.dart';
 import '../../repository/auth_repository.dart';
 import '../../../../core/utils/app_exception.dart';
+import '../mixins/auth_error_handler_mixin.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 /// Login Bloc
 /// Manages login state and business logic using Bloc pattern with AsyncRunner
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends Bloc<LoginEvent, LoginState> with AuthErrorHandlerMixin {
   final AsyncRunner<LoginResponse> loginRunner = AsyncRunner<LoginResponse>();
 
   LoginBloc() : super(LoginInitial(request: LoginRequest())) {
@@ -75,9 +76,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           loginRequest: state.request,
         );
         
+        // Validate owner status before saving token
+        // Block owner users with inactive status
+        if (loginResponse.userType == 'owner' && loginResponse.user.status == 'inactive') {
+          // Do not save token or user data
+          // Throw exception to be caught in onError
+          throw AppException(
+            statusCode: 403,
+            errorCode: 'owner_pending_approval',
+            message: 'Your account is pending admin approval. Please wait until your account is activated.',
+          );
+        }
+        
         // API returned 200 OK with token - login is successful
-        // Save token and user data regardless of status
-        // The API is the source of truth - if it allows login, we allow it
+        // Save token and user data for active users
         await AuthLocalRepository.saveToken(loginResponse.token);
         final userJson = loginResponse.user.toJson();
         // Ensure user_type is saved from loginResponse (it may differ from user object)
@@ -97,37 +109,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-            
-            // Handle validation errors
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-            
-            // Handle 401 specifically (Invalid Email or Password)
-            // Error message will be translated in UI layer based on statusCode
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(LoginFailure(
-            request: state.request,
-            error: errorMessage,
-            statusCode: statusCode,
-            isInactiveUser: false, // No longer blocking based on status
-            userType: null,
-          ));
+          handleLoginError(error, emit, state.request);
         }
       },
     );

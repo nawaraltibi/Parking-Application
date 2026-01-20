@@ -380,6 +380,12 @@ abstract class AppLocalizations {
   /// **'Your account is pending admin approval'**
   String get authErrorAccountPending;
 
+  /// Message for owner account pending approval after login
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is pending admin approval. Please wait until your account is activated.'**
+  String get authErrorOwnerPendingApproval;
+
   /// Message for blocked user account
   ///
   /// In en, this message translates to:
@@ -631,6 +637,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get profileRetryButton;
+
+  /// Button to confirm and apply language change
+  ///
+  /// In en, this message translates to:
+  /// **'Change Language'**
+  String get profileChangeLanguageButton;
+
+  /// Title for parking management screen
+  ///
+  /// In en, this message translates to:
+  /// **'My Parkings'**
+  String get parkingTitle;
+
+  /// Title for create parking screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create Parking'**
+  String get parkingCreateTitle;
+
+  /// Title for update parking screen
+  ///
+  /// In en, this message translates to:
+  /// **'Update Parking'**
+  String get parkingUpdateTitle;
+
+  /// Title for owner dashboard screen
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get parkingDashboardTitle;
+
+  /// Label for parking lot name field
+  ///
+  /// In en, this message translates to:
+  /// **'Lot Name'**
+  String get parkingLotNameLabel;
+
+  /// Hint for parking lot name field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter parking lot name'**
+  String get parkingLotNameHint;
+
+  /// Label for parking address field
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get parkingAddressLabel;
+
+  /// Hint for parking address field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter parking address'**
+  String get parkingAddressHint;
+
+  /// Label for latitude field
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get parkingLatitudeLabel;
+
+  /// Hint for latitude field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter latitude (-90 to 90)'**
+  String get parkingLatitudeHint;
+
+  /// Label for longitude field
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get parkingLongitudeLabel;
+
+  /// Hint for longitude field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter longitude (-180 to 180)'**
+  String get parkingLongitudeHint;
+
+  /// Label for parking location selection section
+  ///
+  /// In en, this message translates to:
+  /// **'Select Parking Location'**
+  String get parkingSelectLocationLabel;
+
+  /// Button text to open map for location selection
+  ///
+  /// In en, this message translates to:
+  /// **'Choose location on map'**
+  String get parkingChooseLocationButton;
+
+  /// Message shown when location is not selected
+  ///
+  /// In en, this message translates to:
+  /// **'Location not selected'**
+  String get parkingLocationNotSelected;
+
+  /// Title for map picker screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select Parking Location'**
+  String get parkingMapScreenTitle;
+
+  /// Button text to confirm selected location on map
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Location'**
+  String get parkingConfirmLocationButton;
+
+  /// Error message when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required to select your current location'**
+  String get parkingLocationPermissionDenied;
+
+  /// Error message when location cannot be retrieved
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to get your location. Please select a location on the map.'**
+  String get parkingLocationError;
+
+  /// Label for total spaces field
+  ///
+  /// In en, this message translates to:
+  /// **'Total Spaces'**
+  String get parkingTotalSpacesLabel;
+
+  /// Hint for total spaces field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter total parking spaces'**
+  String get parkingTotalSpacesHint;
+
+  /// Label for hourly rate field
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly Rate'**
+  String get parkingHourlyRateLabel;
+
+  /// Hint for hourly rate field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter hourly rate'**
+  String get parkingHourlyRateHint;
+
+  /// Button text for creating parking
+  ///
+  /// In en, this message translates to:
+  /// **'Create Parking'**
+  String get parkingCreateButton;
+
+  /// Button text for updating parking
+  ///
+  /// In en, this message translates to:
+  /// **'Update Parking'**
+  String get parkingUpdateButton;
+
+  /// Status badge text for pending parking
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get parkingStatusPending;
+
+  /// Status badge text for approved parking
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get parkingStatusApproved;
+
+  /// Status badge text for rejected parking
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get parkingStatusRejected;
+
+  /// Status badge text for active parking
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get parkingStatusActive;
+
+  /// Status badge text for inactive parking
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get parkingStatusInactive;
+
+  /// Empty state message when no parkings exist
+  ///
+  /// In en, this message translates to:
+  /// **'No parking lots yet'**
+  String get parkingEmptyState;
+
+  /// Empty state subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first parking lot to get started'**
+  String get parkingEmptyStateSubtitle;
+
+  /// Message shown when updating parking
+  ///
+  /// In en, this message translates to:
+  /// **'Updating this parking will require admin approval again'**
+  String get parkingUpdateRequiresApproval;
+
+  /// Title for update confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Update'**
+  String get parkingUpdateConfirmTitle;
+
+  /// Message for update confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This update will be sent to admin for approval. Continue?'**
+  String get parkingUpdateConfirmMessage;
+
+  /// Success message after creating parking
+  ///
+  /// In en, this message translates to:
+  /// **'Parking created successfully. Waiting for admin approval.'**
+  String get parkingSuccessCreate;
+
+  /// Success message after updating parking
+  ///
+  /// In en, this message translates to:
+  /// **'Parking update request submitted. Waiting for admin approval.'**
+  String get parkingSuccessUpdate;
+
+  /// Error message for unauthorized access
+  ///
+  /// In en, this message translates to:
+  /// **'You are not authorized to perform this action'**
+  String get parkingErrorUnauthorized;
+
+  /// Error message when parking not found
+  ///
+  /// In en, this message translates to:
+  /// **'Parking lot not found'**
+  String get parkingErrorNotFound;
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get parkingRetryButton;
+
+  /// Loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading parkings...'**
+  String get parkingLoading;
+
+  /// Creating message
+  ///
+  /// In en, this message translates to:
+  /// **'Creating parking...'**
+  String get parkingCreating;
+
+  /// Updating message
+  ///
+  /// In en, this message translates to:
+  /// **'Updating parking...'**
+  String get parkingUpdating;
+
+  /// Dashboard loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading dashboard...'**
+  String get parkingDashboardLoading;
+
+  /// Validation error for empty lot name
+  ///
+  /// In en, this message translates to:
+  /// **'Lot name is required'**
+  String get parkingValidationLotNameRequired;
+
+  /// Validation error for empty address
+  ///
+  /// In en, this message translates to:
+  /// **'Address is required'**
+  String get parkingValidationAddressRequired;
+
+  /// Validation error for invalid latitude
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude must be between -90 and 90'**
+  String get parkingValidationLatitudeInvalid;
+
+  /// Validation error for invalid longitude
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude must be between -180 and 180'**
+  String get parkingValidationLongitudeInvalid;
+
+  /// Validation error for invalid total spaces
+  ///
+  /// In en, this message translates to:
+  /// **'Total spaces must be at least 1'**
+  String get parkingValidationTotalSpacesInvalid;
+
+  /// Validation error for invalid hourly rate
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly rate must be 0 or greater'**
+  String get parkingValidationHourlyRateInvalid;
+
+  /// Dashboard summary section title
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get parkingDashboardSummary;
+
+  /// Dashboard occupancy section title
+  ///
+  /// In en, this message translates to:
+  /// **'Occupancy'**
+  String get parkingDashboardOccupancy;
+
+  /// Dashboard financial section title
+  ///
+  /// In en, this message translates to:
+  /// **'Financial'**
+  String get parkingDashboardFinancial;
+
+  /// Dashboard bookings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get parkingDashboardBookings;
+
+  /// Dashboard total parkings label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Parkings'**
+  String get parkingDashboardTotalParkings;
+
+  /// Dashboard active parkings label
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get parkingDashboardActiveParkings;
+
+  /// Dashboard pending parkings label
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get parkingDashboardPendingParkings;
+
+  /// Dashboard rejected parkings label
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get parkingDashboardRejectedParkings;
+
+  /// Dashboard total spaces label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Spaces'**
+  String get parkingDashboardTotalSpaces;
+
+  /// Dashboard available spaces label
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get parkingDashboardAvailableSpaces;
+
+  /// Dashboard occupied spaces label
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get parkingDashboardOccupiedSpaces;
+
+  /// Dashboard occupancy rate label
+  ///
+  /// In en, this message translates to:
+  /// **'Occupancy Rate'**
+  String get parkingDashboardOccupancyRate;
+
+  /// Dashboard total revenue label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Revenue'**
+  String get parkingDashboardTotalRevenue;
+
+  /// Dashboard successful payments label
+  ///
+  /// In en, this message translates to:
+  /// **'Successful Payments'**
+  String get parkingDashboardSuccessfulPayments;
+
+  /// Dashboard average hourly rate label
+  ///
+  /// In en, this message translates to:
+  /// **'Average Hourly Rate'**
+  String get parkingDashboardAverageHourlyRate;
+
+  /// Dashboard revenue today label
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get parkingDashboardRevenueToday;
+
+  /// Dashboard revenue this week label
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get parkingDashboardRevenueThisWeek;
+
+  /// Dashboard revenue this month label
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get parkingDashboardRevenueThisMonth;
+
+  /// Dashboard total bookings label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Bookings'**
+  String get parkingDashboardTotalBookings;
+
+  /// Dashboard active bookings label
+  ///
+  /// In en, this message translates to:
+  /// **'Active Bookings'**
+  String get parkingDashboardActiveBookings;
+
+  /// Dashboard cancelled bookings label
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get parkingDashboardCancelledBookings;
+
+  /// Dashboard active bookings now label
+  ///
+  /// In en, this message translates to:
+  /// **'Active Now'**
+  String get parkingDashboardActiveBookingsNow;
 }
 
 class _AppLocalizationsDelegate

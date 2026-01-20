@@ -3,14 +3,14 @@ import '../../../../core/utils/async_runner.dart';
 import '../../models/register_request.dart';
 import '../../models/register_response.dart';
 import '../../repository/auth_repository.dart';
-import '../../../../core/utils/app_exception.dart';
+import '../mixins/auth_error_handler_mixin.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 /// Register Bloc
 /// Manages registration state and business logic using Bloc pattern with AsyncRunner
-class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+class RegisterBloc extends Bloc<RegisterEvent, RegisterState> with AuthErrorHandlerMixin {
   final AsyncRunner<RegisterResponse> registerRunner =
       AsyncRunner<RegisterResponse>();
 
@@ -154,32 +154,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-
-            // Extract validation errors if available
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(RegisterFailure(
-            request: state.request,
-            error: errorMessage,
-            statusCode: statusCode,
-          ));
+          handleRegisterError(error, emit, state.request);
         }
       },
     );

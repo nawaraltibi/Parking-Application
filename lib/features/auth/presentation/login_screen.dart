@@ -4,11 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
-import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../bloc/login/login_bloc.dart';
+import 'utils/auth_error_handler.dart';
+import 'widgets/login_form_fields.dart';
 
 /// Login Screen
 /// UI component for user login
@@ -31,28 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  /// Translate error messages based on known error codes or messages
-  String _translateErrorMessage(BuildContext context, String error, int statusCode) {
-    final l10n = AppLocalizations.of(context)!;
-    
-    // Map known error messages to localized strings
-    if (statusCode == 401) {
-      return l10n.authErrorInvalidCredentials;
-    }
-    if (error.contains('Invalid Email or Password') || 
-        error.toLowerCase().contains('invalid credentials')) {
-      return l10n.authErrorInvalidCredentials;
-    }
-    if (error.contains('Your account is pending admin approval')) {
-      return l10n.authErrorAccountPending;
-    }
-    if (error.contains('Your account has been blocked')) {
-      return l10n.authErrorAccountBlocked;
-    }
-    
-    // Return original error message if not recognized
-    return error;
-  }
 
   void _handleLogin() {
     if (formKey.currentState!.validate()) {
@@ -75,6 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
         bottom: true,
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
+            final l10n = AppLocalizations.of(context)!;
+            
             if (state is LoginSuccess) {
               UnifiedSnackbar.success(
                 context,
@@ -82,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               );
 
               // Navigate to appropriate main screen based on user type
+              // Only navigate if user is active (inactive owners are blocked before LoginSuccess)
               final userType = state.response.userType;
               final navigator = GoRouter.of(context);
               Future.delayed(const Duration(seconds: 1), () {
@@ -97,11 +79,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               });
             } else if (state is LoginFailure) {
-              String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
+              final errorMessage = AuthErrorHandler.handleLoginError(
+                state.error,
+                state.statusCode,
+                l10n,
+              );
               
-              // Show error for login failures
-              // API is the source of truth - if API returns error, we show it
-              UnifiedSnackbar.error(context, message: errorMessage);
+              // Handle owner pending approval with specific message
+              if (state.isInactiveUser && state.userType == 'owner') {
+                UnifiedSnackbar.warning(
+                  context,
+                  message: l10n.authErrorOwnerPendingApproval,
+                );
+              } else {
+                // Show error for other login failures
+                UnifiedSnackbar.error(context, message: errorMessage);
+              }
             }
           },
           builder: (context, state) {
@@ -136,41 +129,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 48.h),
 
-                      // Email Field
-                      CustomTextField(
-                        label: l10n.authEmailLabel,
-                        hintText: l10n.authEmailHint,
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return l10n.authValidationEmailRequired;
-                          }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(value)) {
-                            return l10n.authValidationEmailInvalid;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Password Field
-                      CustomTextField(
-                        label: l10n.authPasswordLabel,
-                        hintText: l10n.authPasswordHint,
-                        controller: passwordController,
-                        isPassword: true,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordRequired;
-                          }
-                          if (value.length < 8) {
-                            return l10n.authValidationPasswordShort;
-                          }
-                          return null;
-                        },
+                      // Login Form Fields
+                      LoginFormFields(
+                        emailController: emailController,
+                        passwordController: passwordController,
                       ),
                       SizedBox(height: 24.h),
 

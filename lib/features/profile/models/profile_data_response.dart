@@ -1,4 +1,4 @@
-import 'user_model.dart';
+import '../../auth/models/user_model.dart';
 
 /// Profile Data Response Model
 /// Response from GET /api/profile/data endpoint

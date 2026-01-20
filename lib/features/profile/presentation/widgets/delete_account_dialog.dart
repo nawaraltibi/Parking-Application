@@ -5,6 +5,7 @@ import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/delete_account_request.dart';
+import '../utils/profile_validators.dart';
 
 /// Delete Account Dialog
 /// Dialog for confirming account deletion
@@ -126,12 +127,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         controller: _passwordController,
                         isPassword: true,
                         obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordRequired;
-                          }
-                          return null;
-                        },
+                        validator: (value) => ProfileValidators.password(value, l10n),
                       ),
                       SizedBox(height: 24.h),
 

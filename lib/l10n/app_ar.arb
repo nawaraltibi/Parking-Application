@@ -188,6 +188,10 @@
   "@authErrorAccountPending": {
     "description": "Message for owner account pending approval"
   },
+  "authErrorOwnerPendingApproval": "حسابك في انتظار موافقة المدير. يرجى الانتظار حتى يتم تفعيل حسابك.",
+  "@authErrorOwnerPendingApproval": {
+    "description": "Message for owner account pending approval after login"
+  },
   "authErrorAccountBlocked": "تم حظر حسابك. الرجاء التواصل مع الدعم",
   "@authErrorAccountBlocked": {
     "description": "Message for blocked user account"
@@ -355,6 +359,298 @@
   "profileRetryButton": "إعادة المحاولة",
   "@profileRetryButton": {
     "description": "Retry button text for profile error state"
+  },
+  "profileChangeLanguageButton": "تغيير اللغة",
+  "@profileChangeLanguageButton": {
+    "description": "Button to confirm and apply language change"
+  },
+  "parkingTitle": "مواقفي",
+  "@parkingTitle": {
+    "description": "Title for parking management screen"
+  },
+  "parkingCreateTitle": "إنشاء موقف",
+  "@parkingCreateTitle": {
+    "description": "Title for create parking screen"
+  },
+  "parkingUpdateTitle": "تحديث موقف",
+  "@parkingUpdateTitle": {
+    "description": "Title for update parking screen"
+  },
+  "parkingDashboardTitle": "لوحة التحكم",
+  "@parkingDashboardTitle": {
+    "description": "Title for owner dashboard screen"
+  },
+  "parkingLotNameLabel": "اسم الموقف",
+  "@parkingLotNameLabel": {
+    "description": "Label for parking lot name field"
+  },
+  "parkingLotNameHint": "أدخل اسم الموقف",
+  "@parkingLotNameHint": {
+    "description": "Hint for parking lot name field"
+  },
+  "parkingAddressLabel": "العنوان",
+  "@parkingAddressLabel": {
+    "description": "Label for parking address field"
+  },
+  "parkingAddressHint": "أدخل عنوان الموقف",
+  "@parkingAddressHint": {
+    "description": "Hint for parking address field"
+  },
+  "parkingLatitudeLabel": "خط العرض",
+  "@parkingLatitudeLabel": {
+    "description": "Label for latitude field"
+  },
+  "parkingLatitudeHint": "أدخل خط العرض (-90 إلى 90)",
+  "@parkingLatitudeHint": {
+    "description": "Hint for latitude field"
+  },
+  "parkingLongitudeLabel": "خط الطول",
+  "@parkingLongitudeLabel": {
+    "description": "Label for longitude field"
+  },
+  "parkingLongitudeHint": "أدخل خط الطول (-180 إلى 180)",
+  "@parkingLongitudeHint": {
+    "description": "Hint for longitude field"
+  },
+  "parkingSelectLocationLabel": "اختر موقع موقف السيارات",
+  "@parkingSelectLocationLabel": {
+    "description": "Label for parking location selection section"
+  },
+  "parkingChooseLocationButton": "اختر الموقع على الخريطة",
+  "@parkingChooseLocationButton": {
+    "description": "Button text to open map for location selection"
+  },
+  "parkingLocationNotSelected": "لم يتم اختيار الموقع",
+  "@parkingLocationNotSelected": {
+    "description": "Message shown when location is not selected"
+  },
+  "parkingMapScreenTitle": "اختر موقع موقف السيارات",
+  "@parkingMapScreenTitle": {
+    "description": "Title for map picker screen"
+  },
+  "parkingConfirmLocationButton": "تأكيد الموقع",
+  "@parkingConfirmLocationButton": {
+    "description": "Button text to confirm selected location on map"
+  },
+  "parkingLocationPermissionDenied": "إذن الموقع مطلوب لتحديد موقعك الحالي",
+  "@parkingLocationPermissionDenied": {
+    "description": "Error message when location permission is denied"
+  },
+  "parkingLocationError": "تعذر الحصول على موقعك. يرجى اختيار موقع على الخريطة.",
+  "@parkingLocationError": {
+    "description": "Error message when location cannot be retrieved"
+  },
+  "parkingTotalSpacesLabel": "إجمالي المساحات",
+  "@parkingTotalSpacesLabel": {
+    "description": "Label for total spaces field"
+  },
+  "parkingTotalSpacesHint": "أدخل إجمالي مساحات الوقوف",
+  "@parkingTotalSpacesHint": {
+    "description": "Hint for total spaces field"
+  },
+  "parkingHourlyRateLabel": "السعر بالساعة",
+  "@parkingHourlyRateLabel": {
+    "description": "Label for hourly rate field"
+  },
+  "parkingHourlyRateHint": "أدخل السعر بالساعة",
+  "@parkingHourlyRateHint": {
+    "description": "Hint for hourly rate field"
+  },
+  "parkingCreateButton": "إنشاء موقف",
+  "@parkingCreateButton": {
+    "description": "Button text for creating parking"
+  },
+  "parkingUpdateButton": "تحديث موقف",
+  "@parkingUpdateButton": {
+    "description": "Button text for updating parking"
+  },
+  "parkingStatusPending": "قيد الانتظار",
+  "@parkingStatusPending": {
+    "description": "Status badge text for pending parking"
+  },
+  "parkingStatusApproved": "موافق عليه",
+  "@parkingStatusApproved": {
+    "description": "Status badge text for approved parking"
+  },
+  "parkingStatusRejected": "مرفوض",
+  "@parkingStatusRejected": {
+    "description": "Status badge text for rejected parking"
+  },
+  "parkingStatusActive": "نشط",
+  "@parkingStatusActive": {
+    "description": "Status badge text for active parking"
+  },
+  "parkingStatusInactive": "غير نشط",
+  "@parkingStatusInactive": {
+    "description": "Status badge text for inactive parking"
+  },
+  "parkingEmptyState": "لا توجد مواقف بعد",
+  "@parkingEmptyState": {
+    "description": "Empty state message when no parkings exist"
+  },
+  "parkingEmptyStateSubtitle": "أنشئ موقفك الأول للبدء",
+  "@parkingEmptyStateSubtitle": {
+    "description": "Empty state subtitle"
+  },
+  "parkingUpdateRequiresApproval": "سيحتاج تحديث هذا الموقف إلى موافقة المدير مرة أخرى",
+  "@parkingUpdateRequiresApproval": {
+    "description": "Message shown when updating parking"
+  },
+  "parkingUpdateConfirmTitle": "تأكيد التحديث",
+  "@parkingUpdateConfirmTitle": {
+    "description": "Title for update confirmation dialog"
+  },
+  "parkingUpdateConfirmMessage": "سيتم إرسال هذا التحديث إلى المدير للموافقة. المتابعة؟",
+  "@parkingUpdateConfirmMessage": {
+    "description": "Message for update confirmation dialog"
+  },
+  "parkingSuccessCreate": "تم إنشاء الموقف بنجاح. في انتظار موافقة المدير.",
+  "@parkingSuccessCreate": {
+    "description": "Success message after creating parking"
+  },
+  "parkingSuccessUpdate": "تم إرسال طلب تحديث الموقف. في انتظار موافقة المدير.",
+  "@parkingSuccessUpdate": {
+    "description": "Success message after updating parking"
+  },
+  "parkingErrorUnauthorized": "غير مصرح لك بتنفيذ هذا الإجراء",
+  "@parkingErrorUnauthorized": {
+    "description": "Error message for unauthorized access"
+  },
+  "parkingErrorNotFound": "الموقف غير موجود",
+  "@parkingErrorNotFound": {
+    "description": "Error message when parking not found"
+  },
+  "parkingRetryButton": "إعادة المحاولة",
+  "@parkingRetryButton": {
+    "description": "Retry button text"
+  },
+  "parkingLoading": "جاري تحميل المواقف...",
+  "@parkingLoading": {
+    "description": "Loading message"
+  },
+  "parkingCreating": "جاري إنشاء الموقف...",
+  "@parkingCreating": {
+    "description": "Creating message"
+  },
+  "parkingUpdating": "جاري تحديث الموقف...",
+  "@parkingUpdating": {
+    "description": "Updating message"
+  },
+  "parkingDashboardLoading": "جاري تحميل لوحة التحكم...",
+  "@parkingDashboardLoading": {
+    "description": "Dashboard loading message"
+  },
+  "parkingValidationLotNameRequired": "اسم الموقف مطلوب",
+  "@parkingValidationLotNameRequired": {
+    "description": "Validation error for empty lot name"
+  },
+  "parkingValidationAddressRequired": "العنوان مطلوب",
+  "@parkingValidationAddressRequired": {
+    "description": "Validation error for empty address"
+  },
+  "parkingValidationLatitudeInvalid": "يجب أن يكون خط العرض بين -90 و 90",
+  "@parkingValidationLatitudeInvalid": {
+    "description": "Validation error for invalid latitude"
+  },
+  "parkingValidationLongitudeInvalid": "يجب أن يكون خط الطول بين -180 و 180",
+  "@parkingValidationLongitudeInvalid": {
+    "description": "Validation error for invalid longitude"
+  },
+  "parkingValidationTotalSpacesInvalid": "يجب أن يكون إجمالي المساحات على الأقل 1",
+  "@parkingValidationTotalSpacesInvalid": {
+    "description": "Validation error for invalid total spaces"
+  },
+  "parkingValidationHourlyRateInvalid": "يجب أن يكون السعر بالساعة 0 أو أكبر",
+  "@parkingValidationHourlyRateInvalid": {
+    "description": "Validation error for invalid hourly rate"
+  },
+  "parkingDashboardSummary": "ملخص",
+  "@parkingDashboardSummary": {
+    "description": "Dashboard summary section title"
+  },
+  "parkingDashboardOccupancy": "الإشغال",
+  "@parkingDashboardOccupancy": {
+    "description": "Dashboard occupancy section title"
+  },
+  "parkingDashboardFinancial": "المالية",
+  "@parkingDashboardFinancial": {
+    "description": "Dashboard financial section title"
+  },
+  "parkingDashboardBookings": "الحجوزات",
+  "@parkingDashboardBookings": {
+    "description": "Dashboard bookings section title"
+  },
+  "parkingDashboardTotalParkings": "إجمالي المواقف",
+  "@parkingDashboardTotalParkings": {
+    "description": "Dashboard total parkings label"
+  },
+  "parkingDashboardActiveParkings": "نشطة",
+  "@parkingDashboardActiveParkings": {
+    "description": "Dashboard active parkings label"
+  },
+  "parkingDashboardPendingParkings": "قيد الانتظار",
+  "@parkingDashboardPendingParkings": {
+    "description": "Dashboard pending parkings label"
+  },
+  "parkingDashboardRejectedParkings": "مرفوضة",
+  "@parkingDashboardRejectedParkings": {
+    "description": "Dashboard rejected parkings label"
+  },
+  "parkingDashboardTotalSpaces": "إجمالي المساحات",
+  "@parkingDashboardTotalSpaces": {
+    "description": "Dashboard total spaces label"
+  },
+  "parkingDashboardAvailableSpaces": "متاحة",
+  "@parkingDashboardAvailableSpaces": {
+    "description": "Dashboard available spaces label"
+  },
+  "parkingDashboardOccupiedSpaces": "مشغولة",
+  "@parkingDashboardOccupiedSpaces": {
+    "description": "Dashboard occupied spaces label"
+  },
+  "parkingDashboardOccupancyRate": "معدل الإشغال",
+  "@parkingDashboardOccupancyRate": {
+    "description": "Dashboard occupancy rate label"
+  },
+  "parkingDashboardTotalRevenue": "إجمالي الإيرادات",
+  "@parkingDashboardTotalRevenue": {
+    "description": "Dashboard total revenue label"
+  },
+  "parkingDashboardSuccessfulPayments": "الدفعات الناجحة",
+  "@parkingDashboardSuccessfulPayments": {
+    "description": "Dashboard successful payments label"
+  },
+  "parkingDashboardAverageHourlyRate": "متوسط السعر بالساعة",
+  "@parkingDashboardAverageHourlyRate": {
+    "description": "Dashboard average hourly rate label"
+  },
+  "parkingDashboardRevenueToday": "اليوم",
+  "@parkingDashboardRevenueToday": {
+    "description": "Dashboard revenue today label"
+  },
+  "parkingDashboardRevenueThisWeek": "هذا الأسبوع",
+  "@parkingDashboardRevenueThisWeek": {
+    "description": "Dashboard revenue this week label"
+  },
+  "parkingDashboardRevenueThisMonth": "هذا الشهر",
+  "@parkingDashboardRevenueThisMonth": {
+    "description": "Dashboard revenue this month label"
+  },
+  "parkingDashboardTotalBookings": "إجمالي الحجوزات",
+  "@parkingDashboardTotalBookings": {
+    "description": "Dashboard total bookings label"
+  },
+  "parkingDashboardActiveBookings": "الحجوزات النشطة",
+  "@parkingDashboardActiveBookings": {
+    "description": "Dashboard active bookings label"
+  },
+  "parkingDashboardCancelledBookings": "ملغاة",
+  "@parkingDashboardCancelledBookings": {
+    "description": "Dashboard cancelled bookings label"
+  },
+  "parkingDashboardActiveBookingsNow": "نشطة الآن",
+  "@parkingDashboardActiveBookingsNow": {
+    "description": "Dashboard active bookings now label"
   }
 }
 

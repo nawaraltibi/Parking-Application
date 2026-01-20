@@ -36,3 +36,6 @@ export 'queue/services/request_queue_manager.dart';
 export 'queue/services/request_queue_service.dart';
 export 'queue/models/request_queue_item.dart';
 
+// Bloc exports
+export 'bloc/locale_cubit.dart';
+

@@ -91,48 +91,53 @@ class _CustomTextFieldState extends State<CustomTextField> {
             errorStyle: TextStyle(fontSize: 12.sp, color: AppColors.error),
             filled: true,
             fillColor: widget.enabled
-                ? AppColors.surface
+                ? AppColors.brightWhite
                 : AppColors.backgroundSecondary,
             contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
+              horizontal: 20.w,
               vertical: 14.h,
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(14.r),
               borderSide: const BorderSide(color: AppColors.border),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(14.r),
               borderSide: const BorderSide(color: AppColors.border),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: AppColors.primary, width: 2),
+              borderRadius: BorderRadius.circular(14.r),
+              borderSide: BorderSide(color: AppColors.primary, width: 1.5),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: AppColors.error),
+              borderRadius: BorderRadius.circular(14.r),
+              borderSide:  BorderSide(color: AppColors.error),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: AppColors.error, width: 2),
+              borderRadius: BorderRadius.circular(14.r),
+              borderSide: BorderSide(color: AppColors.error, width: 1.5),
             ),
             disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: AppColors.border),
+              borderRadius: BorderRadius.circular(14.r),
+              borderSide: const BorderSide(color: AppColors.border),
             ),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      _obscureText
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppColors.secondaryText,
+                      size: 20.sp,
                     ),
                     onPressed: () {
                       setState(() {
                         _obscureText = !_obscureText;
                       });
                     },
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                   )
                 : widget.suffixIcon,
           ),

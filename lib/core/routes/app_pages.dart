@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/splash_page.dart';
 import '../../features/onboarding/presentation/onboarding_page.dart';
 import '../../features/auth/presentation/register_page.dart';
 import '../../features/auth/presentation/login_page.dart';
-import '../../features/auth/presentation/profile_page.dart';
+import '../../features/profile/presentation/profile_page.dart';
 import '../../features/main_screen/presentation/owner_main_page.dart';
 import '../../features/main_screen/presentation/user_main_page.dart';
+import '../../features/parking/presentation/pages/create_parking_screen.dart';
+import '../../features/parking/presentation/pages/update_parking_screen.dart';
+import '../../features/parking/bloc/parking_cubit.dart';
+import '../../features/parking/models/parking_model.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -61,6 +66,37 @@ final appPages = GoRouter(
     GoRoute(
       path: Routes.profilePath,
       builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
+      path: '/create-parking',
+      builder: (context, state) {
+        // Try to get existing ParkingCubit from context (shared instance)
+        // This ensures we use the same instance as the parking list screen
+        try {
+          final existingCubit = context.read<ParkingCubit>();
+          return BlocProvider.value(
+            value: existingCubit,
+            child: const CreateParkingScreen(),
+          );
+        } catch (e) {
+          // Fallback: create new instance if not found in context
+          // This should rarely happen if navigation is from parking management screen
+          return BlocProvider(
+            create: (context) => ParkingCubit(),
+            child: const CreateParkingScreen(),
+          );
+        }
+      },
+    ),
+    GoRoute(
+      path: '/update-parking',
+      builder: (context, state) {
+        final parking = state.extra as ParkingModel;
+        return BlocProvider(
+          create: (context) => ParkingCubit(),
+          child: UpdateParkingScreen(parking: parking),
+        );
+      },
     ),
   ],
 );

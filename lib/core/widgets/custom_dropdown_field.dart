@@ -159,37 +159,36 @@ class _SearchableDropdownDialog<T> extends StatefulWidget {
 class _SearchableDropdownDialogState<T>
     extends State<_SearchableDropdownDialog<T>> {
   final TextEditingController _searchController = TextEditingController();
-  List<T> _filteredItems = [];
+  late final ValueNotifier<List<T>> _filteredItemsNotifier;
 
   @override
   void initState() {
     super.initState();
-    _filteredItems = widget.items;
+    _filteredItemsNotifier = ValueNotifier<List<T>>(widget.items);
     _searchController.addListener(_filterItems);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _filteredItemsNotifier.dispose();
     super.dispose();
   }
 
   void _filterItems() {
     final query = _searchController.text.toLowerCase();
-    setState(() {
-      if (query.isEmpty) {
-        _filteredItems = widget.items;
-      } else {
-        _filteredItems = widget.items.where((item) {
-          if (widget.filterFunction != null) {
-            return widget.filterFunction!(item, query);
-          }
-          // Default filter using getLabel
-          final label = widget.getLabel(item).toLowerCase();
-          return label.contains(query);
-        }).toList();
-      }
-    });
+    if (query.isEmpty) {
+      _filteredItemsNotifier.value = widget.items;
+    } else {
+      _filteredItemsNotifier.value = widget.items.where((item) {
+        if (widget.filterFunction != null) {
+          return widget.filterFunction!(item, query);
+        }
+        // Default filter using getLabel
+        final label = widget.getLabel(item).toLowerCase();
+        return label.contains(query);
+      }).toList();
+    }
   }
 
   @override
@@ -266,8 +265,11 @@ class _SearchableDropdownDialogState<T>
             ),
             // List of items
             Expanded(
-              child: _filteredItems.isEmpty
-                  ? Center(
+              child: ValueListenableBuilder<List<T>>(
+                valueListenable: _filteredItemsNotifier,
+                builder: (context, filteredItems, child) {
+                  if (filteredItems.isEmpty) {
+                    return Center(
                       child: Text(
                         'No data',
                         style: TextStyle(
@@ -275,12 +277,13 @@ class _SearchableDropdownDialogState<T>
                           color: AppColors.secondaryText,
                         ),
                       ),
-                    )
-                  : ListView.builder(
-                      itemCount: _filteredItems.length,
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      itemBuilder: (context, index) {
-                        final item = _filteredItems[index];
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: filteredItems.length,
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
                         final isSelected = widget.selectedValue == item;
 
                         return Container(
@@ -324,7 +327,9 @@ class _SearchableDropdownDialogState<T>
                           ),
                         );
                       },
-                    ),
+                    );
+                },
+              ),
             ),
           ],
         ),

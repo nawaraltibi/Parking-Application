@@ -4,19 +4,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
-import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
 import '../../../l10n/app_localizations.dart';
 import '../bloc/profile/profile_bloc.dart';
-import '../bloc/logout/logout_bloc.dart';
+import '../../auth/bloc/logout/logout_bloc.dart';
 import '../models/profile_data_response.dart';
 import '../models/update_profile_request.dart';
 import '../models/update_password_request.dart';
 import '../models/delete_account_request.dart';
+import 'utils/profile_error_handler.dart';
 import 'widgets/update_password_dialog.dart';
 import 'widgets/delete_account_dialog.dart';
-import 'widgets/logout_dialog.dart';
+import 'widgets/language_switcher_tile.dart';
+import 'widgets/profile_form_fields.dart';
+import 'widgets/profile_status_badge.dart';
+import 'widgets/profile_loading_state.dart';
+import 'widgets/profile_error_state.dart';
+import '../../../features/auth/presentation/widgets/logout_dialog.dart';
 
 /// Profile Screen
 /// UI component for displaying and managing user profile
@@ -118,9 +123,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context,
                     message: l10n.profileSuccessUpdate,
                   );
-                  setState(() {
-                    _isEditing = false;
-                  });
+                  // Update editing state - setState needed for UI rebuild
+                  // This is acceptable: simple UI state change, not business logic
+                  if (mounted) {
+                    setState(() {
+                      _isEditing = false;
+                    });
+                  }
                   // Update controllers with new profile data after successful update
                   if (state.profileData != null) {
                     _fullNameController.text = state.profileData!.data.fullName;
@@ -152,25 +161,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
                   });
                 } else if (state is ProfileFailure) {
-                  String errorMessage = state.error;
-
-                  // Translate known error messages
-                  if (state.statusCode == 422) {
-                    if (errorMessage.contains('incorrect password') ||
-                        errorMessage.contains('Incorrect password')) {
-                      errorMessage = l10n.profileErrorIncorrectPassword;
-                    } else if (errorMessage.contains(
-                          'Passwords do not match',
-                        ) ||
-                        errorMessage.contains('password mismatch')) {
-                      errorMessage = l10n.profileErrorPasswordMismatch;
-                    } else if (errorMessage.contains('email') &&
-                            errorMessage.contains('already') ||
-                        errorMessage.contains('taken')) {
-                      errorMessage = l10n.profileErrorEmailExists;
-                    }
-                  }
-
+                  final errorMessage = ProfileErrorHandler.handleErrorState(
+                    state.error,
+                    state.statusCode,
+                    l10n,
+                  );
                   UnifiedSnackbar.error(context, message: errorMessage);
                 }
               },
@@ -205,54 +200,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
           child: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (previous, current) {
+              // Optimize rebuilds: only rebuild when state type changes or data actually changes
+              if (previous.runtimeType != current.runtimeType) return true;
+              if (current is ProfileLoaded && previous is ProfileLoaded) {
+                return previous.profileData != current.profileData;
+              }
+              if (current is ProfileLoading && previous is ProfileLoading) {
+                return previous.updateRequest != current.updateRequest;
+              }
+              return false;
+            },
             builder: (context, state) {
               if (state is ProfileLoading && state.updateRequest == null) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(color: AppColors.primary),
-                      SizedBox(height: 16.h),
-                      Text(
-                        l10n.profileLoading,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.secondaryText,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+                return const ProfileLoadingState();
               }
 
               if (state is ProfileFailure && state.updateRequest == null) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64.sp,
-                        color: AppColors.error,
-                      ),
-                      SizedBox(height: 16.h),
-                      Text(
-                        state.error,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.error,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 24.h),
-                      CustomElevatedButton(
-                        title: l10n.profileRetryButton,
-                        onPressed: () {
-                          context.read<ProfileBloc>().add(LoadProfile());
-                        },
-                      ),
-                    ],
-                  ),
+                final errorMessage = ProfileErrorHandler.handleErrorState(
+                  state.error,
+                  state.statusCode,
+                  l10n,
+                );
+                return ProfileErrorState(
+                  error: errorMessage,
+                  onRetry: () {
+                    context.read<ProfileBloc>().add(LoadProfile());
+                  },
                 );
               }
 
@@ -301,75 +275,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // User Type Badge
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 6.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Text(
-                              profileData.data.userType.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
-                            ),
+                          ProfileStatusBadge(
+                            status: profileData.data.userType,
+                            isUserType: true,
                           ),
                           SizedBox(height: 16.h),
 
-                          // Full Name Field
-                          CustomTextField(
-                            label: l10n.authFullNameLabel,
-                            hintText: l10n.authFullNameHint,
-                            controller: _fullNameController,
+                          // Profile Form Fields
+                          ProfileFormFields(
+                            fullNameController: _fullNameController,
+                            emailController: _emailController,
+                            phoneController: _phoneController,
                             enabled: _isEditing,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return l10n.authValidationFullNameRequired;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 16.h),
-
-                          // Email Field
-                          CustomTextField(
-                            label: l10n.authEmailLabel,
-                            hintText: l10n.authEmailHint,
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            enabled: _isEditing,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return l10n.authValidationEmailRequired;
-                              }
-                              if (!RegExp(
-                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                              ).hasMatch(value)) {
-                                return l10n.authValidationEmailInvalid;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 16.h),
-
-                          // Phone Field
-                          CustomTextField(
-                            label: l10n.authPhoneLabel,
-                            hintText: l10n.authPhoneHint,
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            enabled: _isEditing,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return l10n.authValidationPhoneRequired;
-                              }
-                              return null;
-                            },
                           ),
                           SizedBox(height: 16.h),
 
@@ -404,27 +321,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(height: 8.h),
 
                           // Status Badge
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.w,
-                              vertical: 6.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: profileData.data.status == 'active'
-                                  ? AppColors.success.withValues(alpha: 0.1)
-                                  : AppColors.warning.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Text(
-                              profileData.data.status.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: profileData.data.status == 'active'
-                                    ? AppColors.success
-                                    : AppColors.warning,
-                              ),
-                            ),
+                          ProfileStatusBadge(
+                            status: profileData.data.status,
+                            isUserType: false,
                           ),
                         ],
                       ),
@@ -457,6 +356,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: const Icon(Icons.edit, size: 20),
                       ),
                     ],
+                    SizedBox(height: 16.h),
+
+                    // Language Switcher
+                    const LanguageSwitcherTile(),
                     SizedBox(height: 16.h),
 
                     // Update Password Button
@@ -513,3 +416,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+

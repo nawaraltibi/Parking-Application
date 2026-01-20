@@ -161,6 +161,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account is pending admin approval';
 
   @override
+  String get authErrorOwnerPendingApproval =>
+      'Your account is pending admin approval. Please wait until your account is activated.';
+
+  @override
   String get authErrorAccountBlocked =>
       'Your account has been blocked. Please contact support';
 
@@ -291,4 +295,235 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileRetryButton => 'Retry';
+
+  @override
+  String get profileChangeLanguageButton => 'Change Language';
+
+  @override
+  String get parkingTitle => 'My Parkings';
+
+  @override
+  String get parkingCreateTitle => 'Create Parking';
+
+  @override
+  String get parkingUpdateTitle => 'Update Parking';
+
+  @override
+  String get parkingDashboardTitle => 'Dashboard';
+
+  @override
+  String get parkingLotNameLabel => 'Lot Name';
+
+  @override
+  String get parkingLotNameHint => 'Enter parking lot name';
+
+  @override
+  String get parkingAddressLabel => 'Address';
+
+  @override
+  String get parkingAddressHint => 'Enter parking address';
+
+  @override
+  String get parkingLatitudeLabel => 'Latitude';
+
+  @override
+  String get parkingLatitudeHint => 'Enter latitude (-90 to 90)';
+
+  @override
+  String get parkingLongitudeLabel => 'Longitude';
+
+  @override
+  String get parkingLongitudeHint => 'Enter longitude (-180 to 180)';
+
+  @override
+  String get parkingSelectLocationLabel => 'Select Parking Location';
+
+  @override
+  String get parkingChooseLocationButton => 'Choose location on map';
+
+  @override
+  String get parkingLocationNotSelected => 'Location not selected';
+
+  @override
+  String get parkingMapScreenTitle => 'Select Parking Location';
+
+  @override
+  String get parkingConfirmLocationButton => 'Confirm Location';
+
+  @override
+  String get parkingLocationPermissionDenied =>
+      'Location permission is required to select your current location';
+
+  @override
+  String get parkingLocationError =>
+      'Unable to get your location. Please select a location on the map.';
+
+  @override
+  String get parkingTotalSpacesLabel => 'Total Spaces';
+
+  @override
+  String get parkingTotalSpacesHint => 'Enter total parking spaces';
+
+  @override
+  String get parkingHourlyRateLabel => 'Hourly Rate';
+
+  @override
+  String get parkingHourlyRateHint => 'Enter hourly rate';
+
+  @override
+  String get parkingCreateButton => 'Create Parking';
+
+  @override
+  String get parkingUpdateButton => 'Update Parking';
+
+  @override
+  String get parkingStatusPending => 'Pending';
+
+  @override
+  String get parkingStatusApproved => 'Approved';
+
+  @override
+  String get parkingStatusRejected => 'Rejected';
+
+  @override
+  String get parkingStatusActive => 'Active';
+
+  @override
+  String get parkingStatusInactive => 'Inactive';
+
+  @override
+  String get parkingEmptyState => 'No parking lots yet';
+
+  @override
+  String get parkingEmptyStateSubtitle =>
+      'Create your first parking lot to get started';
+
+  @override
+  String get parkingUpdateRequiresApproval =>
+      'Updating this parking will require admin approval again';
+
+  @override
+  String get parkingUpdateConfirmTitle => 'Confirm Update';
+
+  @override
+  String get parkingUpdateConfirmMessage =>
+      'This update will be sent to admin for approval. Continue?';
+
+  @override
+  String get parkingSuccessCreate =>
+      'Parking created successfully. Waiting for admin approval.';
+
+  @override
+  String get parkingSuccessUpdate =>
+      'Parking update request submitted. Waiting for admin approval.';
+
+  @override
+  String get parkingErrorUnauthorized =>
+      'You are not authorized to perform this action';
+
+  @override
+  String get parkingErrorNotFound => 'Parking lot not found';
+
+  @override
+  String get parkingRetryButton => 'Retry';
+
+  @override
+  String get parkingLoading => 'Loading parkings...';
+
+  @override
+  String get parkingCreating => 'Creating parking...';
+
+  @override
+  String get parkingUpdating => 'Updating parking...';
+
+  @override
+  String get parkingDashboardLoading => 'Loading dashboard...';
+
+  @override
+  String get parkingValidationLotNameRequired => 'Lot name is required';
+
+  @override
+  String get parkingValidationAddressRequired => 'Address is required';
+
+  @override
+  String get parkingValidationLatitudeInvalid =>
+      'Latitude must be between -90 and 90';
+
+  @override
+  String get parkingValidationLongitudeInvalid =>
+      'Longitude must be between -180 and 180';
+
+  @override
+  String get parkingValidationTotalSpacesInvalid =>
+      'Total spaces must be at least 1';
+
+  @override
+  String get parkingValidationHourlyRateInvalid =>
+      'Hourly rate must be 0 or greater';
+
+  @override
+  String get parkingDashboardSummary => 'Summary';
+
+  @override
+  String get parkingDashboardOccupancy => 'Occupancy';
+
+  @override
+  String get parkingDashboardFinancial => 'Financial';
+
+  @override
+  String get parkingDashboardBookings => 'Bookings';
+
+  @override
+  String get parkingDashboardTotalParkings => 'Total Parkings';
+
+  @override
+  String get parkingDashboardActiveParkings => 'Active';
+
+  @override
+  String get parkingDashboardPendingParkings => 'Pending';
+
+  @override
+  String get parkingDashboardRejectedParkings => 'Rejected';
+
+  @override
+  String get parkingDashboardTotalSpaces => 'Total Spaces';
+
+  @override
+  String get parkingDashboardAvailableSpaces => 'Available';
+
+  @override
+  String get parkingDashboardOccupiedSpaces => 'Occupied';
+
+  @override
+  String get parkingDashboardOccupancyRate => 'Occupancy Rate';
+
+  @override
+  String get parkingDashboardTotalRevenue => 'Total Revenue';
+
+  @override
+  String get parkingDashboardSuccessfulPayments => 'Successful Payments';
+
+  @override
+  String get parkingDashboardAverageHourlyRate => 'Average Hourly Rate';
+
+  @override
+  String get parkingDashboardRevenueToday => 'Today';
+
+  @override
+  String get parkingDashboardRevenueThisWeek => 'This Week';
+
+  @override
+  String get parkingDashboardRevenueThisMonth => 'This Month';
+
+  @override
+  String get parkingDashboardTotalBookings => 'Total Bookings';
+
+  @override
+  String get parkingDashboardActiveBookings => 'Active Bookings';
+
+  @override
+  String get parkingDashboardCancelledBookings => 'Cancelled';
+
+  @override
+  String get parkingDashboardActiveBookingsNow => 'Active Now';
 }

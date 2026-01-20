@@ -4,13 +4,14 @@ import '../../models/logout_response.dart';
 import '../../repository/auth_repository.dart';
 import '../../../../core/utils/app_exception.dart';
 import '../../../../data/repositories/auth_local_repository.dart';
+import '../mixins/auth_error_handler_mixin.dart';
 
 part 'logout_event.dart';
 part 'logout_state.dart';
 
 /// Logout Bloc
 /// Manages logout state and business logic using Bloc pattern with AsyncRunner
-class LogoutBloc extends Bloc<LogoutEvent, LogoutState> {
+class LogoutBloc extends Bloc<LogoutEvent, LogoutState> with AuthErrorHandlerMixin {
   final AsyncRunner<LogoutResponse> logoutRunner =
       AsyncRunner<LogoutResponse>();
 
@@ -63,27 +64,12 @@ class LogoutBloc extends Bloc<LogoutEvent, LogoutState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-
-            // Handle 401 specifically (Unauthenticated)
-            if (error.statusCode == 401) {
-              // Error message will be translated in UI layer
-              // Also clear local auth data if token is invalid
-              AuthLocalRepository.clearAuthData();
-            }
-          } else {
-            errorMessage = error.toString();
+          // Handle 401 specifically (Unauthenticated)
+          if (error is AppException && error.statusCode == 401) {
+            // Clear local auth data if token is invalid
+            AuthLocalRepository.clearAuthData();
           }
-
-          emit(LogoutFailure(
-            error: errorMessage,
-            statusCode: statusCode,
-          ));
+          handleLogoutError(error, emit);
         }
       },
     );

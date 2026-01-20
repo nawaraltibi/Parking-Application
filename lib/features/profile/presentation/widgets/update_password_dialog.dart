@@ -5,6 +5,7 @@ import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/update_password_request.dart';
+import '../utils/profile_validators.dart';
 
 /// Update Password Dialog
 /// Dialog for updating user password
@@ -111,12 +112,7 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                         controller: _currentPasswordController,
                         isPassword: true,
                         obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordRequired;
-                          }
-                          return null;
-                        },
+                        validator: (value) => ProfileValidators.password(value, l10n),
                       ),
                       SizedBox(height: 16.h),
 
@@ -127,15 +123,7 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                         controller: _newPasswordController,
                         isPassword: true,
                         obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordRequired;
-                          }
-                          if (value.length < 8) {
-                            return l10n.authValidationPasswordShort;
-                          }
-                          return null;
-                        },
+                        validator: (value) => ProfileValidators.passwordWithLength(value, l10n),
                       ),
                       SizedBox(height: 16.h),
 
@@ -146,15 +134,11 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                         controller: _confirmPasswordController,
                         isPassword: true,
                         obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.authValidationPasswordConfirmationRequired;
-                          }
-                          if (value != _newPasswordController.text) {
-                            return l10n.authValidationPasswordMismatch;
-                          }
-                          return null;
-                        },
+                        validator: (value) => ProfileValidators.passwordConfirmation(
+                          value,
+                          _newPasswordController.text,
+                          l10n,
+                        ),
                       ),
                       SizedBox(height: 24.h),
 

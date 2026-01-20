@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/async_runner.dart';
+import '../../../../core/services/profile_cache_service.dart';
 import '../../../../data/repositories/auth_local_repository.dart';
 import '../../models/profile_data_response.dart';
 import '../../models/update_profile_request.dart';
@@ -9,14 +10,14 @@ import '../../models/update_password_response.dart';
 import '../../models/delete_account_request.dart';
 import '../../models/delete_account_response.dart';
 import '../../repository/profile_repository.dart';
-import '../../../../core/utils/app_exception.dart';
+import '../mixins/profile_error_handler_mixin.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
 /// Profile Bloc
 /// Manages profile state and business logic using Bloc pattern with AsyncRunner
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class ProfileBloc extends Bloc<ProfileEvent, ProfileState> with ProfileErrorHandlerMixin {
   final AsyncRunner<ProfileDataResponse> loadProfileRunner = AsyncRunner<ProfileDataResponse>();
   final AsyncRunner<UpdateProfileResponse> updateProfileRunner = AsyncRunner<UpdateProfileResponse>();
   final AsyncRunner<UpdatePasswordResponse> updatePasswordRunner = AsyncRunner<UpdatePasswordResponse>();
@@ -32,15 +33,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   /// Load user profile data
+  /// First loads from cache for instant display, then fetches from API
   Future<void> _onLoadProfile(
     LoadProfile event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(ProfileLoading());
+    // Load cached profile first for instant display
+    final cachedProfile = ProfileCacheService.getCachedProfile();
+    if (cachedProfile != null && !emit.isDone) {
+      emit(ProfileLoaded(profileData: cachedProfile));
+    } else {
+      emit(ProfileLoading());
+    }
 
     await loadProfileRunner.run(
       onlineTask: (previousResult) async {
         final profileResponse = await ProfileRepository.getProfile();
+        // Cache the profile data for future instant loading
+        await ProfileCacheService.saveProfile(profileResponse);
         return profileResponse;
       },
       onSuccess: (profileResponse) async {
@@ -50,30 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-            
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(ProfileFailure(
-            error: errorMessage,
-            statusCode: statusCode,
-          ));
+          handleError(error, emit);
         }
       },
     );
@@ -113,6 +100,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (!emit.isDone) {
           // Reload profile to get updated data
           final profileResponse = await ProfileRepository.getProfile();
+          // Update cache with new profile data
+          await ProfileCacheService.saveProfile(profileResponse);
           emit(ProfileUpdateSuccess(
             message: updateResponse.message,
             profileData: profileResponse,
@@ -121,31 +110,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-            
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(ProfileFailure(
-            error: errorMessage,
-            statusCode: statusCode,
-            updateRequest: event.request,
-          ));
+          handleError(error, emit, updateRequest: event.request);
         }
       },
     );
@@ -187,30 +152,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-            
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(ProfileFailure(
-            error: errorMessage,
-            statusCode: statusCode,
-          ));
+          handleError(error, emit);
         }
       },
     );
@@ -251,30 +193,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
       onError: (error) {
         if (!emit.isDone) {
-          String errorMessage = '';
-          int statusCode = 500;
-
-          if (error is AppException) {
-            errorMessage = error.message;
-            statusCode = error.statusCode;
-            
-            if (error.errors != null && error.errors!.isNotEmpty) {
-              final errorList = <String>[];
-              error.errors!.forEach((key, value) {
-                errorList.addAll(value);
-              });
-              if (errorList.isNotEmpty) {
-                errorMessage = errorList.join('\n');
-              }
-            }
-          } else {
-            errorMessage = error.toString();
-          }
-
-          emit(ProfileFailure(
-            error: errorMessage,
-            statusCode: statusCode,
-          ));
+          handleError(error, emit);
         }
       },
     );

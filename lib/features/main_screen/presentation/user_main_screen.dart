@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/styles/app_colors.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/user_main/user_main_bloc.dart';
 import '../models/user_tab.dart';
-import '../../auth/presentation/profile_page.dart';
+import '../widgets/modern_bottom_nav_bar.dart';
+import '../../profile/presentation/profile_page.dart';
 import 'pages/user_home_page.dart';
 import 'pages/user_vehicles_page.dart';
 import 'pages/user_parkings_page.dart';
@@ -87,22 +89,27 @@ class _UserMainScreenState extends State<UserMainScreen>
                 ],
               ),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _mapBottomNavIndex(selectedIndex),
+            bottomNavigationBar: ModernBottomNavBar(
+              items: _bottomNavTabs.map((tab) {
+                return ModernNavItem(
+                  icon: tab.icon,
+                  label: tab.label(l10n),
+                  // Use filled icons for active state
+                  activeIcon: _getActiveIcon(tab.icon, tab),
+                );
+              }).toList(),
+              selectedIndex: _mapBottomNavIndex(selectedIndex),
               onTap: (index) {
                 final tab = _bottomNavTabs[index];
                 final actualIndex = tab.index;
                 _goToPage(actualIndex);
               },
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Theme.of(context).colorScheme.primary,
-              unselectedItemColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-              items: _bottomNavTabs.map((tab) {
-                return BottomNavigationBarItem(
-                  icon: Icon(tab.icon),
-                  label: tab.label(l10n),
-                );
-              }).toList(),
+              backgroundColor: AppColors.surface,
+              selectedColor: AppColors.primary,
+              unselectedColor: AppColors.secondaryText,
+              height: 58,
+              showLabels: true,
+              elevation: 12,
             ),
           );
         },
@@ -122,5 +129,20 @@ int _mapBottomNavIndex(int actualIndex) {
   final tab = UserTab.values[actualIndex];
   final bottomNavIndex = _UserMainScreenState._bottomNavTabs.indexOf(tab);
   return bottomNavIndex >= 0 ? bottomNavIndex : 0;
+}
+
+/// Helper function to get filled/active icon variant based on tab
+IconData _getActiveIcon(IconData outlinedIcon, UserTab tab) {
+  // Map tabs to their filled icon variants for active state
+  switch (tab) {
+    case UserTab.home:
+      return Icons.home;
+    case UserTab.vehicles:
+      return Icons.directions_car;
+    case UserTab.parkings:
+      return Icons.bookmark;
+    case UserTab.profile:
+      return Icons.person;
+  }
 }
 
