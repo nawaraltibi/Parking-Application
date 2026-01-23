@@ -18,6 +18,15 @@ import '../../features/vehicles/domain/usecases/delete_vehicle_usecase.dart';
 import '../../features/vehicles/presentation/bloc/vehicles_bloc.dart';
 import '../../features/file_downloader/bloc/file_download_bloc.dart';
 import '../../features/image_downloader/bloc/image_download_bloc.dart';
+import '../../features/parking_map/data/datasources/parking_map_remote_datasource.dart';
+import '../../features/parking_map/data/repositories/parking_map_repository_impl.dart';
+import '../../features/parking_map/domain/repositories/parking_map_repository.dart';
+import '../../features/parking_map/domain/usecases/get_all_parking_lots_usecase.dart';
+import '../../features/parking_map/domain/usecases/get_parking_details_usecase.dart';
+import '../../features/parking_map/presentation/bloc/parking_map_bloc.dart';
+import '../../core/location/location_repository.dart';
+import '../../core/location/location_service.dart';
+import '../../core/location/get_current_location_usecase.dart';
 
 /// Service Locator
 /// Centralized Dependency Injection using GetIt
@@ -39,10 +48,25 @@ Future<void> setupServiceLocator() async {
     () => VehiclesRemoteDataSource(),
   );
 
+  getIt.registerLazySingleton<ParkingMapRemoteDataSource>(
+    () => ParkingMapRemoteDataSource(),
+  );
+
+  // Location Service
+  getIt.registerLazySingleton<LocationRepository>(
+    () => LocationService(),
+  );
+
   // Repositories
   getIt.registerLazySingleton<VehiclesRepository>(
     () => VehiclesRepositoryImpl(
       remoteDataSource: getIt<VehiclesRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<ParkingMapRepository>(
+    () => ParkingMapRepositoryImpl(
+      remoteDataSource: getIt<ParkingMapRemoteDataSource>(),
     ),
   );
 
@@ -61,6 +85,20 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<DeleteVehicleUseCase>(
     () => DeleteVehicleUseCase(getIt<VehiclesRepository>()),
+  );
+
+  // Use Cases (Parking Map feature)
+  getIt.registerLazySingleton<GetAllParkingLotsUseCase>(
+    () => GetAllParkingLotsUseCase(getIt<ParkingMapRepository>()),
+  );
+
+  getIt.registerLazySingleton<GetParkingDetailsUseCase>(
+    () => GetParkingDetailsUseCase(getIt<ParkingMapRepository>()),
+  );
+
+  // Use Cases (Location)
+  getIt.registerLazySingleton<GetCurrentLocationUseCase>(
+    () => GetCurrentLocationUseCase(getIt<LocationRepository>()),
   );
 
   // BLoCs / Cubits
@@ -121,6 +159,14 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerFactory<ImageDownloadBloc>(
     () => ImageDownloadBloc(),
+  );
+
+  getIt.registerFactory<ParkingMapBloc>(
+    () => ParkingMapBloc(
+      getAllParkingLotsUseCase: getIt<GetAllParkingLotsUseCase>(),
+      getParkingDetailsUseCase: getIt<GetParkingDetailsUseCase>(),
+      getCurrentLocationUseCase: getIt<GetCurrentLocationUseCase>(),
+    ),
   );
 }
 

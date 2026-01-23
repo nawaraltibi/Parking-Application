@@ -52,6 +52,10 @@
   "@authLoginButton": {
     "description": "Login button text"
   },
+  "authLoginSuccess": "Login successful",
+  "@authLoginSuccess": {
+    "description": "Success message after successful login"
+  },
   "authRegisterTitle": "Create Account",
   "@authRegisterTitle": {
     "description": "Register screen title"
@@ -924,6 +928,66 @@
   "colorMaroon": "Maroon",
   "colorNavy": "Navy",
   "colorBurgundy": "Burgundy",
-  "colorTeal": "Teal"
+  "colorTeal": "Teal",
+  "parkingMapTitle": "Parking Map",
+  "@parkingMapTitle": {
+    "description": "Title for parking map screen"
+  },
+  "goToMyLocation": "Go to my location",
+  "@goToMyLocation": {
+    "description": "Tooltip for go to my location button"
+  },
+  "getDirections": "Get Directions",
+  "@getDirections": {
+    "description": "Button text for getting directions to parking lot"
+  },
+  "selectAndPay": "Select and Pay",
+  "@selectAndPay": {
+    "description": "Button text for selecting parking and paying"
+  },
+  "availableParkingSpaces": "Total available parking spaces",
+  "@availableParkingSpaces": {
+    "description": "Label for available parking spaces"
+  },
+  "perHour": "per hour",
+  "@perHour": {
+    "description": "Text for hourly rate"
+  },
+  "paymentHoursApply": "Payment hours apply",
+  "@paymentHoursApply": {
+    "description": "Text indicating payment hours apply"
+  },
+  "noParkingLotsFound": "No parking lots found",
+  "@noParkingLotsFound": {
+    "description": "Message when no parking lots are found"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error label"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "available": "Available",
+  "@available": {
+    "description": "Available status label"
+  },
+  "limited": "Limited",
+  "@limited": {
+    "description": "Limited status label"
+  },
+  "routingServiceError": "Routing service is temporarily unavailable. Please try again later.",
+  "@routingServiceError": {
+    "description": "Error message when routing service fails"
+  },
+  "routingNetworkError": "Network error. Please check your internet connection.",
+  "@routingNetworkError": {
+    "description": "Error message when network fails during routing"
+  },
+  "routingFailed": "Failed to get directions. Please try again.",
+  "@routingFailed": {
+    "description": "Generic error message when routing fails"
+  }
 }
 

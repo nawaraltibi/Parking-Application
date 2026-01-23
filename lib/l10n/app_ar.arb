@@ -52,6 +52,10 @@
   "@authLoginButton": {
     "description": "Login button text"
   },
+  "authLoginSuccess": "تم تسجيل الدخول بنجاح",
+  "@authLoginSuccess": {
+    "description": "Success message after successful login"
+  },
   "authRegisterTitle": "إنشاء حساب",
   "@authRegisterTitle": {
     "description": "Register screen title"
@@ -924,6 +928,66 @@
   "colorMaroon": "كستنائي",
   "colorNavy": "كحلي",
   "colorBurgundy": "بورجوندي",
-  "colorTeal": "تركوازي"
+  "colorTeal": "تركوازي",
+  "parkingMapTitle": "خريطة المواقف",
+  "@parkingMapTitle": {
+    "description": "Title for parking map screen"
+  },
+  "goToMyLocation": "الذهاب إلى موقعي",
+  "@goToMyLocation": {
+    "description": "Tooltip for go to my location button"
+  },
+  "getDirections": "الحصول على الاتجاهات",
+  "@getDirections": {
+    "description": "Button text for getting directions to parking lot"
+  },
+  "selectAndPay": "اختر وادفع",
+  "@selectAndPay": {
+    "description": "Button text for selecting parking and paying"
+  },
+  "availableParkingSpaces": "إجمالي أماكن الوقوف المتاحة",
+  "@availableParkingSpaces": {
+    "description": "Label for available parking spaces"
+  },
+  "perHour": "في الساعة",
+  "@perHour": {
+    "description": "Text for hourly rate"
+  },
+  "paymentHoursApply": "ساعات الدفع سارية",
+  "@paymentHoursApply": {
+    "description": "Text indicating payment hours apply"
+  },
+  "noParkingLotsFound": "لم يتم العثور على مواقف",
+  "@noParkingLotsFound": {
+    "description": "Message when no parking lots are found"
+  },
+  "error": "خطأ",
+  "@error": {
+    "description": "Error label"
+  },
+  "retry": "إعادة المحاولة",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "available": "متاح",
+  "@available": {
+    "description": "Available status label"
+  },
+  "limited": "محدود",
+  "@limited": {
+    "description": "Limited status label"
+  },
+  "routingServiceError": "خدمة الاتجاهات غير متاحة مؤقتاً. يرجى المحاولة لاحقاً.",
+  "@routingServiceError": {
+    "description": "Error message when routing service fails"
+  },
+  "routingNetworkError": "خطأ في الشبكة. يرجى التحقق من اتصال الإنترنت.",
+  "@routingNetworkError": {
+    "description": "Error message when network fails during routing"
+  },
+  "routingFailed": "فشل الحصول على الاتجاهات. يرجى المحاولة مرة أخرى.",
+  "@routingFailed": {
+    "description": "Generic error message when routing fails"
+  }
 }
 

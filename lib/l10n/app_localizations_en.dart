@@ -51,6 +51,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authLoginButton => 'Login';
 
   @override
+  String get authLoginSuccess => 'Login successful';
+
+  @override
   String get authRegisterTitle => 'Create Account';
 
   @override
@@ -838,4 +841,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get colorTeal => 'Teal';
+
+  @override
+  String get parkingMapTitle => 'Parking Map';
+
+  @override
+  String get goToMyLocation => 'Go to my location';
+
+  @override
+  String get getDirections => 'Get Directions';
+
+  @override
+  String get selectAndPay => 'Select and Pay';
+
+  @override
+  String get availableParkingSpaces => 'Total available parking spaces';
+
+  @override
+  String get perHour => 'per hour';
+
+  @override
+  String get paymentHoursApply => 'Payment hours apply';
+
+  @override
+  String get noParkingLotsFound => 'No parking lots found';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get limited => 'Limited';
+
+  @override
+  String get routingServiceError =>
+      'Routing service is temporarily unavailable. Please try again later.';
+
+  @override
+  String get routingNetworkError =>
+      'Network error. Please check your internet connection.';
+
+  @override
+  String get routingFailed => 'Failed to get directions. Please try again.';
 }

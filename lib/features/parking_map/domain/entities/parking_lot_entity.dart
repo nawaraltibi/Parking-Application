@@ -1,0 +1,91 @@
+/// Parking Lot Entity
+/// Pure domain entity representing a parking lot for map display
+/// No Flutter or external dependencies
+class ParkingLotEntity {
+  final int lotId;
+  final String lotName;
+  final String address;
+  final double latitude;
+  final double longitude;
+  final int? availableSpaces;
+  final int totalSpaces;
+  final double hourlyRate;
+  final String status; // 'active' or 'inactive'
+
+  const ParkingLotEntity({
+    required this.lotId,
+    required this.lotName,
+    required this.address,
+    required this.latitude,
+    required this.longitude,
+    required this.totalSpaces,
+    this.availableSpaces,
+    required this.hourlyRate,
+    required this.status,
+  });
+
+  /// Check if parking is active
+  bool get isActive => status == 'active';
+
+  /// Check if parking is inactive
+  bool get isInactive => status == 'inactive';
+
+  /// Check if parking has available spaces
+  bool get hasAvailableSpaces {
+    if (availableSpaces == null) return false;
+    return availableSpaces! > 0;
+  }
+
+  /// Get occupancy percentage (0.0 to 1.0)
+  double get occupancyRate {
+    if (totalSpaces == 0) return 0.0;
+    if (availableSpaces == null) return 0.0;
+    final occupied = totalSpaces - availableSpaces!;
+    return occupied / totalSpaces;
+  }
+
+  /// Get available spaces count (returns 0 if null)
+  int get availableSpacesCount => availableSpaces ?? 0;
+
+  /// Create a copy of ParkingLotEntity with updated fields
+  ParkingLotEntity copyWith({
+    int? lotId,
+    String? lotName,
+    String? address,
+    double? latitude,
+    double? longitude,
+    int? totalSpaces,
+    int? availableSpaces,
+    double? hourlyRate,
+    String? status,
+  }) {
+    return ParkingLotEntity(
+      lotId: lotId ?? this.lotId,
+      lotName: lotName ?? this.lotName,
+      address: address ?? this.address,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      totalSpaces: totalSpaces ?? this.totalSpaces,
+      availableSpaces: availableSpaces ?? this.availableSpaces,
+      hourlyRate: hourlyRate ?? this.hourlyRate,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ParkingLotEntity && other.lotId == lotId;
+  }
+
+  @override
+  int get hashCode => lotId.hashCode;
+
+  @override
+  String toString() {
+    return 'ParkingLotEntity(lotId: $lotId, lotName: $lotName, address: $address, '
+        'lat: $latitude, lng: $longitude, available: $availableSpaces/$totalSpaces)';
+  }
+}
+

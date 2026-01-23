@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
             if (state is LoginSuccess) {
               UnifiedSnackbar.success(
                 context,
-                message: state.message,
+                message: l10n.authLoginSuccess,
               );
 
               // Navigate to appropriate main screen based on user type

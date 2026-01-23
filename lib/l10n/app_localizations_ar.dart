@@ -52,6 +52,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authLoginButton => 'تسجيل الدخول';
 
   @override
+  String get authLoginSuccess => 'تم تسجيل الدخول بنجاح';
+
+  @override
   String get authRegisterTitle => 'إنشاء حساب';
 
   @override
@@ -834,4 +837,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get colorTeal => 'تركوازي';
+
+  @override
+  String get parkingMapTitle => 'خريطة المواقف';
+
+  @override
+  String get goToMyLocation => 'الذهاب إلى موقعي';
+
+  @override
+  String get getDirections => 'الحصول على الاتجاهات';
+
+  @override
+  String get selectAndPay => 'اختر وادفع';
+
+  @override
+  String get availableParkingSpaces => 'إجمالي أماكن الوقوف المتاحة';
+
+  @override
+  String get perHour => 'في الساعة';
+
+  @override
+  String get paymentHoursApply => 'ساعات الدفع سارية';
+
+  @override
+  String get noParkingLotsFound => 'لم يتم العثور على مواقف';
+
+  @override
+  String get error => 'خطأ';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get available => 'متاح';
+
+  @override
+  String get limited => 'محدود';
+
+  @override
+  String get routingServiceError =>
+      'خدمة الاتجاهات غير متاحة مؤقتاً. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get routingNetworkError =>
+      'خطأ في الشبكة. يرجى التحقق من اتصال الإنترنت.';
+
+  @override
+  String get routingFailed =>
+      'فشل الحصول على الاتجاهات. يرجى المحاولة مرة أخرى.';
 }

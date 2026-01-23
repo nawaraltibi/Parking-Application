@@ -14,7 +14,7 @@
     // 10.0.2.2 is the special IP that Android Emulator uses to access the host machine's localhost
     // For iOS Simulator, 127.0.0.1 works, but 10.0.2.2 also works
     // For physical devices, use the host machine's local network IP (e.g., 192.168.x.x:8000)
-    static const String _debugHost = "10.244.11.104:8000";
+    static const String _debugHost = "10.96.69.104:8000";
     static String get host => kDebugMode ? _debugHost : _prodHost;
 
     /// Base URL for the API

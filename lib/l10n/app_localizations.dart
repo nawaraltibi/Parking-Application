@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get authLoginButton;
 
+  /// Success message after successful login
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful'**
+  String get authLoginSuccess;
+
   /// Register screen title
   ///
   /// In en, this message translates to:
@@ -1681,6 +1687,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Teal'**
   String get colorTeal;
+
+  /// Title for parking map screen
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Map'**
+  String get parkingMapTitle;
+
+  /// Tooltip for go to my location button
+  ///
+  /// In en, this message translates to:
+  /// **'Go to my location'**
+  String get goToMyLocation;
+
+  /// Button text for getting directions to parking lot
+  ///
+  /// In en, this message translates to:
+  /// **'Get Directions'**
+  String get getDirections;
+
+  /// Button text for selecting parking and paying
+  ///
+  /// In en, this message translates to:
+  /// **'Select and Pay'**
+  String get selectAndPay;
+
+  /// Label for available parking spaces
+  ///
+  /// In en, this message translates to:
+  /// **'Total available parking spaces'**
+  String get availableParkingSpaces;
+
+  /// Text for hourly rate
+  ///
+  /// In en, this message translates to:
+  /// **'per hour'**
+  String get perHour;
+
+  /// Text indicating payment hours apply
+  ///
+  /// In en, this message translates to:
+  /// **'Payment hours apply'**
+  String get paymentHoursApply;
+
+  /// Message when no parking lots are found
+  ///
+  /// In en, this message translates to:
+  /// **'No parking lots found'**
+  String get noParkingLotsFound;
+
+  /// Error label
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Retry button text
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Available status label
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// Limited status label
+  ///
+  /// In en, this message translates to:
+  /// **'Limited'**
+  String get limited;
+
+  /// Error message when routing service fails
+  ///
+  /// In en, this message translates to:
+  /// **'Routing service is temporarily unavailable. Please try again later.'**
+  String get routingServiceError;
+
+  /// Error message when network fails during routing
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your internet connection.'**
+  String get routingNetworkError;
+
+  /// Generic error message when routing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get directions. Please try again.'**
+  String get routingFailed;
 }
 
 class _AppLocalizationsDelegate
