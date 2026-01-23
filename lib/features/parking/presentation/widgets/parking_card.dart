@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/parking_model.dart';
 
@@ -38,11 +40,7 @@ class ParkingCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       parking.lotName,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryText,
-                      ),
+                      style: AppTextStyles.cardTitle(context),
                     ),
                   ),
                   _buildStatusBadge(context, l10n),
@@ -52,7 +50,7 @@ class ParkingCard extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    Icons.location_on,
+                    EvaIcons.pin,
                     size: 16.sp,
                     color: AppColors.secondaryText,
                   ),
@@ -60,10 +58,7 @@ class ParkingCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       parking.address,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppColors.secondaryText,
-                      ),
+                      style: AppTextStyles.cardSubtitle(context),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -74,12 +69,14 @@ class ParkingCard extends StatelessWidget {
               Row(
                 children: [
                   _buildInfoChip(
-                    icon: Icons.local_parking,
+                    context,
+                    icon: EvaIcons.car,
                     label: '${parking.totalSpaces} ${l10n.parkingDashboardTotalSpaces}',
                   ),
                   SizedBox(width: 8.w),
                   _buildInfoChip(
-                    icon: Icons.attach_money,
+                    context,
+                    icon: EvaIcons.creditCard,
                     label: '${parking.hourlyRate.toStringAsFixed(2)}/hr',
                   ),
                 ],
@@ -122,16 +119,15 @@ class ParkingCard extends StatelessWidget {
       ),
       child: Text(
         statusText,
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w600,
+        style: AppTextStyles.labelSmall(
+          context,
           color: textColor,
         ),
       ),
     );
   }
 
-  Widget _buildInfoChip({required IconData icon, required String label}) {
+  Widget _buildInfoChip(BuildContext context, {required IconData icon, required String label}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
@@ -149,8 +145,8 @@ class ParkingCard extends StatelessWidget {
           SizedBox(width: 4.w),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12.sp,
+            style: AppTextStyles.bodySmall(
+              context,
               color: AppColors.secondaryText,
             ),
           ),

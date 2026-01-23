@@ -11,6 +11,10 @@ class AppTheme {
         primaryColor: AppColors.primary,
         scaffoldBackgroundColor: AppColors.background,
 
+        // Default Font Family - Cairo (supports both Arabic and Latin)
+        // Flutter automatically handles RTL/LTR and font selection based on text content
+        fontFamily: 'Cairo',
+
         colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: AppColors.primary,
@@ -74,23 +78,92 @@ class AppTheme {
           ),
         ),
 
-        // Typography
+        // Typography - Configured with proper weights for modern, balanced look
         textTheme: const TextTheme(
-          displayLarge: TextStyle(),
-          displayMedium: TextStyle(),
-          displaySmall: TextStyle(),
-          headlineLarge: TextStyle(),
-          headlineMedium: TextStyle(),
-          headlineSmall: TextStyle(),
-          titleLarge: TextStyle(),
-          titleMedium: TextStyle(),
-          titleSmall: TextStyle(),
-          bodyLarge: TextStyle(),
-          bodyMedium: TextStyle(),
-          bodySmall: TextStyle(),
-          labelLarge: TextStyle(),
-          labelMedium: TextStyle(),
-          labelSmall: TextStyle(),
+          // Display styles - Largest text, heaviest weight
+          displayLarge: TextStyle(
+            fontSize: 57,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: -0.25,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 45,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: 0,
+          ),
+          displaySmall: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: 0,
+          ),
+
+          // Headline styles - Section headers, heavier weight
+          headlineLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: 0,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: 0,
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600, // SemiBold
+            letterSpacing: 0,
+          ),
+
+          // Title styles - Card titles, list headers, medium weight
+          titleLarge: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0,
+          ),
+          titleMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0.15,
+          ),
+          titleSmall: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0.1,
+          ),
+
+          // Body styles - Main content, regular weight
+          bodyLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400, // Regular
+            letterSpacing: 0.5,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400, // Regular
+            letterSpacing: 0.25,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w400, // Regular
+            letterSpacing: 0.4,
+          ),
+
+          // Label styles - Buttons, captions, medium weight
+          labelLarge: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0.1,
+          ),
+          labelMedium: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0.5,
+          ),
+          labelSmall: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w500, // Medium
+            letterSpacing: 0.5,
+          ),
         ),
       );
 }

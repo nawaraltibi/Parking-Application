@@ -526,4 +526,316 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get parkingDashboardActiveBookingsNow => 'Active Now';
+
+  @override
+  String parkingDashboardWelcome(String name) {
+    return 'Welcome, $name 👋';
+  }
+
+  @override
+  String get parkingDashboardOverview => 'Overview of your parking performance';
+
+  @override
+  String get parkingDashboardTodayRevenue => 'Today\'s Revenue';
+
+  @override
+  String get parkingDashboardCurrentOccupancyRate => 'Current Occupancy Rate';
+
+  @override
+  String get parkingDashboardOccupied => 'Occupied';
+
+  @override
+  String get parkingDashboardStatistics => 'Statistics';
+
+  @override
+  String get parkingDashboardErrorInvalidData => 'Invalid data';
+
+  @override
+  String get parkingDashboardUserFallback => 'User';
+
+  @override
+  String get parkingDashboardUnderReview => 'Under Review';
+
+  @override
+  String get parkingDashboardDefaultRevenue => '0.00 SYP';
+
+  @override
+  String get currencySymbol => 'SYP';
+
+  @override
+  String get vehiclesMyVehiclesTitle => 'My Vehicles';
+
+  @override
+  String get vehiclesAddTitle => 'Add Vehicle';
+
+  @override
+  String get vehiclesEditTitle => 'Edit Vehicle';
+
+  @override
+  String get vehiclesFormNameLabel => 'Car Make';
+
+  @override
+  String get vehiclesFormNameHint => 'Select car make';
+
+  @override
+  String get vehiclesFormPlateLabel => 'Plate Number';
+
+  @override
+  String get vehiclesFormPlateHint => 'Enter plate number';
+
+  @override
+  String get vehiclesFormTypeLabel => 'Car Model';
+
+  @override
+  String get vehiclesFormTypeHint => 'Enter car model';
+
+  @override
+  String get vehiclesFormColorLabel => 'Color';
+
+  @override
+  String get vehiclesFormColorHint => 'Select color';
+
+  @override
+  String get vehiclesFormOther => 'Other';
+
+  @override
+  String get vehiclesFormOtherCarMake => 'Enter car make';
+
+  @override
+  String get vehiclesFormPleaseSelect => 'Please select';
+
+  @override
+  String get vehiclesAddButton => 'Add';
+
+  @override
+  String get vehiclesSaveButton => 'Save';
+
+  @override
+  String get vehiclesEmptyTitle => 'No vehicles yet';
+
+  @override
+  String get vehiclesEmptySubtitle => 'Add your first vehicle to get started';
+
+  @override
+  String get vehiclesStatusActive => 'Active';
+
+  @override
+  String get vehiclesStatusInactive => 'Blocked';
+
+  @override
+  String get vehiclesStatusPending => 'Pending';
+
+  @override
+  String get vehiclesStatusRejected => 'Rejected';
+
+  @override
+  String get vehiclesDeleteDialogTitle => 'Delete Vehicle';
+
+  @override
+  String get vehiclesDeleteDialogMessage =>
+      'Are you sure you want to delete this vehicle?';
+
+  @override
+  String get vehiclesSuccessAdded => 'Vehicle added successfully';
+
+  @override
+  String get vehiclesSuccessUpdateRequested =>
+      'Update request submitted. Waiting for admin approval.';
+
+  @override
+  String get vehiclesSuccessDeleted => 'Vehicle deleted successfully';
+
+  @override
+  String get vehiclesActionEdit => 'Edit';
+
+  @override
+  String get vehiclesActionDelete => 'Delete';
+
+  @override
+  String get vehiclesRetryButton => 'Retry';
+
+  @override
+  String get vehiclesUpdateRequiresApproval =>
+      'Updating this vehicle requires admin approval';
+
+  @override
+  String get vehiclesErrorUnauthorized => 'Unauthenticated.';
+
+  @override
+  String get vehiclesErrorForbidden =>
+      'You are not authorized to perform this action';
+
+  @override
+  String get vehiclesErrorValidation => 'Please check your input';
+
+  @override
+  String get vehiclesErrorServer =>
+      'A server error occurred. Please try again.';
+
+  @override
+  String get vehiclesColorPickerCancel => 'Cancel';
+
+  @override
+  String get vehiclesColorPickerConfirm => 'Confirm';
+
+  @override
+  String get vehiclesPlateNumberMinLength =>
+      'Plate number must be at least 3 characters';
+
+  @override
+  String get vehiclesPlateNumberInvalid =>
+      'Plate number contains invalid characters';
+
+  @override
+  String get vehiclesColorPickerCustom => 'Custom Color';
+
+  @override
+  String get vehiclesColorPickerCustomTitle => 'Pick Custom Color';
+
+  @override
+  String get vehiclesFormSearch => 'Search';
+
+  @override
+  String get vehiclesFormNoData => 'No data';
+
+  @override
+  String get carMakeToyota => 'Toyota';
+
+  @override
+  String get carMakeHyundai => 'Hyundai';
+
+  @override
+  String get carMakeNissan => 'Nissan';
+
+  @override
+  String get carMakeHonda => 'Honda';
+
+  @override
+  String get carMakeMitsubishi => 'Mitsubishi';
+
+  @override
+  String get carMakeSuzuki => 'Suzuki';
+
+  @override
+  String get carMakeMazda => 'Mazda';
+
+  @override
+  String get carMakeMercedes => 'Mercedes';
+
+  @override
+  String get carMakeBMW => 'BMW';
+
+  @override
+  String get carMakeAudi => 'Audi';
+
+  @override
+  String get carMakeVolkswagen => 'Volkswagen';
+
+  @override
+  String get carMakeOpel => 'Opel';
+
+  @override
+  String get carMakePeugeot => 'Peugeot';
+
+  @override
+  String get carMakeRenault => 'Renault';
+
+  @override
+  String get carMakeCitroen => 'Citroën';
+
+  @override
+  String get carMakeKia => 'Kia';
+
+  @override
+  String get carMakeLexus => 'Lexus';
+
+  @override
+  String get carMakeSubaru => 'Subaru';
+
+  @override
+  String get carMakeFord => 'Ford';
+
+  @override
+  String get carMakeChevrolet => 'Chevrolet';
+
+  @override
+  String get carMakeDodge => 'Dodge';
+
+  @override
+  String get carMakeJeep => 'Jeep';
+
+  @override
+  String get carMakeGMC => 'GMC';
+
+  @override
+  String get carMakeChery => 'Chery';
+
+  @override
+  String get carMakeGeely => 'Geely';
+
+  @override
+  String get carMakeBYD => 'BYD';
+
+  @override
+  String get carMakeDacia => 'Dacia';
+
+  @override
+  String get carMakeSaipa => 'Saipa';
+
+  @override
+  String get carMakeOther => 'Other';
+
+  @override
+  String get colorBlack => 'Black';
+
+  @override
+  String get colorWhite => 'White';
+
+  @override
+  String get colorSilver => 'Silver';
+
+  @override
+  String get colorGray => 'Gray';
+
+  @override
+  String get colorBlue => 'Blue';
+
+  @override
+  String get colorRed => 'Red';
+
+  @override
+  String get colorGreen => 'Green';
+
+  @override
+  String get colorBrown => 'Brown';
+
+  @override
+  String get colorBeige => 'Beige';
+
+  @override
+  String get colorGold => 'Gold';
+
+  @override
+  String get colorYellow => 'Yellow';
+
+  @override
+  String get colorOrange => 'Orange';
+
+  @override
+  String get colorPurple => 'Purple';
+
+  @override
+  String get colorPink => 'Pink';
+
+  @override
+  String get colorMaroon => 'Maroon';
+
+  @override
+  String get colorNavy => 'Navy';
+
+  @override
+  String get colorBurgundy => 'Burgundy';
+
+  @override
+  String get colorTeal => 'Teal';
 }

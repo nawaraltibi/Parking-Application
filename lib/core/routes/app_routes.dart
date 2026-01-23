@@ -16,12 +16,19 @@ class Routes {
 
   // Parking feature routes
   static const String parkingPath = '/parking';
+  static const String parkingCreatePath = '/create-parking';
+  static const String parkingUpdatePath = '/update-parking';
   static const String bookingPath = '/booking';
   static const String paymentPath = '/payment';
 
   // Feature routes
   static const String profilePath = '/profile';
   static const String notificationsPath = '/notifications';
+
+  // Vehicles feature routes
+  static const String vehiclesPath = '/vehicles';
+  static const String vehiclesAddPath = '/vehicles/add';
+  static const String vehiclesEditPath = '/vehicles/edit';
 
   // Route names for pushNamed
   static const String notifications = 'notifications';

@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 
@@ -400,7 +402,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
         title: const Text('Select Location'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.my_location),
+            icon: const Icon(EvaIcons.navigation2),
             tooltip: 'Center on my location',
             onPressed: _mapIsReady ? _goToMyLocation : null,
           ),
@@ -423,25 +425,21 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.error_outline,
+                      EvaIcons.alertCircleOutline,
                       size: 64.sp,
                       color: AppColors.error,
                     ),
                     SizedBox(height: 16.h),
                     Text(
                       'Error',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
-                      ),
+                      style: AppTextStyles.titleLarge(context),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       _errorMessage!,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14.sp,
+                      style: AppTextStyles.bodyMedium(
+                        context,
                         color: AppColors.secondaryText,
                       ),
                     ),
@@ -480,14 +478,14 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
                 userLocationMarker: UserLocationMaker(
                   personMarker: const MarkerIcon(
                     icon: Icon(
-                      Icons.person_pin_circle,
+                      EvaIcons.person,
                       color: AppColors.primary,
                       size: 48,
                     ),
                   ),
                   directionArrowMarker: const MarkerIcon(
                     icon: Icon(
-                      Icons.arrow_upward,
+                      EvaIcons.arrowUpward,
                       color: AppColors.primary,
                       size: 32,
                     ),
@@ -511,7 +509,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
             Center(
               child: IgnorePointer(
                 child: Icon(
-                  Icons.location_on,
+                  EvaIcons.pin,
                   size: 48.sp,
                   color: AppColors.primary,
                 ),

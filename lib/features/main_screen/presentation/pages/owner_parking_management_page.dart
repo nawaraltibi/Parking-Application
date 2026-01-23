@@ -1,8 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/utils/app_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../parking/bloc/parking_cubit.dart';
+import '../../../parking/cubit/parking_cubit.dart';
 import '../../../parking/presentation/pages/parking_list_screen.dart';
 import '../../../parking/presentation/pages/parking_dashboard_screen.dart';
 
@@ -37,27 +42,103 @@ class _OwnerParkingManagementPageState
     final l10n = AppLocalizations.of(context)!;
 
     return BlocProvider(
-      create: (context) => ParkingCubit(),
+      create: (context) {
+        final cubit = getIt<ParkingCubit>();
+        debugPrint('🏗️ OwnerParkingManagementPage: Created ParkingCubit instance: ${cubit.hashCode}');
+        return cubit;
+      },
       child: DefaultTabController(
         length: 2,
         child: Column(
           children: [
-            TabBar(
-              controller: _tabController,
-              tabs: [
-                Tab(
-                  icon: const Icon(AppIcons.myParkings),
-                  text: l10n.parkingTitle,
+            // Modern TabBar with smooth design
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.r),
+                  gradient: LinearGradient(
+                    colors: AppColors.buttonGradient,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
-                Tab(
-                  icon: const Icon(AppIcons.dashboard),
-                  text: l10n.parkingDashboardTitle,
-                ),
-              ],
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorPadding: EdgeInsets.all(4.w),
+                dividerColor: Colors.transparent,
+                labelColor: AppColors.textOnPrimary,
+                unselectedLabelColor: AppColors.secondaryText,
+                labelStyle: AppTextStyles.labelMedium(context),
+                unselectedLabelStyle: AppTextStyles.labelMedium(context),
+                tabs: [
+                  Tab(
+                    height: 48.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          EvaIcons.gridOutline,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Flexible(
+                          child: Text(
+                            l10n.parkingTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Tab(
+                    height: 48.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          EvaIcons.pieChartOutline,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Flexible(
+                          child: Text(
+                            l10n.parkingDashboardTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
+                physics: const BouncingScrollPhysics(),
                 children: const [
                   ParkingListScreen(),
                   ParkingDashboardScreen(),

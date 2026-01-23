@@ -167,9 +167,9 @@ class OccupancyStats {
 /// Financial Statistics Model
 class FinancialStats {
   final double totalRevenue;
-  final String formattedTotalRevenue; // e.g., "1,234.56 ر.س"
+  final String formattedTotalRevenue; // e.g., "1,234.56 ل.س"
   final int successfulPayments;
-  final String averageHourlyRate; // e.g., "5.00 ر.س/ساعة"
+  final String averageHourlyRate; // e.g., "5.00 ل.س/ساعة"
   final RevenueByPeriod revenueByPeriod;
 
   FinancialStats({
@@ -183,12 +183,12 @@ class FinancialStats {
   factory FinancialStats.fromJson(Map<String, dynamic> json) {
     return FinancialStats(
       totalRevenue: _parseDouble(json['total_revenue']),
-      formattedTotalRevenue: json['formatted_total_revenue'] as String? ?? '0.00 ر.س',
+      formattedTotalRevenue: json['formatted_total_revenue'] as String? ?? '0.00 ل.س',
       successfulPayments: _parseInt(json['successful_payments']),
-      averageHourlyRate: json['average_hourly_rate'] as String? ?? '0.00 ر.س/ساعة',
+      averageHourlyRate: json['average_hourly_rate'] as String? ?? '0.00 ل.س/ساعة',
       revenueByPeriod: json['revenue_by_period'] != null
           ? RevenueByPeriod.fromJson(json['revenue_by_period'] as Map<String, dynamic>)
-          : RevenueByPeriod(today: '0.00 ر.س', thisWeek: '0.00 ر.س', thisMonth: '0.00 ر.س'),
+          : RevenueByPeriod(today: '0.00 ل.س', thisWeek: '0.00 ل.س', thisMonth: '0.00 ل.س'),
     );
   }
 
@@ -219,9 +219,9 @@ class FinancialStats {
 
 /// Revenue by Period Model
 class RevenueByPeriod {
-  final String today; // e.g., "100.00 ر.س"
-  final String thisWeek; // e.g., "500.00 ر.س"
-  final String thisMonth; // e.g., "2000.00 ر.س"
+  final String today; // e.g., "100.00 ل.س"
+  final String thisWeek; // e.g., "500.00 ل.س"
+  final String thisMonth; // e.g., "2000.00 ل.س"
 
   RevenueByPeriod({
     required this.today,
@@ -231,9 +231,9 @@ class RevenueByPeriod {
 
   factory RevenueByPeriod.fromJson(Map<String, dynamic> json) {
     return RevenueByPeriod(
-      today: json['today'] as String? ?? '0.00 ر.س',
-      thisWeek: json['this_week'] as String? ?? '0.00 ر.س',
-      thisMonth: json['this_month'] as String? ?? '0.00 ر.س',
+      today: json['today'] as String? ?? '0.00 ل.س',
+      thisWeek: json['this_week'] as String? ?? '0.00 ل.س',
+      thisMonth: json['this_month'] as String? ?? '0.00 ل.س',
     );
   }
 

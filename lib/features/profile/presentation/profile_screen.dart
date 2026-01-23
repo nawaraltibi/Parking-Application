@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
+import '../../../core/styles/app_text_styles.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
 import '../../../l10n/app_localizations.dart';
@@ -108,9 +109,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(l10n.authProfileTitle),
+        title: Text(
+          l10n.authProfileTitle,
+          style: AppTextStyles.titleLarge(context),
+        ),
         backgroundColor: AppColors.background,
         elevation: 0,
+        centerTitle: false,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.h),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.05),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            height: 1.h,
+          ),
+        ),
       ),
       body: SafeArea(
         bottom: true,
@@ -239,9 +259,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
 
               if (profileData == null) {
-                // Initial load
+                // Initial load - trigger immediately
                 if (state is ProfileInitial) {
-                  context.read<ProfileBloc>().add(LoadProfile());
+                  // Load profile data immediately without waiting
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (mounted) {
+                      context.read<ProfileBloc>().add(LoadProfile());
+                    }
+                  });
                 }
                 return const SizedBox.shrink();
               }
@@ -251,23 +276,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 24.h),
+                    SizedBox(height: 8.h),
 
                     // Profile Info Card
                     Container(
-                      padding: EdgeInsets.all(20.w),
+                      padding: EdgeInsets.all(24.w),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: BorderRadius.circular(24.r),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
-                            blurRadius: 10,
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 12,
                             offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.02),
+                            blurRadius: 6,
+                            offset: const Offset(0, 1),
+                            spreadRadius: 0,
                           ),
                         ],
                       ),
@@ -290,35 +322,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 16.h),
 
-                          // Number of Vehicles (Read-only)
-                          Container(
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: AppColors.backgroundSecondary,
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  l10n.profileNumberOfVehicles,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColors.secondaryText,
-                                  ),
+                          // Number of Vehicles (Read-only) - Only show for users, not owners
+                          if (profileData.data.userType.toLowerCase() == 'user') ...[
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+                              decoration: BoxDecoration(
+                                color: AppColors.backgroundSecondary.withValues(alpha: 0.5),
+                                borderRadius: BorderRadius.circular(16.r),
+                                border: Border.all(
+                                  color: AppColors.border.withValues(alpha: 0.3),
+                                  width: 1,
                                 ),
-                                Text(
-                                  '${profileData.data.numberOfVehicles}',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.primaryText,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    l10n.profileNumberOfVehicles,
+                                    style: AppTextStyles.bodyMedium(
+                                      context,
+                                      color: AppColors.secondaryText,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    '${profileData.data.numberOfVehicles}',
+                                    style: AppTextStyles.titleMedium(
+                                      context,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 8.h),
+                            SizedBox(height: 12.h),
+                          ],
 
                           // Status Badge
                           ProfileStatusBadge(
@@ -393,8 +430,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(color: AppColors.error, width: 1.5),
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: AppColors.error.withValues(alpha: 0.3),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.error.withValues(alpha: 0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ],
                       ),
                       child: CustomElevatedButton(
                         title: l10n.profileDeleteAccountButton,

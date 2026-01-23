@@ -22,7 +22,7 @@ class UserMainScreen extends StatefulWidget {
 class _UserMainScreenState extends State<UserMainScreen>
     with AutomaticKeepAliveClientMixin<UserMainScreen> {
   late PageController _pageController;
-  static const _navDuration = Duration(milliseconds: 300);
+  static const _navDuration = Duration(milliseconds: 250);
 
   static List<UserTab> get _bottomNavTabs => [
         UserTab.home,
@@ -34,7 +34,10 @@ class _UserMainScreenState extends State<UserMainScreen>
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    _pageController = PageController(
+      initialPage: 0,
+      keepPage: true,
+    );
   }
 
   @override
@@ -44,12 +47,17 @@ class _UserMainScreenState extends State<UserMainScreen>
   }
 
   void _goToPage(int index) {
-    _pageController.animateToPage(
-      index,
-      duration: _navDuration,
-      curve: Curves.fastOutSlowIn,
-    );
+    // Update BLoC first for immediate UI feedback
     context.read<UserMainBloc>().add(ChangeUserTab(index));
+    
+    // Then animate page transition smoothly
+    if (_pageController.hasClients) {
+      _pageController.animateToPage(
+        index,
+        duration: _navDuration,
+        curve: Curves.easeInOutCubic,
+      );
+    }
   }
 
   @override
@@ -62,11 +70,13 @@ class _UserMainScreenState extends State<UserMainScreen>
         final selectedIndex = _mapSelectedIndex(state);
         if (_pageController.hasClients) {
           final currentPage = _pageController.page?.round() ?? 0;
-          if (currentPage != selectedIndex) {
+          if (currentPage != selectedIndex && 
+              (_pageController.page ?? currentPage).abs() < 0.1) {
+            // Only animate if page is at a stable position (not mid-transition)
             _pageController.animateToPage(
               selectedIndex,
               duration: _navDuration,
-              curve: Curves.fastOutSlowIn,
+              curve: Curves.easeInOutCubic,
             );
           }
         }
@@ -77,15 +87,24 @@ class _UserMainScreenState extends State<UserMainScreen>
           return Scaffold(
             extendBody: true,
             body: SafeArea(
-              bottom: false,
+              bottom: true,
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  UserHomePage(),
-                  UserVehiclesPage(),
-                  UserParkingsPage(),
-                  ProfilePage(),
+                allowImplicitScrolling: false,
+                children: [
+                  RepaintBoundary(
+                    child: const UserHomePage(),
+                  ),
+                  RepaintBoundary(
+                    child: const UserVehiclesPage(),
+                  ),
+                  RepaintBoundary(
+                    child: const UserParkingsPage(),
+                  ),
+                  RepaintBoundary(
+                    child: const ProfilePage(),
+                  ),
                 ],
               ),
             ),

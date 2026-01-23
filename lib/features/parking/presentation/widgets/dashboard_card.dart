@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 
 /// Dashboard Card Widget
 /// Displays a statistic card in the dashboard
@@ -61,8 +62,8 @@ class DashboardCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12.sp,
+            style: AppTextStyles.bodySmall(
+              context,
               color: AppColors.secondaryText,
             ),
             maxLines: 2,
@@ -71,11 +72,7 @@ class DashboardCard extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryText,
-            ),
+            style: AppTextStyles.titleLarge(context),
           ),
         ],
       ),

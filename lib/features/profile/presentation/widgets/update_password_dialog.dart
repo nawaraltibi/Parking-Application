@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -97,11 +98,7 @@ class _UpdatePasswordDialogState extends State<UpdatePasswordDialog> {
                       // Title
                       Text(
                         l10n.profileUpdatePasswordDialogTitle,
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
-                        ),
+                        style: AppTextStyles.titleLarge(context),
                       ),
                       SizedBox(height: 24.h),
 

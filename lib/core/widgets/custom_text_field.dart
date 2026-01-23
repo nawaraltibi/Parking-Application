@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 /// Custom Text Field Widget
 /// Consistent text input field with validation support
@@ -59,87 +61,106 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColors.secondaryText,
-            ),
+            style: AppTextStyles.fieldLabel(context),
           ),
           SizedBox(height: 8.h),
         ],
-        TextFormField(
-          controller: widget.controller,
-          keyboardType: widget.keyboardType,
-          validator: widget.validator,
-          enabled: widget.enabled,
-          obscureText: actualObscureText,
-          maxLines: calculatedMaxLines,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          onChanged: widget.onChanged,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: widget.enabled ? AppColors.primaryText : AppColors.secondaryText,
-            fontWeight: FontWeight.w400,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(22.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.03),
+                blurRadius: 6,
+                offset: const Offset(0, 0.5),
+                spreadRadius: 0,
+              ),
+            ],
           ),
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(
-              fontSize: 14.sp,
-              color: AppColors.secondaryText,
-              fontWeight: FontWeight.w300,
+          child: TextFormField(
+            controller: widget.controller,
+            keyboardType: widget.keyboardType,
+            validator: widget.validator,
+            enabled: widget.enabled,
+            obscureText: actualObscureText,
+            maxLines: calculatedMaxLines,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: widget.onChanged,
+            style: AppTextStyles.fieldInput(context, enabled: widget.enabled),
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              hintStyle: AppTextStyles.fieldHint(context),
+              errorStyle: AppTextStyles.fieldError(context),
+              filled: true,
+              fillColor: widget.enabled
+                  ? AppColors.brightWhite
+                  : AppColors.backgroundSecondary,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 20.w,
+                vertical: 18.h,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.border.withValues(alpha: 0.4),
+                  width: 1.2,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.border.withValues(alpha: 0.4),
+                  width: 1.2,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.error.withValues(alpha: 0.6),
+                  width: 1.2,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.error,
+                  width: 2,
+                ),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(22.r),
+                borderSide: BorderSide(
+                  color: AppColors.border.withValues(alpha: 0.3),
+                  width: 1.2,
+                ),
+              ),
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        _obscureText
+                            ? EvaIcons.eye
+                            : EvaIcons.eyeOff,
+                        color: AppColors.secondaryText,
+                        size: 20.sp,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    )
+                  : widget.suffixIcon,
             ),
-            errorStyle: TextStyle(fontSize: 12.sp, color: AppColors.error),
-            filled: true,
-            fillColor: widget.enabled
-                ? AppColors.brightWhite
-                : AppColors.backgroundSecondary,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 20.w,
-              vertical: 14.h,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide: const BorderSide(color: AppColors.border),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide: const BorderSide(color: AppColors.border),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide: BorderSide(color: AppColors.primary, width: 1.5),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide:  BorderSide(color: AppColors.error),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide: BorderSide(color: AppColors.error, width: 1.5),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14.r),
-              borderSide: const BorderSide(color: AppColors.border),
-            ),
-            prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    icon: Icon(
-                      _obscureText
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                      color: AppColors.secondaryText,
-                      size: 20.sp,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  )
-                : widget.suffixIcon,
           ),
         ),
       ],

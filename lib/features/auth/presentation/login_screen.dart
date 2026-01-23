@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
+import '../../../core/styles/app_text_styles.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
+import '../../../core/assets/assets.dart';
 import '../../../l10n/app_localizations.dart';
 import '../bloc/login/login_bloc.dart';
 import 'utils/auth_error_handler.dart';
@@ -36,11 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleLogin() {
     if (formKey.currentState!.validate()) {
       final bloc = context.read<LoginBloc>();
-      
+
       // Update email and password in the bloc state
       bloc.add(UpdateEmail(emailController.text.trim()));
       bloc.add(UpdatePassword(passwordController.text));
-      
+
       // Send login request
       bloc.add(SendLoginRequest());
     }
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             final l10n = AppLocalizations.of(context)!;
-            
+
             if (state is LoginSuccess) {
               UnifiedSnackbar.success(
                 context,
@@ -84,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 state.statusCode,
                 l10n,
               );
-              
+
               // Handle owner pending approval with specific message
               if (state.isInactiveUser && state.userType == 'owner') {
                 UnifiedSnackbar.warning(
@@ -108,26 +110,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 32.h),
+                      SizedBox(height: 20.h),
+
+                      // Login Image
+                      Center(
+                        child: Image.asset(
+                          Assets.imagesLogin,
+                          height: 180.h,
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      SizedBox(height: 18.h),
 
                       // Welcome Title
                       Text(
                         l10n.authLoginTitle,
-                        style: TextStyle(
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.bold,
+                        style: AppTextStyles.headlineLarge(
+                          context,
                           color: AppColors.primary,
                         ),
                       ),
                       SizedBox(height: 8.h),
                       Text(
                         l10n.authLoginSubtitle,
-                        style: TextStyle(
-                          fontSize: 14.sp,
+                        style: AppTextStyles.bodyMedium(
+                          context,
                           color: AppColors.secondaryText,
                         ),
                       ),
-                      SizedBox(height: 48.h),
+                      SizedBox(height: 30.h),
 
                       // Login Form Fields
                       LoginFormFields(
@@ -145,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _handleLogin,
                         ),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 15.h),
 
                       // Register Link
                       Row(
@@ -153,27 +165,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             l10n.authNoAccount,
-                            style: TextStyle(
-                              fontSize: 14.sp,
+                            style: AppTextStyles.bodyMedium(
+                              context,
                               color: AppColors.secondaryText,
                             ),
                           ),
                           TextButton(
-                            onPressed: () => context.pushReplacement(
-                              Routes.registerPath,
-                            ),
+                            onPressed: () =>
+                                context.pushReplacement(
+                                  Routes.registerPath,
+                                ),
                             child: Text(
                               l10n.authRegisterButton,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
+                              style: AppTextStyles.labelLarge(
+                                context,
                                 color: AppColors.primary,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: 25.h),
                     ],
                   ),
                 ),
@@ -185,4 +197,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

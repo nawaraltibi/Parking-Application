@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Custom dropdown field with search functionality
 /// 
@@ -31,6 +33,7 @@ class CustomDropdownField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final useSearch = items.length > 4;
 
     return Column(
@@ -38,11 +41,7 @@ class CustomDropdownField<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.secondaryText,
-          ),
+          style: AppTextStyles.fieldLabel(context),
         ),
         SizedBox(height: 8.h),
         GestureDetector(
@@ -64,9 +63,9 @@ class CustomDropdownField<T> extends StatelessWidget {
                         child: Text(
                           selectedValue != null
                               ? getLabel(selectedValue as T)
-                              : 'Please select',
-                          style: TextStyle(
-                            fontSize: 14.sp,
+                              : l10n?.vehiclesFormPleaseSelect ?? 'Please select',
+                          style: AppTextStyles.bodyMedium(
+                            context,
                             color: selectedValue != null
                                 ? AppColors.primaryText
                                 : AppColors.secondaryText,
@@ -88,21 +87,15 @@ class CustomDropdownField<T> extends StatelessWidget {
                       hint: Text(
                         selectedValue != null
                             ? getLabel(selectedValue as T)
-                            : 'Please select',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.primaryText,
-                        ),
+                            : l10n?.vehiclesFormPleaseSelect ?? 'Please select',
+                        style: AppTextStyles.bodyMedium(context),
                       ),
                       items: items.map((T item) {
                         return DropdownMenuItem<T>(
                           value: item,
                           child: Text(
                             getLabel(item),
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.primaryText,
-                            ),
+                            style: AppTextStyles.bodyMedium(context),
                           ),
                         );
                       }).toList(),
@@ -194,7 +187,7 @@ class _SearchableDropdownDialogState<T>
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
       child: Container(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.7,
@@ -207,10 +200,10 @@ class _SearchableDropdownDialogState<T>
             Container(
               padding: EdgeInsets.all(16.r),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.primary.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12.r),
-                  topRight: Radius.circular(12.r),
+                  topLeft: Radius.circular(24.r),
+                  topRight: Radius.circular(24.r),
                 ),
               ),
               child: Column(
@@ -219,10 +212,9 @@ class _SearchableDropdownDialogState<T>
                     children: [
                       Expanded(
                         child: Text(
-                          'Please select',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
+                          AppLocalizations.of(context)?.vehiclesFormPleaseSelect ?? 'Please select',
+                          style: AppTextStyles.titleLarge(
+                            context,
                             color: AppColors.primary,
                           ),
                         ),
@@ -241,16 +233,16 @@ class _SearchableDropdownDialogState<T>
                       hintText: 'Search',
                       prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                        borderSide: const BorderSide(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(16.r),
+                        borderSide: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                        borderSide: const BorderSide(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(16.r),
+                        borderSide: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                        borderSide: const BorderSide(color: AppColors.primary),
+                        borderRadius: BorderRadius.circular(16.r),
+                        borderSide: const BorderSide(color: AppColors.primary, width: 2),
                       ),
                       filled: true,
                       fillColor: AppColors.brightWhite,
@@ -272,8 +264,8 @@ class _SearchableDropdownDialogState<T>
                     return Center(
                       child: Text(
                         'No data',
-                        style: TextStyle(
-                          fontSize: 14.sp,
+                        style: AppTextStyles.bodyMedium(
+                          context,
                           color: AppColors.secondaryText,
                         ),
                       ),
@@ -295,35 +287,56 @@ class _SearchableDropdownDialogState<T>
                             border: isSelected
                                 ? Border.all(color: AppColors.primary, width: 2)
                                 : null,
-                            borderRadius: BorderRadius.circular(8.r),
+                            borderRadius: BorderRadius.circular(16.r),
                             color: isSelected
-                                ? AppColors.primary.withValues(alpha: 0.1)
+                                ? AppColors.primary.withValues(alpha: 0.08)
                                 : AppColors.brightWhite,
-                          ),
-                          child: ListTile(
-                            selected: isSelected,
-                            title: Text(
-                              widget.getLabel(item),
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : AppColors.primaryText,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            trailing: isSelected
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color: AppColors.primary,
-                                    size: 24.sp,
-                                  )
+                            boxShadow: isSelected
+                                ? [
+                                    BoxShadow(
+                                      color: AppColors.primary.withValues(alpha: 0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ]
                                 : null,
+                          ),
+                          child: InkWell(
                             onTap: () {
                               Navigator.of(context).pop(item);
                             },
+                            borderRadius: BorderRadius.circular(16.r),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 14.h,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      widget.getLabel(item),
+                                      style: AppTextStyles.bodyMedium(
+                                        context,
+                                        color: isSelected
+                                            ? AppColors.primary
+                                            : AppColors.primaryText,
+                                      ).copyWith(
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  if (isSelected)
+                                    Icon(
+                                      Icons.check_circle,
+                                      color: AppColors.primary,
+                                      size: 22.sp,
+                                    ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },

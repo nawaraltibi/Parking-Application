@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/custom_dropdown_field.dart';
@@ -43,14 +44,14 @@ class RegisterFormFields extends StatelessWidget {
           hintText: l10n.authFullNameHint,
           controller: fullNameController,
           prefixIcon: Icon(
-            Icons.person_outlined,
+            EvaIcons.person,
             color: AppColors.primary,
             size: 20.sp,
           ),
           keyboardType: TextInputType.name,
           validator: (value) => AuthValidators.fullName(value, l10n),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         // Email Field
         CustomTextField(
@@ -58,14 +59,14 @@ class RegisterFormFields extends StatelessWidget {
           hintText: l10n.authEmailHint,
           controller: emailController,
           prefixIcon: Icon(
-            Icons.email_outlined,
+            EvaIcons.email,
             color: AppColors.primary,
             size: 20.sp,
           ),
           keyboardType: TextInputType.emailAddress,
           validator: (value) => AuthValidators.email(value, l10n),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         // Phone Field
         CustomTextField(
@@ -73,14 +74,14 @@ class RegisterFormFields extends StatelessWidget {
           hintText: l10n.authPhoneHint,
           controller: phoneController,
           prefixIcon: Icon(
-            Icons.phone_outlined,
+            EvaIcons.phone,
             color: AppColors.primary,
             size: 20.sp,
           ),
           keyboardType: TextInputType.phone,
           validator: (value) => AuthValidators.phone(value, l10n),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         // User Type Dropdown
         CustomDropdownField<String>(
@@ -96,7 +97,7 @@ class RegisterFormFields extends StatelessWidget {
             }
           },
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         // Password Field
         CustomTextField(
@@ -104,7 +105,7 @@ class RegisterFormFields extends StatelessWidget {
           hintText: l10n.authPasswordRegisterHint,
           controller: passwordController,
           prefixIcon: Icon(
-            Icons.lock_outlined,
+            EvaIcons.lock,
             color: AppColors.primary,
             size: 20.sp,
           ),
@@ -112,7 +113,7 @@ class RegisterFormFields extends StatelessWidget {
           obscureText: true,
           validator: (value) => AuthValidators.password(value, l10n),
         ),
-        SizedBox(height: 20.h),
+        SizedBox(height: 16.h),
 
         // Password Confirmation Field
         CustomTextField(
@@ -120,7 +121,7 @@ class RegisterFormFields extends StatelessWidget {
           hintText: l10n.authConfirmPasswordHint,
           controller: passwordConfirmationController,
           prefixIcon: Icon(
-            Icons.lock_outlined,
+            EvaIcons.lock,
             color: AppColors.primary,
             size: 20.sp,
           ),

@@ -3,6 +3,7 @@ import '../../../../l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../data/repositories/settings_local_repository.dart';
 import 'widgets/onboarding_content.dart';
 import 'widgets/onboarding_indicator.dart';
@@ -95,9 +96,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     onPressed: _skipOnboarding,
                     child: Text(
                       l10n.skip,
-                      style: const TextStyle(
+                      style: AppTextStyles.bodyLarge(
+                        context,
                         color: AppColors.secondaryText,
-                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -156,10 +157,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         _currentPage < _totalPages - 1
                             ? l10n.next
                             : l10n.getStarted,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: AppTextStyles.buttonText(context),
                       ),
                     ),
                   ),

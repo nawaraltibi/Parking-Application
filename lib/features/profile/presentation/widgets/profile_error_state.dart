@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -32,8 +33,8 @@ class ProfileErrorState extends StatelessWidget {
           SizedBox(height: 16.h),
           Text(
             error,
-            style: TextStyle(
-              fontSize: 14.sp,
+            style: AppTextStyles.bodyMedium(
+              context,
               color: AppColors.error,
             ),
             textAlign: TextAlign.center,

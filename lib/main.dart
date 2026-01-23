@@ -6,6 +6,7 @@ import 'l10n/app_localizations.dart';
 import 'core/core.dart';
 import 'core/routes/app_pages.dart';
 import 'core/services/language_service.dart';
+import 'core/injection/service_locator.dart';
 import 'data/datasources/network/api_config.dart';
 import 'features/splash/bloc/splash_routing_bloc.dart';
 
@@ -15,6 +16,9 @@ void main() async {
   // Initialize services
   await StorageService.init();
   await HiveService.init();
+
+  // Initialize Dependency Injection
+  await setupServiceLocator();
 
   // Print API configuration for debugging
   if (kDebugMode) {
@@ -42,10 +46,10 @@ class ParkingApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             // Locale Cubit for language management - must be provided at app level
-            BlocProvider(create: (_) => LocaleCubit()),
+            BlocProvider(create: (_) => getIt<LocaleCubit>()),
             // Splash routing BLoC for authentication status checking
-            BlocProvider(create: (_) => SplashRoutingBloc()),
-            // Add other BLoCs here as needed
+            BlocProvider(create: (_) => getIt<SplashRoutingBloc>()),
+            // Add other app-wide BLoCs here as needed
           ],
           child: BlocBuilder<LocaleCubit, LocaleState>(
             builder: (context, localeState) {

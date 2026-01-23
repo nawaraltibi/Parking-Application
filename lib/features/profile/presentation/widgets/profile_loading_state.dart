@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 
 /// Loading state widget for profile
@@ -20,8 +21,8 @@ class ProfileLoadingState extends StatelessWidget {
           SizedBox(height: 16.h),
           Text(
             l10n.profileLoading,
-            style: TextStyle(
-              fontSize: 14.sp,
+            style: AppTextStyles.bodyMedium(
+              context,
               color: AppColors.secondaryText,
             ),
           ),

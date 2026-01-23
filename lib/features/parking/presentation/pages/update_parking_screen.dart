@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:go_router/go_router.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../bloc/parking_cubit.dart';
+import '../../cubit/parking_cubit.dart';
 import '../../models/parking_model.dart';
 import '../../models/update_parking_request.dart';
 import '../utils/parking_error_handler.dart';
@@ -37,6 +39,9 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
 
   // Selected location from map picker (initialized with existing parking location)
   late GeoPoint? _selectedLocation;
+  
+  // Track previous state to detect successful update
+  bool _wasUpdating = false;
 
   @override
   void initState() {
@@ -86,19 +91,135 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
     final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.parkingUpdateConfirmTitle),
-        content: Text(l10n.parkingUpdateConfirmMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.profileCancelButton),
+      barrierColor: Colors.black.withValues(alpha: 0.4),
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.r),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 320.w,
+            maxWidth: 380.w,
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.parkingUpdateButton),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 28.w,
+              vertical: 24.h,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.brightWhite,
+              borderRadius: BorderRadius.circular(24.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  EvaIcons.alertCircleOutline,
+                  size: 32.sp,
+                  color: AppColors.warning,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              // Title
+              Text(
+                l10n.parkingUpdateConfirmTitle,
+                style: AppTextStyles.titleLarge(context),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 12.h),
+              // Message
+              Text(
+                l10n.parkingUpdateConfirmMessage,
+                style: AppTextStyles.bodyMedium(
+                  context,
+                  color: AppColors.secondaryText,
+                ).copyWith(height: 1.5),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24.h),
+              // Buttons
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2, // زدنا من مساحة زر Cancel
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 14.h,
+                          horizontal: 2.w,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        side: BorderSide(
+                          color: AppColors.border.withValues(alpha: 0.5),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Text(
+                        l10n.profileCancelButton,
+                        style: AppTextStyles.labelLarge(
+                          context,
+                          color: AppColors.secondaryText,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    flex: 3, // قللنا شوي من مساحة Update (مثلاً خليها 3 بدل 3.5 لو تحب)
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 14.h,
+                          horizontal: 5.w,
+                        ),
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        l10n.parkingUpdateButton,
+                        style: AppTextStyles.buttonText(
+                          context,
+                          color: AppColors.textOnPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+            ),
           ),
-        ],
+        ),
       ),
     );
 
@@ -123,7 +244,10 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
       hourlyRate: double.tryParse(_hourlyRateController.text.trim()) ?? 0.0,
     );
 
-    context.read<ParkingCubit>().updateParking(widget.parking.lotId, request);
+    context.read<ParkingCubit>().updateParking(
+      parkingId: widget.parking.lotId,
+      request: request,
+    );
   }
 
   @override
@@ -141,32 +265,41 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
         bottom: true,
         child: BlocConsumer<ParkingCubit, ParkingState>(
           listener: (context, state) {
-            if (state is ParkingUpdateSuccess) {
+            // Detect successful update: was updating, now not updating, no error
+            if (_wasUpdating && !state.isUpdating && state.error == null) {
+              // Reset flag immediately to prevent multiple navigations
+              _wasUpdating = false;
+              
               UnifiedSnackbar.success(
                 context,
                 message: l10n.parkingSuccessUpdate,
               );
               
-              // Reload all parkings from API to ensure latest data
-              context.read<ParkingCubit>().loadParkings();
-              
-              // Navigate back after showing success message
-              Future.delayed(const Duration(milliseconds: 800), () {
+              // Navigate to owner main screen (parking management tab) using pushReplacement
+              Future.delayed(const Duration(milliseconds: 100), () {
                 if (mounted) {
-                  context.pop();
+                  context.pushReplacement('/owner-main');
                 }
               });
-            } else if (state is ParkingFailure) {
+            } else {
+              // Update tracking flag only if not handling success
+              _wasUpdating = state.isUpdating;
+            }
+            
+            // Error handling
+            if (state.error != null && !state.isUpdating) {
               final errorMessage = ParkingErrorHandler.handleErrorState(
-                state.error,
-                state.statusCode,
+                state.error!,
+                state.statusCode ?? 500,
                 l10n,
               );
               UnifiedSnackbar.error(context, message: errorMessage);
+              // Clear error after showing
+              context.read<ParkingCubit>().clearError();
             }
           },
           builder: (context, state) {
-            final isLoading = state is ParkingUpdating;
+            final isLoading = state.isUpdating;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -185,7 +318,7 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
                       child: Row(
                         children: [
                           Icon(
-                            Icons.info_outline,
+                            EvaIcons.infoOutline,
                             size: 20.sp,
                             color: AppColors.warning,
                           ),
@@ -193,8 +326,8 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
                           Expanded(
                             child: Text(
                               l10n.parkingUpdateRequiresApproval,
-                              style: TextStyle(
-                                fontSize: 12.sp,
+                              style: AppTextStyles.bodySmall(
+                                context,
                                 color: AppColors.warning,
                               ),
                             ),

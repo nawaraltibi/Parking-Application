@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 
 /// Modern Bottom Navigation Bar Item
 /// Represents a single item in the bottom navigation bar
@@ -83,30 +84,42 @@ class ModernBottomNavBar extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: backgroundColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.r),
+            topRight: Radius.circular(24.r),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: elevation * 1.5,
-              offset: Offset(0, -3.h),
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 20,
+              offset: Offset(0, -4.h),
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 8,
+              offset: Offset(0, -2.h),
               spreadRadius: 0,
             ),
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: List.generate(
               items.length,
-              (index) => _NavItem(
-                item: items[index],
-                isSelected: index == selectedIndex,
-                onTap: () => onTap(index),
-                selectedColor: selectedColor,
-                unselectedColor: unselectedColor,
-                showLabel: showLabels,
-                itemCount: items.length,
+              (index) => Expanded(
+                child: _NavItem(
+                  item: items[index],
+                  isSelected: index == selectedIndex,
+                  onTap: () => onTap(index),
+                  selectedColor: selectedColor,
+                  unselectedColor: unselectedColor,
+                  showLabel: showLabels,
+                  itemCount: items.length,
+                ),
               ),
             ),
           ),
@@ -152,21 +165,21 @@ class _NavItemState extends State<_NavItem>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 350),
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.12).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOutCubic,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
       ),
     );
 
     _bubbleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOutCubic,
+        curve: const Interval(0.0, 0.8, curve: Curves.easeOutCubic),
       ),
     );
 
@@ -176,7 +189,7 @@ class _NavItemState extends State<_NavItem>
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeInOut,
+        curve: const Interval(0.2, 1.0, curve: Curves.easeInOut),
       ),
     );
 
@@ -205,28 +218,28 @@ class _NavItemState extends State<_NavItem>
 
   @override
   Widget build(BuildContext context) {
-    // Calculate optimal width based on item count for better spacing
-    final minItemWidth = widget.itemCount <= 2 ? 120.w : null;
-    
     return GestureDetector(
       onTap: widget.onTap,
       behavior: HitTestBehavior.opaque,
-      child: Container(
-        constraints: minItemWidth != null 
-            ? BoxConstraints(minWidth: minItemWidth)
-            : null,
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: widget.onTap,
+          borderRadius: BorderRadius.circular(16.r),
+          splashColor: widget.selectedColor.withValues(alpha: 0.1),
+          highlightColor: widget.selectedColor.withValues(alpha: 0.05),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
         child: LayoutBuilder(
           builder: (context, constraints) {
             // Calculate available height for this item - more compact
             final availableHeight = constraints.maxHeight;
-            // Reserve space: icon area (28-32h), label (~9h), minimal padding
+            // Reserve space: icon area (28-32h), label (14h for Arabic text), minimal padding
             final iconHeight = availableHeight > 0
-                ? ((availableHeight - (widget.showLabel ? 13.h : 4.h)) * 0.8)
+                ? ((availableHeight - (widget.showLabel ? 18.h : 4.h)) * 0.75)
                     .clamp(28.h, 32.h).toDouble()
                 : 30.h;
-            final labelHeight = widget.showLabel ? 9.h : 0.0;
-            final spacing = widget.showLabel ? 2.h : 0.0;
+            final spacing = widget.showLabel ? 4.h : 0.0;
             
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -243,71 +256,83 @@ class _NavItemState extends State<_NavItem>
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Bubble background (pill-shaped) - compact and elegant
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeOutCubic,
-                            width: _bubbleAnimation.value * 52.w,
-                            height: _bubbleAnimation.value * (iconHeight * 0.88),
-                            decoration: BoxDecoration(
-                              color: widget.isSelected
-                                  ? widget.selectedColor.withValues(alpha: 0.12)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(20.r),
-                              boxShadow: widget.isSelected
-                                  ? [
-                                      BoxShadow(
-                                        color: widget.selectedColor.withValues(alpha: 0.2),
-                                        blurRadius: 8.r,
-                                        offset: Offset(0, 2.h),
-                                        spreadRadius: 0,
-                                      ),
-                                    ]
-                                  : null,
-                            ),
+                          // Bubble background (pill-shaped) with smooth gradient - elegant and refined
+                          AnimatedBuilder(
+                            animation: _bubbleAnimation,
+                            builder: (context, child) {
+                              return Container(
+                                width: _bubbleAnimation.value * 56.w,
+                                height: _bubbleAnimation.value * (iconHeight * 0.95),
+                                decoration: BoxDecoration(
+                                  gradient: widget.isSelected
+                                      ? LinearGradient(
+                                          colors: [
+                                            widget.selectedColor.withValues(alpha: 0.18),
+                                            widget.selectedColor.withValues(alpha: 0.10),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        )
+                                      : null,
+                                  color: widget.isSelected
+                                      ? null
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  boxShadow: widget.isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: widget.selectedColor.withValues(alpha: 0.12),
+                                            blurRadius: 10.r,
+                                            offset: Offset(0, 2.h),
+                                            spreadRadius: 0,
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                              );
+                            },
                           ),
-                          // Icon with scale animation
-                          Transform.scale(
-                            scale: _scaleAnimation.value,
-                            child: Icon(
-                              widget.isSelected && widget.item.activeIcon != null
-                                  ? widget.item.activeIcon!
-                                  : widget.item.icon,
-                              color: _colorAnimation.value,
-                              size: (iconHeight * 0.58).clamp(18.sp, 22.sp).toDouble(),
-                            ),
+                          // Icon with scale animation and smooth transition
+                          AnimatedBuilder(
+                            animation: _controller,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: _scaleAnimation.value,
+                                child: Icon(
+                                  widget.isSelected && widget.item.activeIcon != null
+                                      ? widget.item.activeIcon!
+                                      : widget.item.icon,
+                                  color: _colorAnimation.value,
+                                  size: (iconHeight * 0.6).clamp(20.sp, 24.sp).toDouble(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
                     );
                   },
                 ),
-                // Label with fade animation - adaptive spacing
+                // Label with fade animation and smooth transition
                 if (widget.showLabel)
                   AnimatedBuilder(
                     animation: _controller,
                     builder: (context, child) {
-                      return Opacity(
-                        opacity: widget.isSelected ? 1.0 : 0.65,
+                      return AnimatedOpacity(
+                        opacity: widget.isSelected ? 1.0 : 0.6,
+                        duration: const Duration(milliseconds: 200),
                         child: Padding(
                           padding: EdgeInsets.only(top: spacing),
-                          child: SizedBox(
-                            height: labelHeight,
-                            child: Text(
-                              widget.item.label,
-                              style: TextStyle(
-                                color: _colorAnimation.value,
-                                fontSize: 9.sp,
-                                fontWeight: widget.isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.w500,
-                                letterSpacing: 0.15,
-                                height: 1.0,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
+                          child: Text(
+                            widget.item.label,
+                            style: AppTextStyles.labelSmall(
+                              context,
+                              color: _colorAnimation.value,
+                            ).copyWith(fontSize: 9.sp),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            softWrap: false,
                           ),
                         ),
                       );
@@ -316,6 +341,8 @@ class _NavItemState extends State<_NavItem>
               ],
             );
           },
+        ),
+          ),
         ),
       ),
     );

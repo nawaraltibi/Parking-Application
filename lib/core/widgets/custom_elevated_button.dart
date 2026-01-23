@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 /// Custom Elevated Button Widget
 /// Button with gradient, loading state, and consistent styling
@@ -26,7 +27,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.disabled = false,
     this.backgroundColor,
     this.foregroundColor,
-    this.borderRadius = 12,
+    this.borderRadius = 16,
     this.padding,
     this.fontSize,
     this.fontWeight,
@@ -99,9 +100,12 @@ class CustomElevatedButton extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       maxLines: 2,
-                      style: TextStyle(
-                        fontSize: fontSize?.sp ?? 16.sp,
-                        fontWeight: fontWeight ?? FontWeight.w600,
+                      style: AppTextStyles.buttonText(
+                        context,
+                        color: foregroundColor ?? AppColors.textOnPrimary,
+                      ).copyWith(
+                        fontSize: fontSize?.sp,
+                        fontWeight: fontWeight,
                       ),
                     ),
                   ),

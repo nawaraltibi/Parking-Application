@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 /// Custom date picker field
 /// 
@@ -36,11 +37,7 @@ class CustomDatePickerField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.secondaryText,
-          ),
+          style: AppTextStyles.fieldLabel(context),
         ),
         SizedBox(height: 8.h),
         InkWell(
@@ -59,8 +56,8 @@ class CustomDatePickerField extends StatelessWidget {
                     selectedDate?.isNotEmpty == true
                         ? selectedDate!
                         : 'Select date',
-                    style: TextStyle(
-                      fontSize: 14.sp,
+                    style: AppTextStyles.bodyMedium(
+                      context,
                       color: selectedDate?.isNotEmpty == true
                           ? AppColors.primaryText
                           : AppColors.secondaryText,

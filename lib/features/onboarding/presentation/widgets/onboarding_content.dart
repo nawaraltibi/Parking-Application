@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 
 /// Onboarding Content Widget
 /// Displays a single onboarding page with title, description, and icon
@@ -52,10 +53,7 @@ class OnboardingContent extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+              style: AppTextStyles.headlineLarge(context).copyWith(
                 height: 1.3,
               ),
             ),
@@ -66,9 +64,10 @@ class OnboardingContent extends StatelessWidget {
             Text(
               description,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.bodyLarge(
+                context,
                 color: AppColors.secondaryText,
+              ).copyWith(
                 height: 1.5,
               ),
             ),

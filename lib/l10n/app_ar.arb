@@ -651,6 +651,279 @@
   "parkingDashboardActiveBookingsNow": "نشطة الآن",
   "@parkingDashboardActiveBookingsNow": {
     "description": "Dashboard active bookings now label"
-  }
+  },
+  "parkingDashboardWelcome": "مرحباً، {name} 👋",
+  "@parkingDashboardWelcome": {
+    "description": "Dashboard welcome message with owner name",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parkingDashboardOverview": "نظرة عامة على أداء مواقفك",
+  "@parkingDashboardOverview": {
+    "description": "Dashboard overview subtitle"
+  },
+  "parkingDashboardTodayRevenue": "إيرادات اليوم",
+  "@parkingDashboardTodayRevenue": {
+    "description": "Dashboard today's revenue label"
+  },
+  "parkingDashboardCurrentOccupancyRate": "معدل الإشغال الحالي",
+  "@parkingDashboardCurrentOccupancyRate": {
+    "description": "Dashboard current occupancy rate label"
+  },
+  "parkingDashboardOccupied": "مشغول",
+  "@parkingDashboardOccupied": {
+    "description": "Dashboard occupied spaces label"
+  },
+  "parkingDashboardStatistics": "الإحصائيات",
+  "@parkingDashboardStatistics": {
+    "description": "Dashboard statistics section title"
+  },
+  "parkingDashboardErrorInvalidData": "بيانات غير صحيحة",
+  "@parkingDashboardErrorInvalidData": {
+    "description": "Error message for invalid dashboard data"
+  },
+  "parkingDashboardUserFallback": "المستخدم",
+  "@parkingDashboardUserFallback": {
+    "description": "Fallback text when owner name is not available"
+  },
+  "parkingDashboardUnderReview": "قيد المراجعة",
+  "@parkingDashboardUnderReview": {
+    "description": "Dashboard under review label"
+  },
+  "parkingDashboardDefaultRevenue": "0.00 ل.س",
+  "@parkingDashboardDefaultRevenue": {
+    "description": "Default revenue value when no data available"
+  },
+  "currencySymbol": "ل.س",
+  "@currencySymbol": {
+    "description": "Currency symbol for Syrian Pound in Arabic"
+  },
+
+  "vehiclesMyVehiclesTitle": "مركباتي",
+  "@vehiclesMyVehiclesTitle": {
+    "description": "Title for my vehicles screen"
+  },
+  "vehiclesAddTitle": "إضافة مركبة",
+  "@vehiclesAddTitle": {
+    "description": "Title for add vehicle screen"
+  },
+  "vehiclesEditTitle": "تعديل مركبة",
+  "@vehiclesEditTitle": {
+    "description": "Title for edit vehicle screen"
+  },
+  "vehiclesFormNameLabel": "ماركة السيارة",
+  "@vehiclesFormNameLabel": {
+    "description": "Label for car make field"
+  },
+  "vehiclesFormNameHint": "اختر ماركة السيارة",
+  "@vehiclesFormNameHint": {
+    "description": "Hint for car make field"
+  },
+  "vehiclesFormPlateLabel": "رقم اللوحة",
+  "@vehiclesFormPlateLabel": {
+    "description": "Label for plate number field"
+  },
+  "vehiclesFormPlateHint": "أدخل رقم اللوحة",
+  "@vehiclesFormPlateHint": {
+    "description": "Hint for plate number field"
+  },
+  "vehiclesFormTypeLabel": "طراز السيارة",
+  "@vehiclesFormTypeLabel": {
+    "description": "Label for car model field"
+  },
+  "vehiclesFormTypeHint": "أدخل طراز السيارة",
+  "@vehiclesFormTypeHint": {
+    "description": "Hint for car model field"
+  },
+  "vehiclesFormColorLabel": "لون المركبة",
+  "@vehiclesFormColorLabel": {
+    "description": "Label for vehicle color field"
+  },
+  "vehiclesFormColorHint": "اختر اللون",
+  "@vehiclesFormColorHint": {
+    "description": "Hint for vehicle color field"
+  },
+  "vehiclesFormOther": "أخرى",
+  "@vehiclesFormOther": {
+    "description": "Other option for dropdowns"
+  },
+  "vehiclesFormOtherCarMake": "أدخل ماركة السيارة",
+  "@vehiclesFormOtherCarMake": {
+    "description": "Hint for other car make input"
+  },
+  "vehiclesFormPleaseSelect": "الرجاء الاختيار",
+  "@vehiclesFormPleaseSelect": {
+    "description": "Placeholder for dropdown fields"
+  },
+  "vehiclesAddButton": "إضافة",
+  "@vehiclesAddButton": {
+    "description": "Button text for add vehicle submit"
+  },
+  "vehiclesSaveButton": "حفظ",
+  "@vehiclesSaveButton": {
+    "description": "Button text for save vehicle changes"
+  },
+  "vehiclesEmptyTitle": "لا توجد مركبات بعد",
+  "@vehiclesEmptyTitle": {
+    "description": "Title for vehicles empty state"
+  },
+  "vehiclesEmptySubtitle": "أضف مركبتك الأولى للبدء",
+  "@vehiclesEmptySubtitle": {
+    "description": "Subtitle for vehicles empty state"
+  },
+  "vehiclesStatusActive": "نشطة",
+  "@vehiclesStatusActive": {
+    "description": "Vehicle status: active"
+  },
+  "vehiclesStatusInactive": "محظورة",
+  "@vehiclesStatusInactive": {
+    "description": "Vehicle status: inactive/blocked"
+  },
+  "vehiclesStatusPending": "قيد المراجعة",
+  "@vehiclesStatusPending": {
+    "description": "Vehicle status: pending modification request"
+  },
+  "vehiclesStatusRejected": "مرفوضة",
+  "@vehiclesStatusRejected": {
+    "description": "Vehicle status: rejected modification request"
+  },
+  "vehiclesDeleteDialogTitle": "حذف المركبة",
+  "@vehiclesDeleteDialogTitle": {
+    "description": "Title for delete vehicle confirmation dialog"
+  },
+  "vehiclesDeleteDialogMessage": "هل أنت متأكد من رغبتك في حذف هذه المركبة؟",
+  "@vehiclesDeleteDialogMessage": {
+    "description": "Message for delete vehicle confirmation dialog"
+  },
+  "vehiclesSuccessAdded": "تمت إضافة المركبة بنجاح",
+  "@vehiclesSuccessAdded": {
+    "description": "Success message after adding vehicle"
+  },
+  "vehiclesSuccessUpdateRequested": "تم إرسال طلب تعديل المركبة. في انتظار موافقة المدير.",
+  "@vehiclesSuccessUpdateRequested": {
+    "description": "Success message after requesting vehicle update"
+  },
+  "vehiclesSuccessDeleted": "تم حذف المركبة بنجاح",
+  "@vehiclesSuccessDeleted": {
+    "description": "Success message after deleting vehicle"
+  },
+  "vehiclesActionEdit": "تعديل",
+  "@vehiclesActionEdit": {
+    "description": "Label for edit action"
+  },
+  "vehiclesActionDelete": "حذف",
+  "@vehiclesActionDelete": {
+    "description": "Label for delete action"
+  },
+  "vehiclesRetryButton": "إعادة المحاولة",
+  "@vehiclesRetryButton": {
+    "description": "Retry button text for vehicles error state"
+  },
+  "vehiclesUpdateRequiresApproval": "سيحتاج تعديل هذه المركبة إلى موافقة المدير",
+  "@vehiclesUpdateRequiresApproval": {
+    "description": "Message shown on edit vehicle screen about admin approval"
+  },
+  "vehiclesErrorUnauthorized": "غير مصادق عليه.",
+  "@vehiclesErrorUnauthorized": {
+    "description": "Error message for unauthenticated (401)"
+  },
+  "vehiclesErrorForbidden": "غير مصرح لك بتنفيذ هذا الإجراء",
+  "@vehiclesErrorForbidden": {
+    "description": "Error message for forbidden (403)"
+  },
+  "vehiclesErrorValidation": "يرجى التحقق من البيانات المدخلة",
+  "@vehiclesErrorValidation": {
+    "description": "Error message for validation (422)"
+  },
+  "vehiclesErrorServer": "حدث خطأ في الخادم. الرجاء المحاولة مرة أخرى.",
+  "@vehiclesErrorServer": {
+    "description": "Error message for server error (500)"
+  },
+  "vehiclesColorPickerCancel": "إلغاء",
+  "@vehiclesColorPickerCancel": {
+    "description": "Cancel button in color picker dialog"
+  },
+  "vehiclesColorPickerConfirm": "تأكيد",
+  "@vehiclesColorPickerConfirm": {
+    "description": "Confirm button in color picker dialog"
+  },
+  "vehiclesPlateNumberMinLength": "يجب أن يكون رقم اللوحة 3 أحرف على الأقل",
+  "@vehiclesPlateNumberMinLength": {
+    "description": "Validation error for plate number minimum length"
+  },
+  "vehiclesPlateNumberInvalid": "رقم اللوحة يحتوي على أحرف غير صالحة",
+  "@vehiclesPlateNumberInvalid": {
+    "description": "Validation error for invalid plate number format"
+  },
+  "vehiclesColorPickerCustom": "لون مخصص",
+  "@vehiclesColorPickerCustom": {
+    "description": "Button text for custom color picker option"
+  },
+  "vehiclesColorPickerCustomTitle": "اختر لون مخصص",
+  "@vehiclesColorPickerCustomTitle": {
+    "description": "Title for custom color picker dialog"
+  },
+  "vehiclesFormPleaseSelect": "الرجاء الاختيار",
+  "@vehiclesFormPleaseSelect": {
+    "description": "Placeholder for dropdown fields"
+  },
+  "vehiclesFormSearch": "بحث",
+  "@vehiclesFormSearch": {
+    "description": "Search placeholder in dropdown"
+  },
+  "vehiclesFormNoData": "لا توجد بيانات",
+  "@vehiclesFormNoData": {
+    "description": "No data message in dropdown"
+  },
+  "carMakeToyota": "تويوتا",
+  "carMakeHyundai": "هيونداي",
+  "carMakeNissan": "نيسان",
+  "carMakeHonda": "هوندا",
+  "carMakeMitsubishi": "ميتسوبيشي",
+  "carMakeSuzuki": "سوزوكي",
+  "carMakeMazda": "مازدا",
+  "carMakeMercedes": "مرسيدس",
+  "carMakeBMW": "بي إم دبليو",
+  "carMakeAudi": "أودي",
+  "carMakeVolkswagen": "فولكس فاجن",
+  "carMakeOpel": "أوبل",
+  "carMakePeugeot": "بيجو",
+  "carMakeRenault": "رينو",
+  "carMakeCitroen": "سيتروين",
+  "carMakeKia": "كيا",
+  "carMakeLexus": "لكزس",
+  "carMakeSubaru": "سوبارو",
+  "carMakeFord": "فورد",
+  "carMakeChevrolet": "شيفروليه",
+  "carMakeDodge": "دودج",
+  "carMakeJeep": "جيب",
+  "carMakeGMC": "GMC",
+  "carMakeChery": "شيري",
+  "carMakeGeely": "جيلي",
+  "carMakeBYD": "BYD",
+  "carMakeDacia": "داسيا",
+  "carMakeSaipa": "سايبا",
+  "carMakeOther": "أخرى",
+  "colorBlack": "أسود",
+  "colorWhite": "أبيض",
+  "colorSilver": "فضي",
+  "colorGray": "رمادي",
+  "colorBlue": "أزرق",
+  "colorRed": "أحمر",
+  "colorGreen": "أخضر",
+  "colorBrown": "بني",
+  "colorBeige": "بيج",
+  "colorGold": "ذهبي",
+  "colorYellow": "أصفر",
+  "colorOrange": "برتقالي",
+  "colorPurple": "بنفسجي",
+  "colorPink": "وردي",
+  "colorMaroon": "كستنائي",
+  "colorNavy": "كحلي",
+  "colorBurgundy": "بورجوندي",
+  "colorTeal": "تركوازي"
 }
 

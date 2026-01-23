@@ -651,6 +651,279 @@
   "parkingDashboardActiveBookingsNow": "Active Now",
   "@parkingDashboardActiveBookingsNow": {
     "description": "Dashboard active bookings now label"
-  }
+  },
+  "parkingDashboardWelcome": "Welcome, {name} 👋",
+  "@parkingDashboardWelcome": {
+    "description": "Dashboard welcome message with owner name",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "parkingDashboardOverview": "Overview of your parking performance",
+  "@parkingDashboardOverview": {
+    "description": "Dashboard overview subtitle"
+  },
+  "parkingDashboardTodayRevenue": "Today's Revenue",
+  "@parkingDashboardTodayRevenue": {
+    "description": "Dashboard today's revenue label"
+  },
+  "parkingDashboardCurrentOccupancyRate": "Current Occupancy Rate",
+  "@parkingDashboardCurrentOccupancyRate": {
+    "description": "Dashboard current occupancy rate label"
+  },
+  "parkingDashboardOccupied": "Occupied",
+  "@parkingDashboardOccupied": {
+    "description": "Dashboard occupied spaces label"
+  },
+  "parkingDashboardStatistics": "Statistics",
+  "@parkingDashboardStatistics": {
+    "description": "Dashboard statistics section title"
+  },
+  "parkingDashboardErrorInvalidData": "Invalid data",
+  "@parkingDashboardErrorInvalidData": {
+    "description": "Error message for invalid dashboard data"
+  },
+  "parkingDashboardUserFallback": "User",
+  "@parkingDashboardUserFallback": {
+    "description": "Fallback text when owner name is not available"
+  },
+  "parkingDashboardUnderReview": "Under Review",
+  "@parkingDashboardUnderReview": {
+    "description": "Dashboard under review label"
+  },
+  "parkingDashboardDefaultRevenue": "0.00 SYP",
+  "@parkingDashboardDefaultRevenue": {
+    "description": "Default revenue value when no data available"
+  },
+  "currencySymbol": "SYP",
+  "@currencySymbol": {
+    "description": "Currency symbol for Syrian Pound in English"
+  },
+
+  "vehiclesMyVehiclesTitle": "My Vehicles",
+  "@vehiclesMyVehiclesTitle": {
+    "description": "Title for my vehicles screen"
+  },
+  "vehiclesAddTitle": "Add Vehicle",
+  "@vehiclesAddTitle": {
+    "description": "Title for add vehicle screen"
+  },
+  "vehiclesEditTitle": "Edit Vehicle",
+  "@vehiclesEditTitle": {
+    "description": "Title for edit vehicle screen"
+  },
+  "vehiclesFormNameLabel": "Car Make",
+  "@vehiclesFormNameLabel": {
+    "description": "Label for car make field"
+  },
+  "vehiclesFormNameHint": "Select car make",
+  "@vehiclesFormNameHint": {
+    "description": "Hint for car make field"
+  },
+  "vehiclesFormPlateLabel": "Plate Number",
+  "@vehiclesFormPlateLabel": {
+    "description": "Label for plate number field"
+  },
+  "vehiclesFormPlateHint": "Enter plate number",
+  "@vehiclesFormPlateHint": {
+    "description": "Hint for plate number field"
+  },
+  "vehiclesFormTypeLabel": "Car Model",
+  "@vehiclesFormTypeLabel": {
+    "description": "Label for car model field"
+  },
+  "vehiclesFormTypeHint": "Enter car model",
+  "@vehiclesFormTypeHint": {
+    "description": "Hint for car model field"
+  },
+  "vehiclesFormColorLabel": "Color",
+  "@vehiclesFormColorLabel": {
+    "description": "Label for vehicle color field"
+  },
+  "vehiclesFormColorHint": "Select color",
+  "@vehiclesFormColorHint": {
+    "description": "Hint for vehicle color field"
+  },
+  "vehiclesFormOther": "Other",
+  "@vehiclesFormOther": {
+    "description": "Other option for dropdowns"
+  },
+  "vehiclesFormOtherCarMake": "Enter car make",
+  "@vehiclesFormOtherCarMake": {
+    "description": "Hint for other car make input"
+  },
+  "vehiclesFormPleaseSelect": "Please select",
+  "@vehiclesFormPleaseSelect": {
+    "description": "Placeholder for dropdown fields"
+  },
+  "vehiclesAddButton": "Add",
+  "@vehiclesAddButton": {
+    "description": "Button text for add vehicle submit"
+  },
+  "vehiclesSaveButton": "Save",
+  "@vehiclesSaveButton": {
+    "description": "Button text for save vehicle changes"
+  },
+  "vehiclesEmptyTitle": "No vehicles yet",
+  "@vehiclesEmptyTitle": {
+    "description": "Title for vehicles empty state"
+  },
+  "vehiclesEmptySubtitle": "Add your first vehicle to get started",
+  "@vehiclesEmptySubtitle": {
+    "description": "Subtitle for vehicles empty state"
+  },
+  "vehiclesStatusActive": "Active",
+  "@vehiclesStatusActive": {
+    "description": "Vehicle status: active"
+  },
+  "vehiclesStatusInactive": "Blocked",
+  "@vehiclesStatusInactive": {
+    "description": "Vehicle status: inactive/blocked"
+  },
+  "vehiclesStatusPending": "Pending",
+  "@vehiclesStatusPending": {
+    "description": "Vehicle status: pending modification request"
+  },
+  "vehiclesStatusRejected": "Rejected",
+  "@vehiclesStatusRejected": {
+    "description": "Vehicle status: rejected modification request"
+  },
+  "vehiclesDeleteDialogTitle": "Delete Vehicle",
+  "@vehiclesDeleteDialogTitle": {
+    "description": "Title for delete vehicle confirmation dialog"
+  },
+  "vehiclesDeleteDialogMessage": "Are you sure you want to delete this vehicle?",
+  "@vehiclesDeleteDialogMessage": {
+    "description": "Message for delete vehicle confirmation dialog"
+  },
+  "vehiclesSuccessAdded": "Vehicle added successfully",
+  "@vehiclesSuccessAdded": {
+    "description": "Success message after adding vehicle"
+  },
+  "vehiclesSuccessUpdateRequested": "Update request submitted. Waiting for admin approval.",
+  "@vehiclesSuccessUpdateRequested": {
+    "description": "Success message after requesting vehicle update"
+  },
+  "vehiclesSuccessDeleted": "Vehicle deleted successfully",
+  "@vehiclesSuccessDeleted": {
+    "description": "Success message after deleting vehicle"
+  },
+  "vehiclesActionEdit": "Edit",
+  "@vehiclesActionEdit": {
+    "description": "Label for edit action"
+  },
+  "vehiclesActionDelete": "Delete",
+  "@vehiclesActionDelete": {
+    "description": "Label for delete action"
+  },
+  "vehiclesRetryButton": "Retry",
+  "@vehiclesRetryButton": {
+    "description": "Retry button text for vehicles error state"
+  },
+  "vehiclesUpdateRequiresApproval": "Updating this vehicle requires admin approval",
+  "@vehiclesUpdateRequiresApproval": {
+    "description": "Message shown on edit vehicle screen about admin approval"
+  },
+  "vehiclesErrorUnauthorized": "Unauthenticated.",
+  "@vehiclesErrorUnauthorized": {
+    "description": "Error message for unauthenticated (401)"
+  },
+  "vehiclesErrorForbidden": "You are not authorized to perform this action",
+  "@vehiclesErrorForbidden": {
+    "description": "Error message for forbidden (403)"
+  },
+  "vehiclesErrorValidation": "Please check your input",
+  "@vehiclesErrorValidation": {
+    "description": "Error message for validation (422)"
+  },
+  "vehiclesErrorServer": "A server error occurred. Please try again.",
+  "@vehiclesErrorServer": {
+    "description": "Error message for server error (500)"
+  },
+  "vehiclesColorPickerCancel": "Cancel",
+  "@vehiclesColorPickerCancel": {
+    "description": "Cancel button in color picker dialog"
+  },
+  "vehiclesColorPickerConfirm": "Confirm",
+  "@vehiclesColorPickerConfirm": {
+    "description": "Confirm button in color picker dialog"
+  },
+  "vehiclesPlateNumberMinLength": "Plate number must be at least 3 characters",
+  "@vehiclesPlateNumberMinLength": {
+    "description": "Validation error for plate number minimum length"
+  },
+  "vehiclesPlateNumberInvalid": "Plate number contains invalid characters",
+  "@vehiclesPlateNumberInvalid": {
+    "description": "Validation error for invalid plate number format"
+  },
+  "vehiclesColorPickerCustom": "Custom Color",
+  "@vehiclesColorPickerCustom": {
+    "description": "Button text for custom color picker option"
+  },
+  "vehiclesColorPickerCustomTitle": "Pick Custom Color",
+  "@vehiclesColorPickerCustomTitle": {
+    "description": "Title for custom color picker dialog"
+  },
+  "vehiclesFormPleaseSelect": "Please select",
+  "@vehiclesFormPleaseSelect": {
+    "description": "Placeholder for dropdown fields"
+  },
+  "vehiclesFormSearch": "Search",
+  "@vehiclesFormSearch": {
+    "description": "Search placeholder in dropdown"
+  },
+  "vehiclesFormNoData": "No data",
+  "@vehiclesFormNoData": {
+    "description": "No data message in dropdown"
+  },
+  "carMakeToyota": "Toyota",
+  "carMakeHyundai": "Hyundai",
+  "carMakeNissan": "Nissan",
+  "carMakeHonda": "Honda",
+  "carMakeMitsubishi": "Mitsubishi",
+  "carMakeSuzuki": "Suzuki",
+  "carMakeMazda": "Mazda",
+  "carMakeMercedes": "Mercedes",
+  "carMakeBMW": "BMW",
+  "carMakeAudi": "Audi",
+  "carMakeVolkswagen": "Volkswagen",
+  "carMakeOpel": "Opel",
+  "carMakePeugeot": "Peugeot",
+  "carMakeRenault": "Renault",
+  "carMakeCitroen": "Citroën",
+  "carMakeKia": "Kia",
+  "carMakeLexus": "Lexus",
+  "carMakeSubaru": "Subaru",
+  "carMakeFord": "Ford",
+  "carMakeChevrolet": "Chevrolet",
+  "carMakeDodge": "Dodge",
+  "carMakeJeep": "Jeep",
+  "carMakeGMC": "GMC",
+  "carMakeChery": "Chery",
+  "carMakeGeely": "Geely",
+  "carMakeBYD": "BYD",
+  "carMakeDacia": "Dacia",
+  "carMakeSaipa": "Saipa",
+  "carMakeOther": "Other",
+  "colorBlack": "Black",
+  "colorWhite": "White",
+  "colorSilver": "Silver",
+  "colorGray": "Gray",
+  "colorBlue": "Blue",
+  "colorRed": "Red",
+  "colorGreen": "Green",
+  "colorBrown": "Brown",
+  "colorBeige": "Beige",
+  "colorGold": "Gold",
+  "colorYellow": "Yellow",
+  "colorOrange": "Orange",
+  "colorPurple": "Purple",
+  "colorPink": "Pink",
+  "colorMaroon": "Maroon",
+  "colorNavy": "Navy",
+  "colorBurgundy": "Burgundy",
+  "colorTeal": "Teal"
 }
 

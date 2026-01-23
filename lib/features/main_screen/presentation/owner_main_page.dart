@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../bloc/owner_main/owner_main_bloc.dart';
 import 'owner_main_screen.dart';
 
@@ -11,7 +12,7 @@ class OwnerMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OwnerMainBloc(),
+      create: (context) => getIt<OwnerMainBloc>(),
       child: const OwnerMainScreen(),
     );
   }

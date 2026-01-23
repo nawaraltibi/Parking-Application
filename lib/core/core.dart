@@ -18,6 +18,7 @@ export 'widgets/infinite_list_view_widget.dart';
 
 // Styles exports
 export 'styles/app_colors.dart';
+export 'styles/app_text_styles.dart';
 export 'theme/app_theme.dart';
 
 // Routes exports
@@ -38,4 +39,7 @@ export 'queue/models/request_queue_item.dart';
 
 // Bloc exports
 export 'bloc/locale_cubit.dart';
+
+// Dependency Injection exports
+export 'injection/service_locator.dart';
 

@@ -19,33 +19,23 @@ class OwnerMainScreen extends StatefulWidget {
 
 class _OwnerMainScreenState extends State<OwnerMainScreen>
     with AutomaticKeepAliveClientMixin<OwnerMainScreen> {
-  late PageController _pageController;
-  static const _navDuration = Duration(milliseconds: 300);
+  int _currentIndex = 0;
 
   static List<OwnerTab> get _bottomNavTabs => [
         OwnerTab.parkingManagement,
         OwnerTab.profile,
       ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: 0);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   void _goToPage(int index) {
-    _pageController.animateToPage(
-      index,
-      duration: _navDuration,
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_currentIndex == index) return;
+    
+    // Update BLoC first for immediate UI feedback
     context.read<OwnerMainBloc>().add(ChangeOwnerTab(index));
+    
+    // Update index for smooth transition
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -53,33 +43,31 @@ class _OwnerMainScreenState extends State<OwnerMainScreen>
     super.build(context);
     final l10n = AppLocalizations.of(context)!;
 
-    return BlocListener<OwnerMainBloc, OwnerMainState>(
-      listener: (context, state) {
-        final selectedIndex = _mapSelectedIndex(state);
-        if (_pageController.hasClients) {
-          final currentPage = _pageController.page?.round() ?? 0;
-          if (currentPage != selectedIndex) {
-            _pageController.animateToPage(
-              selectedIndex,
-              duration: _navDuration,
-              curve: Curves.fastOutSlowIn,
-            );
-          }
+    return BlocSelector<OwnerMainBloc, OwnerMainState, int>(
+      selector: _mapSelectedIndex,
+      builder: (context, selectedIndex) {
+        // Sync current index with selected index immediately
+        if (_currentIndex != selectedIndex) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && _currentIndex != selectedIndex) {
+              _goToPage(selectedIndex);
+            }
+          });
         }
-      },
-      child: BlocSelector<OwnerMainBloc, OwnerMainState, int>(
-        selector: _mapSelectedIndex,
-        builder: (context, selectedIndex) {
-          return Scaffold(
+        
+        return Scaffold(
             extendBody: true,
             body: SafeArea(
-              bottom: false,
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  OwnerParkingManagementPage(),
-                  ProfilePage(),
+              bottom: true,
+              child: IndexedStack(
+                index: _currentIndex,
+                children: [
+                  RepaintBoundary(
+                    child: const OwnerParkingManagementPage(),
+                  ),
+                  RepaintBoundary(
+                    child: const ProfilePage(),
+                  ),
                 ],
               ),
             ),
@@ -106,8 +94,7 @@ class _OwnerMainScreenState extends State<OwnerMainScreen>
               elevation: 12,
             ),
           );
-        },
-      ),
+      },
     );
   }
 

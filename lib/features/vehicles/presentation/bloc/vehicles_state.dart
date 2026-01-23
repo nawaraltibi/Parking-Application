@@ -1,0 +1,65 @@
+part of 'vehicles_bloc.dart';
+
+/// Base class for vehicles states
+abstract class VehiclesState {}
+
+/// Initial state
+class VehiclesInitial extends VehiclesState {
+  VehiclesInitial();
+}
+
+/// Loading state - vehicles operation in progress
+class VehiclesLoading extends VehiclesState {
+  VehiclesLoading();
+}
+
+/// Loaded state - vehicles loaded successfully
+class VehiclesLoaded extends VehiclesState {
+  final List<VehicleEntity> vehicles;
+
+  VehiclesLoaded({required this.vehicles});
+}
+
+/// Empty state - no vehicles found
+class VehiclesEmpty extends VehiclesState {
+  VehiclesEmpty();
+}
+
+/// Error state - vehicles operation failed
+class VehiclesError extends VehiclesState {
+  final String error;
+  final int statusCode;
+
+  VehiclesError({
+    required this.error,
+    required this.statusCode,
+  });
+}
+
+/// Loading state for vehicle actions (add, update, delete)
+class VehicleActionLoading extends VehiclesState {
+  VehicleActionLoading();
+}
+
+/// Success state for vehicle actions
+class VehicleActionSuccess extends VehiclesState {
+  final String message;
+  final VehicleEntity? vehicle;
+
+  VehicleActionSuccess({
+    required this.message,
+    this.vehicle,
+  });
+}
+
+/// Failure state for vehicle actions
+class VehicleActionFailure extends VehiclesState {
+  final String error;
+  final int statusCode;
+
+  VehicleActionFailure({
+    required this.error,
+    required this.statusCode,
+  });
+}
+

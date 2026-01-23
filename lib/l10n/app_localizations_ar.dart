@@ -523,4 +523,315 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get parkingDashboardActiveBookingsNow => 'نشطة الآن';
+
+  @override
+  String parkingDashboardWelcome(String name) {
+    return 'مرحباً، $name 👋';
+  }
+
+  @override
+  String get parkingDashboardOverview => 'نظرة عامة على أداء مواقفك';
+
+  @override
+  String get parkingDashboardTodayRevenue => 'إيرادات اليوم';
+
+  @override
+  String get parkingDashboardCurrentOccupancyRate => 'معدل الإشغال الحالي';
+
+  @override
+  String get parkingDashboardOccupied => 'مشغول';
+
+  @override
+  String get parkingDashboardStatistics => 'الإحصائيات';
+
+  @override
+  String get parkingDashboardErrorInvalidData => 'بيانات غير صحيحة';
+
+  @override
+  String get parkingDashboardUserFallback => 'المستخدم';
+
+  @override
+  String get parkingDashboardUnderReview => 'قيد المراجعة';
+
+  @override
+  String get parkingDashboardDefaultRevenue => '0.00 ل.س';
+
+  @override
+  String get currencySymbol => 'ل.س';
+
+  @override
+  String get vehiclesMyVehiclesTitle => 'مركباتي';
+
+  @override
+  String get vehiclesAddTitle => 'إضافة مركبة';
+
+  @override
+  String get vehiclesEditTitle => 'تعديل مركبة';
+
+  @override
+  String get vehiclesFormNameLabel => 'ماركة السيارة';
+
+  @override
+  String get vehiclesFormNameHint => 'اختر ماركة السيارة';
+
+  @override
+  String get vehiclesFormPlateLabel => 'رقم اللوحة';
+
+  @override
+  String get vehiclesFormPlateHint => 'أدخل رقم اللوحة';
+
+  @override
+  String get vehiclesFormTypeLabel => 'طراز السيارة';
+
+  @override
+  String get vehiclesFormTypeHint => 'أدخل طراز السيارة';
+
+  @override
+  String get vehiclesFormColorLabel => 'لون المركبة';
+
+  @override
+  String get vehiclesFormColorHint => 'اختر اللون';
+
+  @override
+  String get vehiclesFormOther => 'أخرى';
+
+  @override
+  String get vehiclesFormOtherCarMake => 'أدخل ماركة السيارة';
+
+  @override
+  String get vehiclesFormPleaseSelect => 'الرجاء الاختيار';
+
+  @override
+  String get vehiclesAddButton => 'إضافة';
+
+  @override
+  String get vehiclesSaveButton => 'حفظ';
+
+  @override
+  String get vehiclesEmptyTitle => 'لا توجد مركبات بعد';
+
+  @override
+  String get vehiclesEmptySubtitle => 'أضف مركبتك الأولى للبدء';
+
+  @override
+  String get vehiclesStatusActive => 'نشطة';
+
+  @override
+  String get vehiclesStatusInactive => 'محظورة';
+
+  @override
+  String get vehiclesStatusPending => 'قيد المراجعة';
+
+  @override
+  String get vehiclesStatusRejected => 'مرفوضة';
+
+  @override
+  String get vehiclesDeleteDialogTitle => 'حذف المركبة';
+
+  @override
+  String get vehiclesDeleteDialogMessage =>
+      'هل أنت متأكد من رغبتك في حذف هذه المركبة؟';
+
+  @override
+  String get vehiclesSuccessAdded => 'تمت إضافة المركبة بنجاح';
+
+  @override
+  String get vehiclesSuccessUpdateRequested =>
+      'تم إرسال طلب تعديل المركبة. في انتظار موافقة المدير.';
+
+  @override
+  String get vehiclesSuccessDeleted => 'تم حذف المركبة بنجاح';
+
+  @override
+  String get vehiclesActionEdit => 'تعديل';
+
+  @override
+  String get vehiclesActionDelete => 'حذف';
+
+  @override
+  String get vehiclesRetryButton => 'إعادة المحاولة';
+
+  @override
+  String get vehiclesUpdateRequiresApproval =>
+      'سيحتاج تعديل هذه المركبة إلى موافقة المدير';
+
+  @override
+  String get vehiclesErrorUnauthorized => 'غير مصادق عليه.';
+
+  @override
+  String get vehiclesErrorForbidden => 'غير مصرح لك بتنفيذ هذا الإجراء';
+
+  @override
+  String get vehiclesErrorValidation => 'يرجى التحقق من البيانات المدخلة';
+
+  @override
+  String get vehiclesErrorServer =>
+      'حدث خطأ في الخادم. الرجاء المحاولة مرة أخرى.';
+
+  @override
+  String get vehiclesColorPickerCancel => 'إلغاء';
+
+  @override
+  String get vehiclesColorPickerConfirm => 'تأكيد';
+
+  @override
+  String get vehiclesPlateNumberMinLength =>
+      'يجب أن يكون رقم اللوحة 3 أحرف على الأقل';
+
+  @override
+  String get vehiclesPlateNumberInvalid =>
+      'رقم اللوحة يحتوي على أحرف غير صالحة';
+
+  @override
+  String get vehiclesColorPickerCustom => 'لون مخصص';
+
+  @override
+  String get vehiclesColorPickerCustomTitle => 'اختر لون مخصص';
+
+  @override
+  String get vehiclesFormSearch => 'بحث';
+
+  @override
+  String get vehiclesFormNoData => 'لا توجد بيانات';
+
+  @override
+  String get carMakeToyota => 'تويوتا';
+
+  @override
+  String get carMakeHyundai => 'هيونداي';
+
+  @override
+  String get carMakeNissan => 'نيسان';
+
+  @override
+  String get carMakeHonda => 'هوندا';
+
+  @override
+  String get carMakeMitsubishi => 'ميتسوبيشي';
+
+  @override
+  String get carMakeSuzuki => 'سوزوكي';
+
+  @override
+  String get carMakeMazda => 'مازدا';
+
+  @override
+  String get carMakeMercedes => 'مرسيدس';
+
+  @override
+  String get carMakeBMW => 'بي إم دبليو';
+
+  @override
+  String get carMakeAudi => 'أودي';
+
+  @override
+  String get carMakeVolkswagen => 'فولكس فاجن';
+
+  @override
+  String get carMakeOpel => 'أوبل';
+
+  @override
+  String get carMakePeugeot => 'بيجو';
+
+  @override
+  String get carMakeRenault => 'رينو';
+
+  @override
+  String get carMakeCitroen => 'سيتروين';
+
+  @override
+  String get carMakeKia => 'كيا';
+
+  @override
+  String get carMakeLexus => 'لكزس';
+
+  @override
+  String get carMakeSubaru => 'سوبارو';
+
+  @override
+  String get carMakeFord => 'فورد';
+
+  @override
+  String get carMakeChevrolet => 'شيفروليه';
+
+  @override
+  String get carMakeDodge => 'دودج';
+
+  @override
+  String get carMakeJeep => 'جيب';
+
+  @override
+  String get carMakeGMC => 'GMC';
+
+  @override
+  String get carMakeChery => 'شيري';
+
+  @override
+  String get carMakeGeely => 'جيلي';
+
+  @override
+  String get carMakeBYD => 'BYD';
+
+  @override
+  String get carMakeDacia => 'داسيا';
+
+  @override
+  String get carMakeSaipa => 'سايبا';
+
+  @override
+  String get carMakeOther => 'أخرى';
+
+  @override
+  String get colorBlack => 'أسود';
+
+  @override
+  String get colorWhite => 'أبيض';
+
+  @override
+  String get colorSilver => 'فضي';
+
+  @override
+  String get colorGray => 'رمادي';
+
+  @override
+  String get colorBlue => 'أزرق';
+
+  @override
+  String get colorRed => 'أحمر';
+
+  @override
+  String get colorGreen => 'أخضر';
+
+  @override
+  String get colorBrown => 'بني';
+
+  @override
+  String get colorBeige => 'بيج';
+
+  @override
+  String get colorGold => 'ذهبي';
+
+  @override
+  String get colorYellow => 'أصفر';
+
+  @override
+  String get colorOrange => 'برتقالي';
+
+  @override
+  String get colorPurple => 'بنفسجي';
+
+  @override
+  String get colorPink => 'وردي';
+
+  @override
+  String get colorMaroon => 'كستنائي';
+
+  @override
+  String get colorNavy => 'كحلي';
+
+  @override
+  String get colorBurgundy => 'بورجوندي';
+
+  @override
+  String get colorTeal => 'تركوازي';
 }

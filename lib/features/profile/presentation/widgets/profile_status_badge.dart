@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 
 /// Reusable status badge widget for profile
 class ProfileStatusBadge extends StatelessWidget {
@@ -28,9 +29,8 @@ class ProfileStatusBadge extends StatelessWidget {
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w600,
+        style: AppTextStyles.labelSmall(
+          context,
           color: config.textColor,
         ),
       ),

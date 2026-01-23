@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -29,11 +31,7 @@ class LocationPickerField extends StatelessWidget {
       children: [
         Text(
           l10n.parkingSelectLocationLabel,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.secondaryText,
-          ),
+          style: AppTextStyles.fieldLabel(context),
         ),
         SizedBox(height: 8.h),
         CustomElevatedButton(
@@ -43,7 +41,7 @@ class LocationPickerField extends StatelessWidget {
           backgroundColor: AppColors.surface,
           foregroundColor: AppColors.primary,
           icon: Icon(
-            Icons.map,
+            EvaIcons.map,
             size: 20.sp,
             color: AppColors.primary,
           ),

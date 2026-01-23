@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../enums/loading_type.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 class LoadingWidget extends StatelessWidget {
   final bool withPadding;
@@ -53,7 +54,10 @@ class LoadingWidget extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             message!,
-            style: const TextStyle(fontSize: 14, color: AppColors.secondaryText),
+            style: AppTextStyles.bodyMedium(
+              context,
+              color: AppColors.secondaryText,
+            ),
           ),
         ],
       );

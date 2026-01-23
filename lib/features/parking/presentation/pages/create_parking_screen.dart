@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../bloc/parking_cubit.dart';
+import '../../cubit/parking_cubit.dart';
 import '../../models/create_parking_request.dart';
 import '../utils/parking_error_handler.dart';
 import '../widgets/parking_form_fields.dart';
@@ -31,6 +32,9 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
 
   // Selected location from map picker
   GeoPoint? _selectedLocation;
+  
+  // Track previous state to detect successful creation
+  bool _wasCreating = false;
 
   @override
   void dispose() {
@@ -99,32 +103,41 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
         bottom: true,
         child: BlocConsumer<ParkingCubit, ParkingState>(
           listener: (context, state) {
-            if (state is ParkingCreateSuccess) {
+            // Detect successful creation: was creating, now not creating, no error
+            if (_wasCreating && !state.isCreating && state.error == null) {
+              // Reset flag immediately to prevent multiple navigations
+              _wasCreating = false;
+              
               UnifiedSnackbar.success(
                 context,
                 message: l10n.parkingSuccessCreate,
               );
               
-              // Reload all parkings from API to ensure latest data
-              context.read<ParkingCubit>().loadParkings();
-              
-              // Navigate back after showing success message
-              Future.delayed(const Duration(milliseconds: 800), () {
+              // Navigate to owner main screen using pushReplacement
+              Future.delayed(const Duration(milliseconds: 100), () {
                 if (mounted) {
-                  context.pop();
+                  context.pushReplacement(Routes.ownerMainPath);
                 }
               });
-            } else if (state is ParkingFailure) {
+            } else {
+              // Update tracking flag only if not handling success
+              _wasCreating = state.isCreating;
+            }
+            
+            // Error handling
+            if (state.error != null && !state.isCreating) {
               final errorMessage = ParkingErrorHandler.handleErrorState(
-                state.error,
-                state.statusCode,
+                state.error!,
+                state.statusCode ?? 500,
                 l10n,
               );
               UnifiedSnackbar.error(context, message: errorMessage);
+              // Clear error after showing
+              context.read<ParkingCubit>().clearError();
             }
           },
           builder: (context, state) {
-            final isLoading = state is ParkingCreating;
+            final isLoading = state.isCreating;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),

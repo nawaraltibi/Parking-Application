@@ -7,6 +7,7 @@ class ParkingModel {
   final double latitude;
   final double longitude;
   final int totalSpaces;
+  final int? availableSpaces; // Number of available spaces (total_spaces - occupied_spaces)
   final double hourlyRate;
   final String status; // 'active' or 'inactive'
   final String? statusRequest; // 'pending', 'accept', or 'rejected'
@@ -21,6 +22,7 @@ class ParkingModel {
     required this.latitude,
     required this.longitude,
     required this.totalSpaces,
+    this.availableSpaces,
     required this.hourlyRate,
     required this.status,
     this.statusRequest,
@@ -37,6 +39,7 @@ class ParkingModel {
       latitude: _parseDouble(json['latitude']),
       longitude: _parseDouble(json['longitude']),
       totalSpaces: _parseInt(json['total_spaces']),
+      availableSpaces: json['available_spaces'] != null ? _parseInt(json['available_spaces']) : null,
       hourlyRate: _parseDouble(json['hourly_rate']),
       status: json['status'] as String? ?? 'inactive',
       statusRequest: json['statusrequest'] as String? ?? json['status_request'] as String?,
@@ -68,6 +71,7 @@ class ParkingModel {
       'latitude': latitude,
       'longitude': longitude,
       'total_spaces': totalSpaces,
+      'available_spaces': availableSpaces,
       'hourly_rate': hourlyRate,
       'status': status,
       'statusrequest': statusRequest,
@@ -85,6 +89,7 @@ class ParkingModel {
     double? latitude,
     double? longitude,
     int? totalSpaces,
+    int? availableSpaces,
     double? hourlyRate,
     String? status,
     String? statusRequest,
@@ -99,6 +104,7 @@ class ParkingModel {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       totalSpaces: totalSpaces ?? this.totalSpaces,
+      availableSpaces: availableSpaces ?? this.availableSpaces,
       hourlyRate: hourlyRate ?? this.hourlyRate,
       status: status ?? this.status,
       statusRequest: statusRequest ?? this.statusRequest,

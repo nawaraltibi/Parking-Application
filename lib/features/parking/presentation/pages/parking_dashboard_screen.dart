@@ -2,14 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/utils/app_icons.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/error_state_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../bloc/parking_cubit.dart';
+import '../../cubit/parking_cubit.dart';
 import '../../models/owner_dashboard_stats_response.dart';
 import '../widgets/dashboard_card.dart';
+
+/// Helper function to format currency based on current language
+/// Converts backend format (e.g., "100.00 ر.س" or "1,234.56 ر.س") to localized format
+String formatCurrency(String? value, AppLocalizations l10n) {
+  if (value == null || value.isEmpty) {
+    return '0.00 ${l10n.currencySymbol}';
+  }
+  
+  // Remove currency symbols (both old and new) and any whitespace
+  String cleaned = value
+      .replaceAll('ر.س', '')
+      .replaceAll('ل.س', '')
+      .replaceAll('SAR', '')
+      .replaceAll('SYP', '')
+      .trim();
+  
+  // Extract numeric value (preserve decimal formatting, remove commas for parsing)
+  final numericValue = cleaned.replaceAll(',', '').trim();
+  
+  // If no numeric value found, return default
+  if (numericValue.isEmpty) {
+    return '0.00 ${l10n.currencySymbol}';
+  }
+  
+  // Validate it's a valid number
+  final parsedValue = double.tryParse(numericValue);
+  if (parsedValue == null) {
+    return '0.00 ${l10n.currencySymbol}';
+  }
+  
+  // Format with 2 decimal places and localized currency symbol
+  return '${parsedValue.toStringAsFixed(2)} ${l10n.currencySymbol}';
+}
 
 /// Parking Dashboard Screen
 /// Modern, data-driven dashboard with welcome header, KPI cards, and occupancy indicators
@@ -37,22 +71,22 @@ class ParkingDashboardScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: BlocBuilder<ParkingCubit, ParkingState>(
         buildWhen: (previous, current) {
-          return current is DashboardLoading ||
-              current is DashboardLoaded ||
-              current is DashboardFailure;
+          return previous.isLoadingDashboard != current.isLoadingDashboard ||
+              previous.dashboardData != current.dashboardData ||
+              previous.dashboardError != current.dashboardError;
         },
         builder: (context, state) {
           // Loading State
-          if (state is DashboardLoading) {
+          if (state.isLoadingDashboard && state.dashboardData == null) {
             return const Center(
               child: LoadingWidget(),
             );
           }
 
           // Error State
-          if (state is DashboardFailure) {
-            String errorMessage = state.error;
-            if (state.statusCode == 403) {
+          if (state.dashboardError != null && state.dashboardData == null) {
+            String errorMessage = state.dashboardError!;
+            if (state.dashboardStatusCode == 403) {
               errorMessage = l10n.parkingErrorUnauthorized;
             }
 
@@ -65,13 +99,13 @@ class ParkingDashboardScreen extends StatelessWidget {
           }
 
           // Loaded State - Only render content when data is fully loaded
-          if (state is DashboardLoaded) {
-            final data = state.dashboardData;
+          if (state.dashboardData != null) {
+            final data = state.dashboardData!;
             
             // Validate data before rendering
             if (!_isValidDashboardData(data)) {
               return ErrorStateWidget(
-                message: 'بيانات غير صحيحة',
+                message: l10n.parkingDashboardErrorInvalidData,
                 onRetry: () {
                   context.read<ParkingCubit>().loadDashboardStats();
                 },
@@ -82,7 +116,7 @@ class ParkingDashboardScreen extends StatelessWidget {
           }
 
           // Initial state - trigger load
-          if (state is ParkingInitial) {
+          if (!state.isLoadingDashboard && state.dashboardData == null && state.dashboardError == null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.read<ParkingCubit>().loadDashboardStats();
             });
@@ -131,8 +165,7 @@ class DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        final cubit = context.read<ParkingCubit>();
-        await cubit.loadDashboardStats();
+        context.read<ParkingCubit>().loadDashboardStats();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -174,27 +207,27 @@ class _WelcomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const SizedBox.shrink();
+    }
+
     // Safe owner name with fallback
-    final displayName = ownerName.isNotEmpty ? ownerName : 'المستخدم';
+    final displayName = ownerName.isNotEmpty ? ownerName : l10n.parkingDashboardUserFallback;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'مرحباً، $displayName 👋',
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
-            height: 1.2,
-          ),
+          l10n.parkingDashboardWelcome(displayName),
+          style: AppTextStyles.headlineMedium(context).copyWith(height: 1.2),
         ),
         SizedBox(height: 4.h),
         Text(
-          'نظرة عامة على أداء مواقفك',
-          style: TextStyle(
-            fontSize: 14.sp,
+          l10n.parkingDashboardOverview,
+          style: AppTextStyles.bodyMedium(
+            context,
             color: AppColors.secondaryText,
           ),
         ),
@@ -212,8 +245,13 @@ class _HeroKPICard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Safe revenue display with fallback
-    final displayRevenue = todayRevenue.isNotEmpty ? todayRevenue : '0.00 ر.س';
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const SizedBox.shrink();
+    }
+
+    // Format revenue with localized currency
+    final displayRevenue = formatCurrency(todayRevenue, l10n);
 
     return Container(
       padding: EdgeInsets.all(24.w),
@@ -249,7 +287,7 @@ class _HeroKPICard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
-                  AppIcons.currencySolid,
+                  EvaIcons.creditCard,
                   color: Colors.white,
                   size: 24.sp,
                 ),
@@ -261,22 +299,19 @@ class _HeroKPICard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'إيرادات اليوم',
-                      style: TextStyle(
-                        fontSize: 14.sp,
+                      l10n.parkingDashboardTodayRevenue,
+                      style: AppTextStyles.bodyMedium(
+                        context,
                         color: Colors.white.withValues(alpha: 0.9),
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(height: 4.h),
                     Text(
                       displayRevenue,
-                      style: TextStyle(
-                        fontSize: 32.sp,
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyles.displaySmall(
+                        context,
                         color: Colors.white,
-                        height: 1.2,
-                      ),
+                      ).copyWith(height: 1.2),
                     ),
                   ],
                 ),
@@ -298,6 +333,11 @@ class _OccupancyIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const SizedBox.shrink();
+    }
+
     // Safe percent calculation with validation
     final totalSpaces = stats.totalSpaces > 0 ? stats.totalSpaces : 1;
     final occupiedSpaces = stats.occupiedSpaces.clamp(0, totalSpaces);
@@ -322,12 +362,8 @@ class _OccupancyIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'معدل الإشغال الحالي',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryText,
-            ),
+            l10n.parkingDashboardCurrentOccupancyRate,
+            style: AppTextStyles.titleMedium(context),
           ),
           SizedBox(height: 20.h),
           Row(
@@ -345,16 +381,15 @@ class _OccupancyIndicator extends StatelessWidget {
                   children: [
                     Text(
                       '$occupiedSpaces',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyles.headlineSmall(
+                        context,
                         color: AppColors.primary,
                       ),
                     ),
                     Text(
                       '/ $totalSpaces',
-                      style: TextStyle(
-                        fontSize: 14.sp,
+                      style: AppTextStyles.bodyMedium(
+                        context,
                         color: AppColors.secondaryText,
                       ),
                     ),
@@ -370,9 +405,9 @@ class _OccupancyIndicator extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            '$occupiedSpaces / $totalSpaces مشغول',
-            style: TextStyle(
-              fontSize: 14.sp,
+            '$occupiedSpaces / $totalSpaces ${l10n.parkingDashboardOccupied}',
+            style: AppTextStyles.bodyMedium(
+              context,
               color: AppColors.secondaryText,
             ),
           ),
@@ -391,10 +426,13 @@ class _SummaryStatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Safe value extraction with fallbacks
-    final totalRevenue = data.financialStats.formattedTotalRevenue.isNotEmpty
-        ? data.financialStats.formattedTotalRevenue
-        : '0.00 ر.س';
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const SizedBox.shrink();
+    }
+
+    // Format revenue with localized currency
+    final totalRevenue = formatCurrency(data.financialStats.formattedTotalRevenue, l10n);
     
     final totalBookings = data.bookingStats.totalBookings;
     final activeParkings = data.summary.activeParkings;
@@ -405,57 +443,53 @@ class _SummaryStatsGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'الإحصائيات',
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
-          ),
+          l10n.parkingDashboardStatistics,
+          style: AppTextStyles.titleLarge(context),
         ),
         SizedBox(height: 16.h),
-        Row(
-          children: [
-            Expanded(
-              child: DashboardCard(
-                title: 'إجمالي الإيرادات',
-                value: totalRevenue,
-                icon: AppIcons.revenue,
-                color: AppColors.success,
+          Row(
+            children: [
+              Expanded(
+                child: DashboardCard(
+                  title: l10n.parkingDashboardTotalRevenue,
+                  value: totalRevenue,
+                  icon: EvaIcons.creditCard,
+                  color: AppColors.success,
+                ),
               ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: DashboardCard(
-                title: 'إجمالي الحجوزات',
-                value: '$totalBookings',
-                icon: AppIcons.booking,
-                color: AppColors.primary,
+              SizedBox(width: 12.w),
+              Expanded(
+                child: DashboardCard(
+                  title: l10n.parkingDashboardTotalBookings,
+                  value: '$totalBookings',
+                  icon: EvaIcons.calendar,
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 12.h),
-        Row(
-          children: [
-            Expanded(
-              child: DashboardCard(
-                title: 'المواقف النشطة',
-                value: '$activeParkings',
-                icon: AppIcons.check,
-                color: AppColors.success,
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              Expanded(
+                child: DashboardCard(
+                  title: l10n.parkingDashboardActiveParkings,
+                  value: '$activeParkings',
+                  icon: EvaIcons.checkmarkCircle2,
+                  color: AppColors.success,
+                ),
               ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: DashboardCard(
-                title: 'قيد المراجعة',
-                value: '$pendingCount',
-                icon: AppIcons.warning,
-                color: AppColors.warning,
+              SizedBox(width: 12.w),
+              Expanded(
+                child: DashboardCard(
+                  title: l10n.parkingDashboardUnderReview,
+                  value: '$pendingCount',
+                  icon: EvaIcons.alertCircle,
+                  color: AppColors.warning,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
       ],
     );
   }

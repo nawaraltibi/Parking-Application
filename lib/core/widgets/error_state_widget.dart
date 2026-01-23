@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 /// Error State Widget
 /// Standard error display widget
@@ -30,8 +31,8 @@ class ErrorStateWidget extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.bodyLarge(
+                context,
                 color: AppColors.primaryText,
               ),
             ),

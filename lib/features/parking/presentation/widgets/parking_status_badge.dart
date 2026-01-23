@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/parking_model.dart';
 
@@ -28,9 +29,8 @@ class ParkingStatusBadge extends StatelessWidget {
       ),
       child: Text(
         statusConfig.text,
-        style: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w600,
+        style: AppTextStyles.labelSmall(
+          context,
           color: statusConfig.textColor,
         ),
       ),

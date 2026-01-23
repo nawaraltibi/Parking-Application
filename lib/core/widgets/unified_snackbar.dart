@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_text_styles.dart';
 
 /// Unified Snackbar Types
 enum SnackbarType { success, error, info, warning }
@@ -231,9 +232,8 @@ class _SnackbarContent extends StatelessWidget {
           Expanded(
             child: Text(
               message,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyles.bodyMedium(
+                context,
                 color: _getTextColor(),
               ),
             ),
@@ -278,9 +278,8 @@ class _SnackbarContent extends StatelessWidget {
         ),
         child: Text(
           actionLabel!,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
+          style: AppTextStyles.labelSmall(
+            context,
             color: _getActionButtonTextColor(),
           ),
         ),

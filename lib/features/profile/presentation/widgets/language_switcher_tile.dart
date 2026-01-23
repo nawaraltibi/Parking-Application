@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/bloc/locale_cubit.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 
@@ -88,11 +89,7 @@ class _LanguageSwitcherTileState extends State<LanguageSwitcherTile> {
         children: [
           Text(
             currentLanguage == 'en' ? 'Language' : 'اللغة',
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryText,
-            ),
+            style: AppTextStyles.titleMedium(context),
           ),
           SizedBox(height: 16.h),
           Row(
@@ -184,22 +181,23 @@ class _LanguageOption extends StatelessWidget {
           children: [
             Text(
               flag,
-              style: TextStyle(fontSize: 20.sp),
+              style: AppTextStyles.titleLarge(context),
             ),
             SizedBox(width: 6.w),
             Flexible(
               child: Text(
                 languageName,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: isSelected || isPending
-                      ? FontWeight.w600
-                      : FontWeight.normal,
+                style: AppTextStyles.bodySmall(
+                  context,
                   color: isSelected
                       ? AppColors.primary
                       : isPending
                           ? AppColors.primary.withValues(alpha: 0.8)
                           : AppColors.primaryText,
+                ).copyWith(
+                  fontWeight: isSelected || isPending
+                      ? FontWeight.w600
+                      : FontWeight.normal,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
