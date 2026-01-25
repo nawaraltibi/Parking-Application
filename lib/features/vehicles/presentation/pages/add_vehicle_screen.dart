@@ -10,14 +10,24 @@ import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../data/repositories/auth_local_repository.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../bloc/vehicles_bloc.dart';
 import '../utils/vehicles_error_handler.dart';
 import '../utils/color_name_mapper.dart';
 import '../widgets/vehicle_form_fields.dart';
+import '../../../vehicles/domain/usecases/get_vehicles_usecase.dart';
+import '../../../vehicles/data/models/vehicle_model.dart';
 
 /// Add Vehicle Screen (User side)
 class AddVehicleScreen extends StatefulWidget {
-  const AddVehicleScreen({super.key});
+  final String? source; // 'booking_pre_payment' or 'vehicles_list'
+  final Map<String, dynamic>? returnData; // Data to pass back when navigating
+  
+  const AddVehicleScreen({
+    super.key,
+    this.source,
+    this.returnData,
+  });
 
   @override
   State<AddVehicleScreen> createState() => _AddVehicleScreenState();
@@ -143,21 +153,63 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
               context.read<VehiclesBloc>().add(ResetVehiclesState());
               Future.delayed(const Duration(milliseconds: 350), () async {
                 if (context.mounted) {
-                  // Determine user type and navigate to appropriate main screen
-                  final userType = await AuthLocalRepository.getUserType();
-                  final mainScreenPath = userType == 'owner' 
-                      ? Routes.ownerMainPath 
-                      : Routes.userMainPath;
-                  
-                  // Use pushReplacement to navigate to main screen
-                  // This replaces the add vehicle page in the navigation stack
-                  // so when user goes back, they'll see the main screen with bottom nav bar
-                  // Pass vehicles tab index (1) as extra parameter for user type
-                  if (userType != 'owner') {
-                    context.pushReplacement(mainScreenPath, extra: 1); // UserTab.vehicles.index = 1
+                  // Navigate based on source
+                  if (widget.source == 'booking_pre_payment' && widget.returnData != null) {
+                    // If came from booking pre-payment, refresh vehicles and use pushReplacement with data
+                    try {
+                      final getVehiclesUseCase = getIt<GetVehiclesUseCase>();
+                      final vehiclesEntities = await getVehiclesUseCase();
+                      
+                      // Convert entities to models
+                      final vehicles = vehiclesEntities
+                          .map((entity) => VehicleModel(
+                            vehicleId: entity.vehicleId,
+                            platNumber: entity.platNumber,
+                            carMake: entity.carMake,
+                            carModel: entity.carModel,
+                            color: entity.color,
+                            status: entity.status,
+                            requestStatus: entity.requestStatus,
+                            userId: entity.userId,
+                            createdAt: entity.createdAt,
+                            updatedAt: entity.updatedAt,
+                          ))
+                          .toList();
+                      
+                      // Update returnData with fresh vehicles list
+                      final updatedReturnData = Map<String, dynamic>.from(widget.returnData!);
+                      updatedReturnData['vehicles'] = vehicles;
+                      
+                      // Use pushReplacement with updated data
+                      context.pushReplacement(
+                        Routes.bookingPrePaymentPath,
+                        extra: updatedReturnData,
+                      );
+                    } catch (e) {
+                      debugPrint('Error refreshing vehicles: $e');
+                      // Fallback to original data if refresh fails
+                      context.pushReplacement(
+                        Routes.bookingPrePaymentPath,
+                        extra: widget.returnData,
+                      );
+                    }
                   } else {
-                    // For owner type, vehicles might not be in bottom nav, so navigate without tab index
-                    context.pushReplacement(mainScreenPath);
+                    // Default behavior: navigate to main screen with vehicles tab
+                    final userType = await AuthLocalRepository.getUserType();
+                    final mainScreenPath = userType == 'owner' 
+                        ? Routes.ownerMainPath 
+                        : Routes.userMainPath;
+                    
+                    // Use pushReplacement to navigate to main screen
+                    // This replaces the add vehicle page in the navigation stack
+                    // so when user goes back, they'll see the main screen with bottom nav bar
+                    // Pass vehicles tab index (1) as extra parameter for user type
+                    if (userType != 'owner') {
+                      context.pushReplacement(mainScreenPath, extra: 1); // UserTab.vehicles.index = 1
+                    } else {
+                      // For owner type, vehicles might not be in bottom nav, so navigate without tab index
+                      context.pushReplacement(mainScreenPath);
+                    }
                   }
                 }
               });

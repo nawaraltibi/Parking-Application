@@ -12,12 +12,16 @@ import '../../features/main_screen/presentation/owner_main_page.dart';
 import '../../features/main_screen/presentation/user_main_page.dart';
 import '../../features/parking/presentation/pages/create_parking_screen.dart';
 import '../../features/parking/presentation/pages/update_parking_screen.dart';
-import '../../features/parking/cubit/parking_cubit.dart';
+import '../../features/parking/bloc/create_parking/create_parking_bloc.dart';
+import '../../features/parking/bloc/update_parking/update_parking_bloc.dart';
 import '../../features/parking/models/parking_model.dart';
 import '../../features/vehicles/presentation/pages/add_vehicle_page.dart';
 import '../../features/vehicles/presentation/pages/edit_vehicle_page.dart';
 import '../../features/vehicles/presentation/pages/vehicles_page.dart';
 import '../../features/vehicles/domain/entities/vehicle_entity.dart';
+import '../../features/booking/presentation/pages/booking_pre_payment_screen.dart';
+import '../../features/booking/bloc/create_booking/create_booking_bloc.dart';
+import '../../features/vehicles/data/models/vehicle_model.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -79,7 +83,19 @@ final appPages = GoRouter(
     ),
     GoRoute(
       path: Routes.vehiclesAddPath,
-      builder: (context, state) => const AddVehiclePage(),
+      builder: (context, state) {
+        final extra = state.extra;
+        String? source;
+        Map<String, dynamic>? returnData;
+        if (extra is Map<String, dynamic>) {
+          source = extra['source'] as String?;
+          returnData = extra['returnData'] as Map<String, dynamic>?;
+        }
+        return AddVehiclePage(
+          source: source,
+          returnData: returnData,
+        );
+      },
     ),
     GoRoute(
       path: Routes.vehiclesEditPath,
@@ -91,44 +107,37 @@ final appPages = GoRouter(
     GoRoute(
       path: Routes.parkingCreatePath,
       builder: (context, state) {
-        // Try to get existing ParkingCubit from context (shared instance)
-        // This ensures we use the same instance as the parking list screen
-        try {
-          final existingCubit = context.read<ParkingCubit>();
-          debugPrint('✅ app_pages: Found existing ParkingCubit instance: ${existingCubit.hashCode}');
-          return BlocProvider.value(
-            value: existingCubit,
-            child: const CreateParkingScreen(),
-          );
-        } catch (e) {
-          // Fallback: create new instance if not found in context
-          // This should rarely happen if navigation is from parking management screen
-          debugPrint('⚠️ app_pages: Creating new ParkingCubit instance (not found in context): $e');
-          return BlocProvider(
-            create: (context) => getIt<ParkingCubit>(),
-            child: const CreateParkingScreen(),
-          );
-        }
+        debugPrint('✅ app_pages: Creating new CreateParkingBloc instance');
+        return BlocProvider(
+          create: (context) => getIt<CreateParkingBloc>(),
+          child: const CreateParkingScreen(),
+        );
       },
     ),
     GoRoute(
       path: Routes.parkingUpdatePath,
       builder: (context, state) {
         final parking = state.extra as ParkingModel;
-        // Try to get existing ParkingCubit from context (shared instance)
-        try {
-          final existingCubit = context.read<ParkingCubit>();
-          return BlocProvider.value(
-            value: existingCubit,
-            child: UpdateParkingScreen(parking: parking),
-          );
-        } catch (e) {
-          // Fallback: create new instance if not found in context
-          return BlocProvider(
-            create: (context) => getIt<ParkingCubit>(),
-            child: UpdateParkingScreen(parking: parking),
-          );
-        }
+        debugPrint('✅ app_pages: Creating new UpdateParkingBloc instance');
+        return BlocProvider(
+          create: (context) => getIt<UpdateParkingBloc>(),
+          child: UpdateParkingScreen(parking: parking),
+        );
+      },
+    ),
+    GoRoute(
+      path: Routes.bookingPrePaymentPath,
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        final parking = data['parking'] as ParkingModel;
+        final vehicles = data['vehicles'] as List<VehicleModel>;
+        return BlocProvider(
+          create: (context) => CreateBookingBloc(),
+          child: BookingPrePaymentScreen(
+            parking: parking,
+            vehicles: vehicles,
+          ),
+        );
       },
     ),
   ],

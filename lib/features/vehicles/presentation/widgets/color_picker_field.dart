@@ -269,6 +269,8 @@ class ColorPickerField extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
                     onColorSelected(pickerColor);
+                    // Unfocus to prevent keyboard from opening and focus moving to next field
+                    FocusScope.of(context).unfocus();
                   },
                   child: Text(
                     l10n.vehiclesColorPickerConfirm,
@@ -359,6 +361,8 @@ class ColorPickerField extends StatelessWidget {
                     Navigator.of(customDialogContext).pop();
                     Navigator.of(dialogContext).pop();
                     onColorSelected(customColor);
+                    // Unfocus to prevent keyboard from opening and focus moving to next field
+                    FocusScope.of(context).unfocus();
                   },
                   child: Text(
                     l10n.vehiclesColorPickerConfirm,
