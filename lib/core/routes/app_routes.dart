@@ -21,6 +21,7 @@ class Routes {
   static const String bookingPath = '/booking';
   static const String bookingPrePaymentPath = '/booking/pre-payment';
   static const String bookingDetailsPath = '/booking/details';
+  static const String extendBookingPath = '/booking/extend';
   static const String paymentPath = '/payment';
 
   // Feature routes

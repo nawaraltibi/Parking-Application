@@ -22,6 +22,8 @@ import '../../features/vehicles/domain/entities/vehicle_entity.dart';
 import '../../features/booking/presentation/pages/booking_pre_payment_screen.dart';
 import '../../features/booking/presentation/pages/payment_screen.dart';
 import '../../features/booking/presentation/pages/booking_details_screen.dart';
+import '../../features/booking/presentation/pages/extend_booking_screen.dart';
+import '../../features/booking/models/booking_model.dart';
 import '../../features/booking/bloc/create_booking/create_booking_bloc.dart';
 import '../../features/vehicles/data/models/vehicle_model.dart';
 import '../../l10n/app_localizations.dart';
@@ -185,6 +187,13 @@ final appPages = GoRouter(
         final data = state.extra as Map<String, dynamic>?;
         final bookingId = data?['bookingId'] as int? ?? 0;
         return BookingDetailsScreen(bookingId: bookingId);
+      },
+    ),
+    GoRoute(
+      path: Routes.extendBookingPath,
+      builder: (context, state) {
+        final booking = state.extra as BookingModel;
+        return ExtendBookingScreen(booking: booking);
       },
     ),
   ],

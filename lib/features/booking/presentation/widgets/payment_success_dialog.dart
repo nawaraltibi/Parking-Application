@@ -83,7 +83,7 @@ class PaymentSuccessDialog extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: onViewDetails,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.success,
+                      backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.textOnPrimary,
                       elevation: 0,
                       padding: EdgeInsets.symmetric(vertical: 14.h),

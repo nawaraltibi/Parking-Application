@@ -73,8 +73,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         bookingId: widget.bookingId,
         onViewDetails: () {
           Navigator.of(dialogContext).pop(); // Close dialog
-          // Navigate to booking details
-          context.push(
+          // Navigate to booking details and clear payment screen from stack
+          // Use pushReplacement to replace payment screen with booking details
+          context.pushReplacement(
             Routes.bookingDetailsPath,
             extra: {'bookingId': widget.bookingId},
           );
@@ -257,7 +258,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         color: AppColors.surface,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
+                            color: AppColors.primaryText.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, -2),
                           ),

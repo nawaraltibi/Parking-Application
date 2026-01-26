@@ -1,6 +1,6 @@
 part of 'bookings_list_bloc.dart';
 
-/// Base class for bookings list states
+/// Bookings List States
 abstract class BookingsListState extends Equatable {
   const BookingsListState();
 
@@ -15,49 +15,31 @@ class BookingsListInitial extends BookingsListState {
 
 /// Loading state
 class BookingsListLoading extends BookingsListState {
-  final bool isActive; // true for active bookings, false for finished
-
-  const BookingsListLoading({required this.isActive});
-
-  @override
-  List<Object?> get props => [isActive];
+  const BookingsListLoading();
 }
 
-/// Loaded state with bookings data
+/// Loaded state with bookings
 class BookingsListLoaded extends BookingsListState {
-  final BookingsListResponse response;
-  final bool isActive; // true for active bookings, false for finished
+  final List<BookingModel> bookings;
+  final bool isActiveTab;
 
   const BookingsListLoaded({
-    required this.response,
-    required this.isActive,
+    required this.bookings,
+    required this.isActiveTab,
   });
 
   @override
-  List<Object?> get props => [response, isActive];
+  List<Object?> get props => [bookings, isActiveTab];
 
-  /// Check if list is empty
-  bool get isEmpty => !response.hasBookings;
-
-  /// Get bookings count
-  int get count => response.bookingsCount;
+  bool get hasBookings => bookings.isNotEmpty;
 }
 
 /// Error state
 class BookingsListError extends BookingsListState {
   final String message;
-  final int? statusCode;
-  final String? errorCode;
-  final bool isActive; // true for active bookings, false for finished
 
-  const BookingsListError({
-    required this.message,
-    this.statusCode,
-    this.errorCode,
-    required this.isActive,
-  });
+  const BookingsListError({required this.message});
 
   @override
-  List<Object?> get props => [message, statusCode, errorCode, isActive];
+  List<Object?> get props => [message];
 }
-

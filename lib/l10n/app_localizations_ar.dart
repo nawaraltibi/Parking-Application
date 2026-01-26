@@ -921,16 +921,86 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancelBooking => 'إلغاء الحجز';
 
   @override
+  String get cancelBookingConfirmation =>
+      'هل أنت متأكد من إلغاء هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
   String get extendBooking => 'تمديد الحجز';
 
   @override
   String get activeBookings => 'الحجوزات النشطة';
 
   @override
+  String get userTabBookings => 'حجوزاتي';
+
+  @override
+  String get completedBookings => 'منتهي';
+
+  @override
+  String get listOfBookings => 'قائمة الحجوزات';
+
+  @override
+  String get private => 'خاص';
+
+  @override
+  String get amount => 'المبلغ';
+
+  @override
   String get finishedBookings => 'الحجوزات المنتهية';
 
   @override
   String get bookingDetails => 'تفاصيل الحجز';
+
+  @override
+  String get selectExtraHours => 'اختر الساعات الإضافية';
+
+  @override
+  String get errorInvalidHours => 'يرجى اختيار ساعة واحدة على الأقل';
+
+  @override
+  String get confirmExtension => 'تأكيد التمديد';
+
+  @override
+  String get extensionPrice => 'سعر التمديد';
+
+  @override
+  String get customHours => 'ساعات مخصصة';
+
+  @override
+  String get enterHours => 'أدخل عدد الساعات';
+
+  @override
+  String get currentBooking => 'الحجز الحالي';
+
+  @override
+  String get hour => 'ساعة';
+
+  @override
+  String get hours => 'ساعات';
+
+  @override
+  String get plateNumber => 'رقم اللوحة';
+
+  @override
+  String get reviewInvoice => 'استعراض الفاتورة';
+
+  @override
+  String get downloadingInvoice => 'جاري تحميل الفاتورة...';
+
+  @override
+  String get invoiceDownloaded => 'تم تحميل الفاتورة بنجاح';
+
+  @override
+  String get loadingInvoice => 'جاري تحميل الفاتورة...';
+
+  @override
+  String get errorOpeningFile => 'خطأ في فتح الملف';
 
   @override
   String get noActiveBookings => 'لا توجد حجوزات نشطة';
@@ -970,6 +1040,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get timeExpired => 'انتهى الوقت';
+
+  @override
+  String get expiresAt => 'تنتهي صلاحيته عند';
+
+  @override
+  String get ticketNumber => 'رقم التذكرة';
+
+  @override
+  String get remaining => 'متبقي';
+
+  @override
+  String get minutes => 'دقائق';
+
+  @override
+  String get expired => 'منتهي';
 
   @override
   String get timeWarning => 'أقل من 10 دقائق متبقية!';

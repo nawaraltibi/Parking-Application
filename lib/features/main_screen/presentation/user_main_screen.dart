@@ -8,7 +8,7 @@ import '../widgets/modern_bottom_nav_bar.dart';
 import '../../profile/presentation/profile_page.dart';
 import 'pages/user_home_page.dart';
 import 'pages/user_vehicles_page.dart';
-import 'pages/user_parkings_page.dart';
+import 'pages/user_bookings_page.dart';
 
 /// User Main Screen
 /// Main screen for regular users with bottom navigation
@@ -27,7 +27,7 @@ class _UserMainScreenState extends State<UserMainScreen>
   static List<UserTab> get _bottomNavTabs => [
         UserTab.home,
         UserTab.vehicles,
-        UserTab.parkings,
+        UserTab.bookings,
         UserTab.profile,
       ];
 
@@ -100,7 +100,7 @@ class _UserMainScreenState extends State<UserMainScreen>
                     child: const UserVehiclesPage(),
                   ),
                   RepaintBoundary(
-                    child: const UserParkingsPage(),
+                    child: const UserBookingsPage(),
                   ),
                   RepaintBoundary(
                     child: const ProfilePage(),
@@ -158,6 +158,8 @@ IconData _getActiveIcon(IconData outlinedIcon, UserTab tab) {
       return Icons.home;
     case UserTab.vehicles:
       return Icons.directions_car;
+    case UserTab.bookings:
+      return Icons.local_parking;
     case UserTab.parkings:
       return Icons.bookmark;
     case UserTab.profile:

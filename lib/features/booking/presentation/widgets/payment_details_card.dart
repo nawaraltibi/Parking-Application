@@ -126,14 +126,14 @@ class PaymentDetailsCard extends StatelessWidget {
                       width: 60.w,
                       height: 36.h,
                       decoration: BoxDecoration(
-                        color: Colors.blue.shade50,
+                        color: AppColors.lightBlue,
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                       child: Center(
                         child: Text(
                           'PayPal',
                           style: TextStyle(
-                            color: Colors.blue.shade900,
+                            color: AppColors.primary,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -158,14 +158,14 @@ class PaymentDetailsCard extends StatelessWidget {
                           width: 50.w,
                           height: 30.h,
                           decoration: BoxDecoration(
-                            color: Colors.blue.shade900,
+                            color: AppColors.primary,
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Center(
                             child: Text(
                               'VISA',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.textOnPrimary,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -185,14 +185,14 @@ class PaymentDetailsCard extends StatelessWidget {
                           width: 50.w,
                           height: 30.h,
                           decoration: BoxDecoration(
-                            color: Colors.red.shade700,
+                            color: AppColors.error,
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Center(
                             child: Text(
                               'MC',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.textOnPrimary,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
                               ),

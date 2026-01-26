@@ -924,16 +924,86 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelBooking => 'Cancel Booking';
 
   @override
+  String get cancelBookingConfirmation =>
+      'Are you sure you want to cancel this booking? This action cannot be undone.';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
   String get extendBooking => 'Extend Booking';
 
   @override
   String get activeBookings => 'Active Bookings';
 
   @override
+  String get userTabBookings => 'My Bookings';
+
+  @override
+  String get completedBookings => 'Completed';
+
+  @override
+  String get listOfBookings => 'List of Bookings';
+
+  @override
+  String get private => 'Private';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
   String get finishedBookings => 'Finished Bookings';
 
   @override
   String get bookingDetails => 'Booking Details';
+
+  @override
+  String get selectExtraHours => 'Select Extra Hours';
+
+  @override
+  String get errorInvalidHours => 'Please select at least 1 hour';
+
+  @override
+  String get confirmExtension => 'Confirm Extension';
+
+  @override
+  String get extensionPrice => 'Extension Price';
+
+  @override
+  String get customHours => 'Custom Hours';
+
+  @override
+  String get enterHours => 'Enter hours';
+
+  @override
+  String get currentBooking => 'Current Booking';
+
+  @override
+  String get hour => 'hour';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get plateNumber => 'Plate Number';
+
+  @override
+  String get reviewInvoice => 'Review Invoice';
+
+  @override
+  String get downloadingInvoice => 'Downloading invoice...';
+
+  @override
+  String get invoiceDownloaded => 'Invoice downloaded successfully';
+
+  @override
+  String get loadingInvoice => 'Loading invoice...';
+
+  @override
+  String get errorOpeningFile => 'Error opening file';
 
   @override
   String get noActiveBookings => 'No active bookings';
@@ -973,6 +1043,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeExpired => 'Time Expired';
+
+  @override
+  String get expiresAt => 'Expires at';
+
+  @override
+  String get ticketNumber => 'Ticket';
+
+  @override
+  String get remaining => 'remaining';
+
+  @override
+  String get minutes => 'minutes';
+
+  @override
+  String get expired => 'Expired';
 
   @override
   String get timeWarning => 'Less than 10 minutes remaining!';

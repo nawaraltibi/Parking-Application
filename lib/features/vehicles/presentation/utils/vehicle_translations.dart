@@ -1,8 +1,39 @@
 import '../../../../l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
 
 /// Helper class for vehicle-related translations
 /// Handles translation of car makes and colors based on locale
 class VehicleTranslations {
+  /// Get car make name in both Arabic and English
+  /// Returns format: "Arabic English" or "English Arabic" based on current locale
+  /// Example: "كيا Kia" (if Arabic) or "Kia كيا" (if English)
+  static String getCarMakeBilingual(String carMake, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) return carMake;
+
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    
+    // Get Arabic translation
+    final arabicName = getCarMakeTranslation(carMake, l10n);
+    
+    // The original carMake is already in English (from database/API)
+    final englishName = carMake;
+
+    // If both are the same (no translation available or already bilingual), return original
+    if (arabicName == englishName) {
+      return carMake;
+    }
+
+    // Return format based on current locale
+    // Arabic locale: "كيا Kia"
+    // English locale: "Kia كيا"
+    if (isArabic) {
+      return '$arabicName $englishName';
+    } else {
+      return '$englishName $arabicName';
+    }
+  }
+
   /// Get translated car make name
   /// Returns the original value if translation is not available
   static String getCarMakeTranslation(String carMake, AppLocalizations? l10n) {

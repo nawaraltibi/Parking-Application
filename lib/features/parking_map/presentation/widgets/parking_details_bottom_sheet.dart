@@ -45,7 +45,9 @@ class ParkingDetailsBottomSheet extends StatefulWidget {
 
 class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
   static GeoPoint?
-  _lastDrawnRoadDestination; // Track last drawn road (static to share across instances)
+      _lastDrawnRoadDestination; // Track last drawn road (static to share across instances)
+  static GeoPoint?
+      _lastDestinationPin; // Track last destination pin location to remove it
 
   @override
   Widget build(BuildContext context) {
@@ -253,14 +255,15 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
 
       while (retryCount <= maxRetries && mounted) {
         try {
-          // Draw road from user location to parking lot
+          // Draw elegant route from user location to parking lot
+          // Using app primary color with thicker width for better visibility
           roadInfo = await widget.mapController!.drawRoad(
             userGeoPoint,
             parkingGeoPoint,
             roadType: RoadType.car,
             roadOption: RoadOption(
-              roadColor: AppColors.primary,
-              roadWidth: 8,
+              roadColor: AppColors.primary, // App primary blue color
+              roadWidth: 60, // Thicker for better visibility and clarity
               zoomInto: true,
             ),
           );
@@ -282,6 +285,47 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       if (!mounted || roadInfo == null) return;
 
       _lastDrawnRoadDestination = parkingGeoPoint;
+
+      // Remove previous destination pin if exists
+      // Use a small offset for red pin to avoid removing parking lot marker (P)
+      if (_lastDestinationPin != null) {
+        try {
+          // Remove marker at previous offset location (not the exact parking location)
+          await widget.mapController!.removeMarker(_lastDestinationPin!);
+          debugPrint('✅ Removed previous destination pin');
+        } catch (removeError) {
+          // If removeMarker doesn't work, we'll add the new marker anyway
+          debugPrint('⚠️ Could not remove previous marker: $removeError');
+        }
+      }
+
+      // Add large red pin marker at parking destination with small offset
+      // This offset ensures the red pin doesn't overlap exactly with parking marker (P)
+      // and allows us to remove it without affecting the parking marker
+      try {
+        // Small offset (about 5-10 meters) to avoid exact overlap with parking marker
+        const offset = 0.0001; // Approximately 10 meters
+        final pinLocation = GeoPoint(
+          latitude: parkingGeoPoint.latitude + offset,
+          longitude: parkingGeoPoint.longitude,
+        );
+        
+        await widget.mapController!.addMarker(
+          pinLocation,
+          markerIcon: MarkerIcon(
+            icon: Icon(
+              Icons.location_on,
+              color: Colors.red,
+              size: 80, // Large red pin at destination (يمكن تعديل الحجم هنا)
+            ),
+          ),
+        );
+        // Track this pin location (with offset) for future removal
+        _lastDestinationPin = pinLocation;
+        debugPrint('✅ Added new destination pin at offset location: ${pinLocation.latitude}, ${pinLocation.longitude}');
+      } catch (markerError) {
+        debugPrint('❌ Error adding destination marker: $markerError');
+      }
 
       // Close bottom sheet to show the map with directions
       if (mounted) {
@@ -672,7 +716,9 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       label: Text(label),
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }

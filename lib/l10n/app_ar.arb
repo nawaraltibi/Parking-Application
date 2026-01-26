@@ -1029,11 +1029,43 @@
   "@cancelBooking": {
     "description": "Cancel booking action"
   },
+  "cancelBookingConfirmation": "هل أنت متأكد من إلغاء هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@cancelBookingConfirmation": {
+    "description": "Confirmation message before canceling booking"
+  },
+  "confirm": "تأكيد",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
   "extendBooking": "تمديد الحجز",
   "@extendBooking": {
     "description": "Extend booking action"
   },
   "activeBookings": "الحجوزات النشطة",
+  "userTabBookings": "حجوزاتي",
+  "@userTabBookings": {
+    "description": "Label for bookings tab in bottom navigation"
+  },
+  "completedBookings": "منتهي",
+  "@completedBookings": {
+    "description": "Label for completed bookings tab"
+  },
+  "listOfBookings": "قائمة الحجوزات",
+  "@listOfBookings": {
+    "description": "Heading for bookings list"
+  },
+  "private": "خاص",
+  "@private": {
+    "description": "Label for private vehicle"
+  },
+  "amount": "المبلغ",
+  "@amount": {
+    "description": "Label for booking amount"
+  },
   "@activeBookings": {
     "description": "Active bookings section title"
   },
@@ -1044,6 +1076,66 @@
   "bookingDetails": "تفاصيل الحجز",
   "@bookingDetails": {
     "description": "Booking details screen title"
+  },
+  "selectExtraHours": "اختر الساعات الإضافية",
+  "@selectExtraHours": {
+    "description": "Label for selecting extra hours in extend booking screen"
+  },
+  "errorInvalidHours": "يرجى اختيار ساعة واحدة على الأقل",
+  "@errorInvalidHours": {
+    "description": "Error message when invalid hours selected"
+  },
+  "confirmExtension": "تأكيد التمديد",
+  "@confirmExtension": {
+    "description": "Button text to confirm booking extension"
+  },
+  "extensionPrice": "سعر التمديد",
+  "@extensionPrice": {
+    "description": "Label for extension price in extend booking screen"
+  },
+  "customHours": "ساعات مخصصة",
+  "@customHours": {
+    "description": "Label for custom hours input"
+  },
+  "enterHours": "أدخل عدد الساعات",
+  "@enterHours": {
+    "description": "Placeholder for hours input"
+  },
+  "currentBooking": "الحجز الحالي",
+  "@currentBooking": {
+    "description": "Label for current booking info"
+  },
+  "hour": "ساعة",
+  "@hour": {
+    "description": "Singular form of hour"
+  },
+  "hours": "ساعات",
+  "@hours": {
+    "description": "Plural form of hours"
+  },
+  "plateNumber": "رقم اللوحة",
+  "@plateNumber": {
+    "description": "Vehicle plate number label"
+  },
+  "reviewInvoice": "استعراض الفاتورة",
+  "@reviewInvoice": {
+    "description": "Title for invoice review screen"
+  },
+  "downloadingInvoice": "جاري تحميل الفاتورة...",
+  "@downloadingInvoice": {
+    "description": "Message shown while downloading invoice"
+  },
+  "invoiceDownloaded": "تم تحميل الفاتورة بنجاح",
+  "@invoiceDownloaded": {
+    "description": "Success message after invoice download"
+  },
+  "loadingInvoice": "جاري تحميل الفاتورة...",
+  "@loadingInvoice": {
+    "description": "Message shown while loading invoice"
+  },
+  "errorOpeningFile": "خطأ في فتح الملف",
+  "@errorOpeningFile": {
+    "description": "Error message when file cannot be opened"
   },
   "noActiveBookings": "لا توجد حجوزات نشطة",
   "@noActiveBookings": {
@@ -1096,6 +1188,26 @@
   "timeExpired": "انتهى الوقت",
   "@timeExpired": {
     "description": "Message when booking time has expired"
+  },
+  "expiresAt": "تنتهي صلاحيته عند",
+  "@expiresAt": {
+    "description": "Label for booking expiration time"
+  },
+  "ticketNumber": "رقم التذكرة",
+  "@ticketNumber": {
+    "description": "Label for ticket number"
+  },
+  "remaining": "متبقي",
+  "@remaining": {
+    "description": "Text indicating remaining time"
+  },
+  "minutes": "دقائق",
+  "@minutes": {
+    "description": "Plural form of minutes"
+  },
+  "expired": "منتهي",
+  "@expired": {
+    "description": "Text indicating expired status"
   },
   "timeWarning": "أقل من 10 دقائق متبقية!",
   "@timeWarning": {

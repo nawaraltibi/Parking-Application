@@ -33,3 +33,28 @@ class RefreshBookingDetails extends BookingDetailsEvent {
   const RefreshBookingDetails();
 }
 
+/// Start real-time remaining time updates
+class StartRemainingTimeTimer extends BookingDetailsEvent {
+  final int bookingId;
+
+  const StartRemainingTimeTimer({required this.bookingId});
+
+  @override
+  List<Object?> get props => [bookingId];
+}
+
+/// Stop real-time remaining time updates
+class StopRemainingTimeTimer extends BookingDetailsEvent {
+  const StopRemainingTimeTimer();
+}
+
+/// Remaining time tick event (dispatched periodically)
+class RemainingTimeTicked extends BookingDetailsEvent {
+  final int bookingId;
+
+  const RemainingTimeTicked({required this.bookingId});
+
+  @override
+  List<Object?> get props => [bookingId];
+}
+

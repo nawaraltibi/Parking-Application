@@ -1,6 +1,6 @@
 part of 'bookings_list_bloc.dart';
 
-/// Base class for bookings list events
+/// Bookings List Events
 abstract class BookingsListEvent extends Equatable {
   const BookingsListEvent();
 
@@ -8,18 +8,27 @@ abstract class BookingsListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Load active bookings (active + pending, not expired)
+/// Load active bookings
 class LoadActiveBookings extends BookingsListEvent {
   const LoadActiveBookings();
 }
 
-/// Load finished bookings (inactive or expired)
+/// Load finished bookings
 class LoadFinishedBookings extends BookingsListEvent {
   const LoadFinishedBookings();
 }
 
-/// Refresh current bookings list
+/// Refresh bookings (reload current tab)
 class RefreshBookings extends BookingsListEvent {
   const RefreshBookings();
 }
 
+/// Switch between active and finished tabs
+class SwitchTab extends BookingsListEvent {
+  final bool isActiveTab;
+
+  const SwitchTab({required this.isActiveTab});
+
+  @override
+  List<Object?> get props => [isActiveTab];
+}

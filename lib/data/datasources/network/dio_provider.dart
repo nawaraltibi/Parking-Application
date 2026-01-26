@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../../../core/utils/app_exception.dart';
+import '../../repositories/auth_local_repository.dart';
 import 'api_config.dart';
 import 'api_request.dart';
 
@@ -107,12 +108,25 @@ class DioProvider {
     String savePath, {
     Function(int, int)? onProgress,
     CancelToken? cancelToken,
+    Map<String, String>? headers,
   }) async {
     try {
+      // Get auth token if not provided in headers
+      Map<String, String> downloadHeaders = headers ?? {};
+      if (!downloadHeaders.containsKey('Authorization')) {
+        final token = await AuthLocalRepository.retrieveToken();
+        if (token.isNotEmpty) {
+          downloadHeaders['Authorization'] = 'Bearer $token';
+        }
+      }
+      
       Response response = await _dio.download(
         fileUrl,
         savePath,
         cancelToken: cancelToken,
+        options: Options(
+          headers: downloadHeaders,
+        ),
         onReceiveProgress: (received, total) {
           if (onProgress != null) {
             onProgress(received, total);

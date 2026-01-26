@@ -34,7 +34,7 @@ class PaymentActionButtons extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onSimulateSuccess,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
+              backgroundColor: AppColors.primary,
               disabledBackgroundColor: AppColors.buttonDisabled,
               foregroundColor: AppColors.textOnPrimary,
               elevation: 0,

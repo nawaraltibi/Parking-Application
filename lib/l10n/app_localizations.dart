@@ -1838,6 +1838,24 @@ abstract class AppLocalizations {
   /// **'Cancel Booking'**
   String get cancelBooking;
 
+  /// Confirmation message before canceling booking
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this booking? This action cannot be undone.'**
+  String get cancelBookingConfirmation;
+
+  /// Confirm button text
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
   /// Extend booking action
   ///
   /// In en, this message translates to:
@@ -1850,6 +1868,36 @@ abstract class AppLocalizations {
   /// **'Active Bookings'**
   String get activeBookings;
 
+  /// Label for bookings tab in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'My Bookings'**
+  String get userTabBookings;
+
+  /// Label for completed bookings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedBookings;
+
+  /// Heading for bookings list
+  ///
+  /// In en, this message translates to:
+  /// **'List of Bookings'**
+  String get listOfBookings;
+
+  /// Label for private vehicle
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get private;
+
+  /// Label for booking amount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
   /// Finished bookings section title
   ///
   /// In en, this message translates to:
@@ -1861,6 +1909,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Booking Details'**
   String get bookingDetails;
+
+  /// Label for selecting extra hours in extend booking screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select Extra Hours'**
+  String get selectExtraHours;
+
+  /// Error message when invalid hours selected
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least 1 hour'**
+  String get errorInvalidHours;
+
+  /// Button text to confirm booking extension
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Extension'**
+  String get confirmExtension;
+
+  /// Label for extension price in extend booking screen
+  ///
+  /// In en, this message translates to:
+  /// **'Extension Price'**
+  String get extensionPrice;
+
+  /// Label for custom hours input
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Hours'**
+  String get customHours;
+
+  /// Placeholder for hours input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter hours'**
+  String get enterHours;
+
+  /// Label for current booking info
+  ///
+  /// In en, this message translates to:
+  /// **'Current Booking'**
+  String get currentBooking;
+
+  /// Singular form of hour
+  ///
+  /// In en, this message translates to:
+  /// **'hour'**
+  String get hour;
+
+  /// Plural form of hours
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// Vehicle plate number label
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get plateNumber;
+
+  /// Title for invoice review screen
+  ///
+  /// In en, this message translates to:
+  /// **'Review Invoice'**
+  String get reviewInvoice;
+
+  /// Message shown while downloading invoice
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading invoice...'**
+  String get downloadingInvoice;
+
+  /// Success message after invoice download
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice downloaded successfully'**
+  String get invoiceDownloaded;
+
+  /// Message shown while loading invoice
+  ///
+  /// In en, this message translates to:
+  /// **'Loading invoice...'**
+  String get loadingInvoice;
+
+  /// Error message when file cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening file'**
+  String get errorOpeningFile;
 
   /// Message when there are no active bookings
   ///
@@ -1939,6 +2077,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time Expired'**
   String get timeExpired;
+
+  /// Label for booking expiration time
+  ///
+  /// In en, this message translates to:
+  /// **'Expires at'**
+  String get expiresAt;
+
+  /// Label for ticket number
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket'**
+  String get ticketNumber;
+
+  /// Text indicating remaining time
+  ///
+  /// In en, this message translates to:
+  /// **'remaining'**
+  String get remaining;
+
+  /// Plural form of minutes
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// Text indicating expired status
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get expired;
 
   /// Warning when time is running out
   ///

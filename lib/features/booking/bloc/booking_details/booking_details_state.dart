@@ -67,6 +67,27 @@ class RemainingTimeLoaded extends BookingDetailsState {
   bool get hasExpired => response.hasExpired;
 }
 
+/// Remaining time updated (real-time tick)
+/// This state extends BookingDetailsLoaded to preserve booking data
+class RemainingTimeUpdated extends BookingDetailsLoaded {
+  final RemainingTimeResponse remainingTimeResponse;
+
+  const RemainingTimeUpdated({
+    required super.bookingId,
+    required super.response,
+    required this.remainingTimeResponse,
+  });
+
+  @override
+  List<Object?> get props => [bookingId, response, remainingTimeResponse];
+
+  /// Check if there's a warning (< 10 minutes remaining)
+  bool get hasWarning => remainingTimeResponse.hasWarning;
+
+  /// Check if time has expired
+  bool get hasExpired => remainingTimeResponse.hasExpired;
+}
+
 /// Booking details error
 class BookingDetailsError extends BookingDetailsState {
   final int bookingId;

@@ -28,6 +28,8 @@ import '../../features/parking_map/domain/usecases/get_all_parking_lots_usecase.
 import '../../features/parking_map/domain/usecases/get_parking_details_usecase.dart';
 import '../../features/parking_map/presentation/bloc/parking_map_bloc.dart';
 import '../../features/booking/bloc/payment/payment_bloc.dart';
+import '../../features/booking/bloc/booking_action/booking_action_bloc.dart';
+import '../../features/booking/bloc/bookings_list/bookings_list_bloc.dart';
 import '../../core/location/location_repository.dart';
 import '../../core/location/location_service.dart';
 import '../../core/location/get_current_location_usecase.dart';
@@ -156,6 +158,10 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerFactory<PaymentBloc>(() => PaymentBloc());
+
+  getIt.registerFactory<BookingActionBloc>(() => BookingActionBloc());
+
+  getIt.registerFactory<BookingsListBloc>(() => BookingsListBloc());
 }
 
 /// Reset service locator (useful for testing)

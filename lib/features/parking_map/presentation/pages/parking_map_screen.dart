@@ -109,13 +109,50 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
 
   /// Go to my location button handler
   Future<void> _goToMyLocation() async {
+    // Wait for map to be ready if not ready yet
+    if (!_mapIsReady) {
+      debugPrint('⏳ Waiting for map to be ready...');
+      // Wait up to 3 seconds for map to be ready
+      for (int i = 0; i < 30; i++) {
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (_mapIsReady && _mapController != null) {
+          break;
+        }
+        if (!mounted) return;
+      }
+      
+      if (!_mapIsReady || _mapController == null) {
+        debugPrint('⚠️ Map still not ready after waiting');
+        return;
+      }
+    }
+
+    if (_mapController == null) {
+      debugPrint('⚠️ Map controller is null');
+      return;
+    }
+
     final state = context.read<ParkingMapBloc>().state;
+    
     if (state.userLocation != null) {
+      // If we have location, center on it
       final userLocation = MapAdapter.toGeoPoint(state.userLocation!);
       await _centerOnUserLocation(userLocation, force: true);
     } else {
-      // If no location, request it
+      // If no location, request it first
       context.read<ParkingMapBloc>().add(LoadUserLocation());
+      
+      // Wait a bit for location to load, then try again
+      await Future.delayed(const Duration(milliseconds: 1000));
+      
+      if (!mounted) return;
+      final updatedState = context.read<ParkingMapBloc>().state;
+      if (updatedState.userLocation != null) {
+        final userLocation = MapAdapter.toGeoPoint(updatedState.userLocation!);
+        await _centerOnUserLocation(userLocation, force: true);
+      } else {
+        debugPrint('⚠️ User location not available after request');
+      }
     }
   }
 
@@ -172,14 +209,29 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
         final isSelected = selectedLotId != null && lot.lotId == selectedLotId;
 
         try {
-          // Large parking icon with better visibility
+          // Enhanced parking marker - Pin style (location_on) for better positioning
+          // The pin shape (teardrop) points to the exact location
           await _mapController!.addMarker(
             geoPoint,
             markerIcon: MarkerIcon(
               icon: Icon(
-                Icons.local_parking,
-                color: AppColors.primary,
-                size: isSelected ? 72 : 64, // Much larger size
+                Icons.local_parking, // P icon - واضحة ومميزة للمواقف
+                color: isSelected 
+                    ? AppColors.primary 
+                    : AppColors.primary.withValues(alpha: 0.85),
+                size: isSelected ? 64 : 60, // حجم P للوضوح
+                shadows: [
+                  Shadow(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    blurRadius: 4,
+                    offset: const Offset(0, 0),
+                  ),
+                  Shadow(
+                    color: AppColors.primary.withValues(alpha: 0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
             ),
           );
@@ -268,7 +320,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
       ),
       body: BlocConsumer<ParkingMapBloc, ParkingMapState>(
         listener: (context, state) {
-          // Handle user location updates (only center once on initial load)
+          // Handle user location updates - center once on first load only
           if (state.userLocation != null && !_hasCenteredOnUserLocation) {
             final userLocation = MapAdapter.toGeoPoint(state.userLocation!);
             _centerOnUserLocation(userLocation);
@@ -350,25 +402,30 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
         controller: _mapController!,
         osmOption: OSMOption(
           userTrackingOption: const UserTrackingOption(
-            enableTracking: false,
-            unFollowUser: true,
+            enableTracking: true, // تفعيل التتبع لإظهار السهم
+            unFollowUser: true, // لا يتابع الموقع تلقائياً (لا يمركز تلقائياً)
           ),
           zoomOption: const ZoomOption(
-            initZoom: 15.0,
+            initZoom: 16.0, // زيادة zoom ابتدائي لدقة أفضل (كان 15)
             minZoomLevel: 3.0,
-            maxZoomLevel: 19.0,
+            maxZoomLevel: 19.0, // الحد الأقصى المسموح في OpenStreetMap
             stepZoom: 1.0,
           ),
           userLocationMarker: UserLocationMaker(
-            personMarker: const MarkerIcon(
+            // إلغاء personMarker (pin حمراء) - استخدام marker صغير جداً بدلاً من 0 لتجنب خطأ Invalid image dimensions
+            personMarker: MarkerIcon(
               icon: Icon(
                 Icons.location_on,
-                color: Colors.red, // Red pin for user location
-                size: 48,
+                color: Colors.transparent, // شفاف - لا يظهر pin
+                size: 1, // حجم صغير جداً (1) لتجنب خطأ Invalid image dimensions
               ),
             ),
-            directionArrowMarker: const MarkerIcon(
-              icon: Icon(Icons.arrow_upward, color: Colors.red, size: 32),
+            directionArrowMarker: MarkerIcon(
+              icon: Icon(
+                Icons.navigation,
+                color: AppColors.primary, // App primary color for direction arrow
+                size: 60, // Larger size for better visibility (كان 32)
+              ),
             ),
           ),
         ),
@@ -443,3 +500,4 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
     });
   }
 }
+

@@ -1,5 +1,7 @@
 import '../../../core/utils/app_exception.dart';
 import '../../../data/datasources/network/api_request.dart';
+import '../../../data/datasources/network/api_config.dart';
+import '../../../data/datasources/network/dio_provider.dart';
 import '../models/booking_details_response.dart';
 import '../models/bookings_list_response.dart';
 import '../models/cancel_booking_response.dart';
@@ -444,23 +446,28 @@ class BookingRepository {
   /// final filePath = '${savePath.path}/booking_$bookingId.pdf';
   /// await downloadBookingPdf(bookingId: bookingId, savePath: filePath);
   /// ```
+  /// Get PDF URL for viewing in WebView
+  /// Returns the full URL to the PDF endpoint
+  static String getBookingPdfUrl(int bookingId) {
+    return '${APIConfig.appAPI}/booking/printbookingPdf/$bookingId';
+  }
+
   static Future<void> downloadBookingPdf({
     required int bookingId,
     required String savePath,
     Function(int received, int total)? onProgress,
   }) async {
-    final apiRequest = APIRequest(
-      path: '/booking/printbookingPdf/$bookingId',
-      method: HTTPMethod.get,
-      body: null,
-      authorizationOption: AuthorizationOption.authorized,
-      requestType: RequestType.download,
-      fileUrl: '/booking/printbookingPdf/$bookingId', // Will be appended to baseUrl
-      savePath: savePath,
-    );
-
+    final fileUrl = '${APIConfig.appAPI}/booking/printbookingPdf/$bookingId';
+    
     try {
-      await apiRequest.send();
+      await DioProvider.instance.downloadFile(
+        fileUrl,
+        savePath,
+        onProgress: onProgress,
+        headers: {
+          'Accept': 'application/pdf',
+        },
+      );
     } on AppException {
       rethrow;
     } catch (e) {

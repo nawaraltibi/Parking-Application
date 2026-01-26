@@ -17,12 +17,24 @@ class RemainingTimeResponse {
     this.warning,
   });
 
+  /// Helper method to safely convert dynamic value to int
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) {
+      final parsed = int.tryParse(value);
+      return parsed;
+    }
+    return null;
+  }
+
   factory RemainingTimeResponse.fromJson(Map<String, dynamic> json) {
     return RemainingTimeResponse(
       status: json['status'] as bool? ?? false,
       message: json['message'] as String?,
-      bookingId: json['booking_id'] as int?,
-      remainingSeconds: json['remaining_seconds'] as int?,
+      bookingId: _parseInt(json['booking_id']),
+      remainingSeconds: _parseInt(json['remaining_seconds']),
       remainingTime: json['remaining_time'] as String?,
       warning: json['warning'] as String?,
     );

@@ -1029,11 +1029,43 @@
   "@cancelBooking": {
     "description": "Cancel booking action"
   },
+  "cancelBookingConfirmation": "Are you sure you want to cancel this booking? This action cannot be undone.",
+  "@cancelBookingConfirmation": {
+    "description": "Confirmation message before canceling booking"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
   "extendBooking": "Extend Booking",
   "@extendBooking": {
     "description": "Extend booking action"
   },
   "activeBookings": "Active Bookings",
+  "userTabBookings": "My Bookings",
+  "@userTabBookings": {
+    "description": "Label for bookings tab in bottom navigation"
+  },
+  "completedBookings": "Completed",
+  "@completedBookings": {
+    "description": "Label for completed bookings tab"
+  },
+  "listOfBookings": "List of Bookings",
+  "@listOfBookings": {
+    "description": "Heading for bookings list"
+  },
+  "private": "Private",
+  "@private": {
+    "description": "Label for private vehicle"
+  },
+  "amount": "Amount",
+  "@amount": {
+    "description": "Label for booking amount"
+  },
   "@activeBookings": {
     "description": "Active bookings section title"
   },
@@ -1044,6 +1076,66 @@
   "bookingDetails": "Booking Details",
   "@bookingDetails": {
     "description": "Booking details screen title"
+  },
+  "selectExtraHours": "Select Extra Hours",
+  "@selectExtraHours": {
+    "description": "Label for selecting extra hours in extend booking screen"
+  },
+  "errorInvalidHours": "Please select at least 1 hour",
+  "@errorInvalidHours": {
+    "description": "Error message when invalid hours selected"
+  },
+  "confirmExtension": "Confirm Extension",
+  "@confirmExtension": {
+    "description": "Button text to confirm booking extension"
+  },
+  "extensionPrice": "Extension Price",
+  "@extensionPrice": {
+    "description": "Label for extension price in extend booking screen"
+  },
+  "customHours": "Custom Hours",
+  "@customHours": {
+    "description": "Label for custom hours input"
+  },
+  "enterHours": "Enter hours",
+  "@enterHours": {
+    "description": "Placeholder for hours input"
+  },
+  "currentBooking": "Current Booking",
+  "@currentBooking": {
+    "description": "Label for current booking info"
+  },
+  "hour": "hour",
+  "@hour": {
+    "description": "Singular form of hour"
+  },
+  "hours": "hours",
+  "@hours": {
+    "description": "Plural form of hours"
+  },
+  "plateNumber": "Plate Number",
+  "@plateNumber": {
+    "description": "Vehicle plate number label"
+  },
+  "reviewInvoice": "Review Invoice",
+  "@reviewInvoice": {
+    "description": "Title for invoice review screen"
+  },
+  "downloadingInvoice": "Downloading invoice...",
+  "@downloadingInvoice": {
+    "description": "Message shown while downloading invoice"
+  },
+  "invoiceDownloaded": "Invoice downloaded successfully",
+  "@invoiceDownloaded": {
+    "description": "Success message after invoice download"
+  },
+  "loadingInvoice": "Loading invoice...",
+  "@loadingInvoice": {
+    "description": "Message shown while loading invoice"
+  },
+  "errorOpeningFile": "Error opening file",
+  "@errorOpeningFile": {
+    "description": "Error message when file cannot be opened"
   },
   "noActiveBookings": "No active bookings",
   "@noActiveBookings": {
@@ -1096,6 +1188,26 @@
   "timeExpired": "Time Expired",
   "@timeExpired": {
     "description": "Message when booking time has expired"
+  },
+  "expiresAt": "Expires at",
+  "@expiresAt": {
+    "description": "Label for booking expiration time"
+  },
+  "ticketNumber": "Ticket",
+  "@ticketNumber": {
+    "description": "Label for ticket number"
+  },
+  "remaining": "remaining",
+  "@remaining": {
+    "description": "Text indicating remaining time"
+  },
+  "minutes": "minutes",
+  "@minutes": {
+    "description": "Plural form of minutes"
+  },
+  "expired": "Expired",
+  "@expired": {
+    "description": "Text indicating expired status"
   },
   "timeWarning": "Less than 10 minutes remaining!",
   "@timeWarning": {
