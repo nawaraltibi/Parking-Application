@@ -109,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           l10n.authProfileTitle,
           style: AppTextStyles.titleLarge(context),
@@ -164,9 +165,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     message: l10n.profileSuccessPasswordUpdate,
                   );
                   // Navigate to login after password update (tokens are invalidated)
+                  // Clear entire navigation stack
                   Future.delayed(const Duration(seconds: 2), () {
                     if (mounted) {
-                      context.pushReplacement(Routes.loginPath);
+                      context.go(Routes.loginPath);
                     }
                   });
                 } else if (state is AccountDeleteSuccess) {
@@ -175,9 +177,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     message: l10n.profileSuccessDeleteAccount,
                   );
                   // Navigate to login after account deletion
+                  // Clear entire navigation stack
                   Future.delayed(const Duration(seconds: 2), () {
                     if (mounted) {
-                      context.pushReplacement(Routes.loginPath);
+                      context.go(Routes.loginPath);
                     }
                   });
                 } else if (state is ProfileFailure) {
@@ -198,17 +201,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     message: l10n.authSuccessLogout,
                   );
                   // Navigate to login screen after logout
+                  // Clear entire navigation stack
                   Future.delayed(const Duration(seconds: 1), () {
                     if (mounted) {
-                      context.pushReplacement(Routes.loginPath);
+                      context.go(Routes.loginPath);
                     }
                   });
                 } else if (state is LogoutFailure) {
                   // Handle 401 (Unauthenticated) - clear data and navigate
+                  // Clear entire navigation stack
                   if (state.statusCode == 401) {
                     Future.delayed(const Duration(seconds: 1), () {
                       if (mounted) {
-                        context.pushReplacement(Routes.loginPath);
+                        context.go(Routes.loginPath);
                       }
                     });
                   } else {

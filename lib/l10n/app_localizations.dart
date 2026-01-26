@@ -398,7 +398,19 @@ abstract class AppLocalizations {
   /// **'Your account has been blocked. Please contact support'**
   String get authErrorAccountBlocked;
 
+  /// Success message for user registration
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully! Please login to continue.'**
+  String get authSuccessRegister;
+
   /// Success message for owner registration pending approval
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully! Your account is pending admin approval.'**
+  String get authSuccessRegisterOwner;
+
+  /// Success message for owner registration pending approval (deprecated)
   ///
   /// In en, this message translates to:
   /// **'Your account is pending admin approval. You will be notified once approved.'**
@@ -1777,6 +1789,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to get directions. Please try again.'**
   String get routingFailed;
+
+  /// Booking feature title
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get bookingTitle;
+
+  /// Create booking action
+  ///
+  /// In en, this message translates to:
+  /// **'Create Booking'**
+  String get createBooking;
+
+  /// Success message after creating booking
+  ///
+  /// In en, this message translates to:
+  /// **'Booking created successfully! Please complete payment to activate.'**
+  String get bookingCreatedSuccess;
+
+  /// Success message after cancelling booking
+  ///
+  /// In en, this message translates to:
+  /// **'Booking cancelled successfully'**
+  String get bookingCancelledSuccess;
+
+  /// Success message after requesting extension
+  ///
+  /// In en, this message translates to:
+  /// **'Booking extension requested. Please complete payment to apply.'**
+  String get bookingExtendedSuccess;
+
+  /// Success message after payment
+  ///
+  /// In en, this message translates to:
+  /// **'Payment processed successfully'**
+  String get paymentProcessedSuccess;
+
+  /// Message after payment failure
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failure recorded'**
+  String get paymentFailureRecorded;
+
+  /// Cancel booking action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Booking'**
+  String get cancelBooking;
+
+  /// Extend booking action
+  ///
+  /// In en, this message translates to:
+  /// **'Extend Booking'**
+  String get extendBooking;
+
+  /// Active bookings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Active Bookings'**
+  String get activeBookings;
+
+  /// Finished bookings section title
+  ///
+  /// In en, this message translates to:
+  /// **'Finished Bookings'**
+  String get finishedBookings;
+
+  /// Booking details screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetails;
+
+  /// Message when there are no active bookings
+  ///
+  /// In en, this message translates to:
+  /// **'No active bookings'**
+  String get noActiveBookings;
+
+  /// Message when there are no finished bookings
+  ///
+  /// In en, this message translates to:
+  /// **'No finished bookings'**
+  String get noFinishedBookings;
+
+  /// Message when there are no payments
+  ///
+  /// In en, this message translates to:
+  /// **'No payments yet'**
+  String get noPaymentsYet;
+
+  /// Booking ID label
+  ///
+  /// In en, this message translates to:
+  /// **'Booking ID'**
+  String get bookingId;
+
+  /// Start time label
+  ///
+  /// In en, this message translates to:
+  /// **'Start Time'**
+  String get startTime;
+
+  /// End time label
+  ///
+  /// In en, this message translates to:
+  /// **'End Time'**
+  String get endTime;
+
+  /// Total amount label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// Booking status label
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get bookingStatus;
+
+  /// Active status
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get statusActive;
+
+  /// Pending status
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Payment'**
+  String get statusPending;
+
+  /// Inactive/cancelled status
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusInactive;
+
+  /// Remaining time label
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Time'**
+  String get remainingTime;
+
+  /// Message when booking time has expired
+  ///
+  /// In en, this message translates to:
+  /// **'Time Expired'**
+  String get timeExpired;
+
+  /// Warning when time is running out
+  ///
+  /// In en, this message translates to:
+  /// **'Less than 10 minutes remaining!'**
+  String get timeWarning;
+
+  /// Select vehicle label
+  ///
+  /// In en, this message translates to:
+  /// **'Select Vehicle'**
+  String get selectVehicle;
+
+  /// Select parking lot label
+  ///
+  /// In en, this message translates to:
+  /// **'Select Parking Lot'**
+  String get selectParkingLot;
+
+  /// Number of hours label
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Hours'**
+  String get numberOfHours;
+
+  /// Extra hours for extension label
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Hours'**
+  String get extraHours;
+
+  /// Hourly rate label
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly Rate'**
+  String get hourlyRate;
+
+  /// Payment method label
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// Cash payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get paymentMethodCash;
+
+  /// Credit card payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Credit Card'**
+  String get paymentMethodCredit;
+
+  /// Online payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Online Payment'**
+  String get paymentMethodOnline;
+
+  /// Transaction ID label
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction ID'**
+  String get transactionId;
+
+  /// Payment history screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Payment History'**
+  String get paymentHistory;
+
+  /// Download invoice action
+  ///
+  /// In en, this message translates to:
+  /// **'Download Invoice'**
+  String get downloadInvoice;
+
+  /// Success message after downloading invoice
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice downloaded successfully'**
+  String get invoiceDownloadSuccess;
+
+  /// Error message when invoice download fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to download invoice'**
+  String get invoiceDownloadFailed;
+
+  /// Confirmation message for cancelling booking
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this booking?'**
+  String get confirmCancelBooking;
+
+  /// Warning message when cancelling booking
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone'**
+  String get cancelBookingWarning;
+
+  /// Error message when booking is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Booking not found or doesn\'t belong to you'**
+  String get bookingNotFound;
+
+  /// Error message when trying to extend non-active booking
+  ///
+  /// In en, this message translates to:
+  /// **'Booking must be active (paid) to extend'**
+  String get bookingMustBeActive;
+
+  /// Error message when parking lot is full
+  ///
+  /// In en, this message translates to:
+  /// **'Parking lot is full'**
+  String get parkingLotFull;
+
+  /// Error message when parking lot is unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Parking lot is unavailable'**
+  String get parkingLotUnavailable;
+
+  /// Error message when vehicle is not owned by user
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle does not belong to you'**
+  String get vehicleNotOwned;
+
+  /// Validation error for hours
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number of hours. Must be at least 1 hour.'**
+  String get invalidHours;
+
+  /// Error message when booking is already cancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Booking is already cancelled'**
+  String get bookingAlreadyCancelled;
+
+  /// Error message when booking cannot be cancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Booking cannot be cancelled'**
+  String get bookingCannotBeCancelled;
+
+  /// Remaining spaces label
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining Spaces'**
+  String get remainingSpaces;
+
+  /// Proceed to payment button
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed to Payment'**
+  String get proceedToPayment;
+
+  /// Complete payment button
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Payment'**
+  String get completePayment;
+
+  /// View booking details action
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewBookingDetails;
+
+  /// Title for booking pre-payment screen
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Details'**
+  String get bookingPrePaymentTitle;
+
+  /// Section title for time selection
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Time'**
+  String get bookingPrePaymentChooseTime;
+
+  /// Section title for vehicle selection
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Vehicle'**
+  String get bookingPrePaymentChooseVehicle;
+
+  /// Section title for vehicle selection with required indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Vehicle *'**
+  String get bookingPrePaymentChooseVehicleRequired;
+
+  /// Custom time option
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get bookingPrePaymentTimeCustom;
+
+  /// 1 hour time option
+  ///
+  /// In en, this message translates to:
+  /// **'1 Hour'**
+  String get bookingPrePaymentTime1Hour;
+
+  /// 2 hours time option
+  ///
+  /// In en, this message translates to:
+  /// **'2 Hours'**
+  String get bookingPrePaymentTime2Hours;
+
+  /// Text indicating payment hours apply
+  ///
+  /// In en, this message translates to:
+  /// **'Payment hours apply'**
+  String get bookingPrePaymentPaymentHours;
+
+  /// Label for total amount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount Value:'**
+  String get bookingPrePaymentAmountValue;
+
+  /// Text indicating VAT is included
+  ///
+  /// In en, this message translates to:
+  /// **'Including Value Added Tax'**
+  String get bookingPrePaymentVatIncluded;
+
+  /// Continue button text
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get bookingPrePaymentContinue;
+
+  /// Label for total available parking spots
+  ///
+  /// In en, this message translates to:
+  /// **'Total Available Parking Spots'**
+  String get bookingPrePaymentTotalAvailable;
+
+  /// Payment screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get paymentTitle;
+
+  /// Label for booking start time
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get paymentStarts;
+
+  /// Label for booking end time
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get paymentEnds;
+
+  /// Label for parking fees
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Fees'**
+  String get paymentParkingFees;
+
+  /// Label for selected payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Payment Method'**
+  String get paymentSelectedMethod;
+
+  /// Label for required amount
+  ///
+  /// In en, this message translates to:
+  /// **'Required Amount:'**
+  String get paymentRequiredAmount;
+
+  /// Confirm payment button text
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get paymentConfirm;
+
+  /// Add credit card option text
+  ///
+  /// In en, this message translates to:
+  /// **'Add Credit Card'**
+  String get paymentAddCard;
+
+  /// Card ending text
+  ///
+  /// In en, this message translates to:
+  /// **'Card ending in'**
+  String get paymentCardEnding;
+
+  /// Card expiry date label
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date'**
+  String get paymentExpiryDate;
+
+  /// Text about accepted payment cards
+  ///
+  /// In en, this message translates to:
+  /// **'We accept Mada, Visa, or Mastercard'**
+  String get paymentAcceptCards;
+
+  /// Title for payment simulation note section
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Simulation'**
+  String get paymentSimulationNote;
+
+  /// Description explaining payment simulation
+  ///
+  /// In en, this message translates to:
+  /// **'All payments are simulation only. No real money is charged. No card or wallet information is required. Payment amount is auto-calculated from booking.'**
+  String get paymentSimulationDescription;
+
+  /// Button text to simulate successful payment
+  ///
+  /// In en, this message translates to:
+  /// **'Simulate Success'**
+  String get paymentSimulateSuccess;
+
+  /// Button text to simulate failed payment
+  ///
+  /// In en, this message translates to:
+  /// **'Simulate Failure'**
+  String get paymentSimulateFailure;
+
+  /// Error message when booking ID is invalid or missing
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid booking ID. Please try again.'**
+  String get errorInvalidBookingId;
+
+  /// Error message when booking ID is missing from response
+  ///
+  /// In en, this message translates to:
+  /// **'Booking ID is missing. Please try again.'**
+  String get errorBookingIdMissing;
+
+  /// Success message shown in payment success dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful!'**
+  String get paymentSuccessMessage;
+
+  /// Question text in payment success dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to view booking details or return to the main page?'**
+  String get paymentSuccessQuestion;
+
+  /// Button text to view booking details
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get paymentViewDetails;
+
+  /// Button text to go to main/home page
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Main Page'**
+  String get paymentGoToHome;
 }
 
 class _AppLocalizationsDelegate

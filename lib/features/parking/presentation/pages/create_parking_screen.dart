@@ -8,7 +8,7 @@ import '../../../../core/routes/app_routes.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../cubit/parking_cubit.dart';
+import '../../bloc/create_parking/create_parking_bloc.dart';
 import '../../models/create_parking_request.dart';
 import '../utils/parking_error_handler.dart';
 import '../widgets/parking_form_fields.dart';
@@ -32,9 +32,6 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
 
   // Selected location from map picker
   GeoPoint? _selectedLocation;
-  
-  // Track previous state to detect successful creation
-  bool _wasCreating = false;
 
   @override
   void dispose() {
@@ -84,7 +81,7 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
         hourlyRate: double.tryParse(_hourlyRateController.text.trim()) ?? 0.0,
       );
 
-      context.read<ParkingCubit>().createParking(request);
+      context.read<CreateParkingBloc>().add(SubmitCreateParking(request));
     }
   }
 
@@ -101,43 +98,35 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
       ),
       body: SafeArea(
         bottom: true,
-        child: BlocConsumer<ParkingCubit, ParkingState>(
+        child: BlocConsumer<CreateParkingBloc, CreateParkingState>(
           listener: (context, state) {
-            // Detect successful creation: was creating, now not creating, no error
-            if (_wasCreating && !state.isCreating && state.error == null) {
-              // Reset flag immediately to prevent multiple navigations
-              _wasCreating = false;
-              
+            // Success handling
+            if (state is CreateParkingSuccess) {
               UnifiedSnackbar.success(
                 context,
                 message: l10n.parkingSuccessCreate,
               );
-              
+
               // Navigate to owner main screen using pushReplacement
               Future.delayed(const Duration(milliseconds: 100), () {
                 if (mounted) {
                   context.pushReplacement(Routes.ownerMainPath);
                 }
               });
-            } else {
-              // Update tracking flag only if not handling success
-              _wasCreating = state.isCreating;
             }
-            
+
             // Error handling
-            if (state.error != null && !state.isCreating) {
+            if (state is CreateParkingFailure) {
               final errorMessage = ParkingErrorHandler.handleErrorState(
-                state.error!,
+                state.error,
                 state.statusCode ?? 500,
                 l10n,
               );
               UnifiedSnackbar.error(context, message: errorMessage);
-              // Clear error after showing
-              context.read<ParkingCubit>().clearError();
             }
           },
           builder: (context, state) {
-            final isLoading = state.isCreating;
+            final isLoading = state is CreateParkingLoading;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -172,4 +161,3 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
     );
   }
 }
-

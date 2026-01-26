@@ -132,10 +132,10 @@ class VehicleCard extends StatelessWidget {
                             // Manufacturer Logo
                             _ManufacturerLogo(carMake: vehicle.carMake),
                             SizedBox(width: 12.w),
-                            // Vehicle Name
+                            // Vehicle Name (translated)
                             Expanded(
                               child: Text(
-                                vehicle.fullName,
+                                '${VehicleTranslations.getCarMakeTranslation(vehicle.carMake, l10n)} ${vehicle.carModel}',
                                 style: AppTextStyles.cardTitle(context),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,

@@ -19,6 +19,8 @@ class Routes {
   static const String parkingCreatePath = '/create-parking';
   static const String parkingUpdatePath = '/update-parking';
   static const String bookingPath = '/booking';
+  static const String bookingPrePaymentPath = '/booking/pre-payment';
+  static const String bookingDetailsPath = '/booking/details';
   static const String paymentPath = '/payment';
 
   // Feature routes

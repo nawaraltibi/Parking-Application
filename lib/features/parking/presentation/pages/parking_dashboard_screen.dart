@@ -8,7 +8,7 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/error_state_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../cubit/parking_cubit.dart';
+import '../../bloc/parking_stats/parking_stats_bloc.dart';
 import '../../models/owner_dashboard_stats_response.dart';
 import '../widgets/dashboard_card.dart';
 
@@ -69,45 +69,40 @@ class ParkingDashboardScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: BlocBuilder<ParkingCubit, ParkingState>(
-        buildWhen: (previous, current) {
-          return previous.isLoadingDashboard != current.isLoadingDashboard ||
-              previous.dashboardData != current.dashboardData ||
-              previous.dashboardError != current.dashboardError;
-        },
+      body: BlocBuilder<ParkingStatsBloc, ParkingStatsState>(
         builder: (context, state) {
           // Loading State
-          if (state.isLoadingDashboard && state.dashboardData == null) {
+          if (state is ParkingStatsLoading) {
             return const Center(
               child: LoadingWidget(),
             );
           }
 
           // Error State
-          if (state.dashboardError != null && state.dashboardData == null) {
-            String errorMessage = state.dashboardError!;
-            if (state.dashboardStatusCode == 403) {
+          if (state is ParkingStatsError) {
+            String errorMessage = state.message;
+            if (state.statusCode == 403) {
               errorMessage = l10n.parkingErrorUnauthorized;
             }
 
             return ErrorStateWidget(
               message: errorMessage,
               onRetry: () {
-                context.read<ParkingCubit>().loadDashboardStats();
+                context.read<ParkingStatsBloc>().add(const LoadParkingStats());
               },
             );
           }
 
-          // Loaded State - Only render content when data is fully loaded
-          if (state.dashboardData != null) {
-            final data = state.dashboardData!;
+          // Loaded State
+          if (state is ParkingStatsLoaded) {
+            final data = state.response.data;
             
             // Validate data before rendering
             if (!_isValidDashboardData(data)) {
               return ErrorStateWidget(
                 message: l10n.parkingDashboardErrorInvalidData,
                 onRetry: () {
-                  context.read<ParkingCubit>().loadDashboardStats();
+                  context.read<ParkingStatsBloc>().add(const LoadParkingStats());
                 },
               );
             }
@@ -116,9 +111,9 @@ class ParkingDashboardScreen extends StatelessWidget {
           }
 
           // Initial state - trigger load
-          if (!state.isLoadingDashboard && state.dashboardData == null && state.dashboardError == null) {
+          if (state is ParkingStatsInitial) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.read<ParkingCubit>().loadDashboardStats();
+              context.read<ParkingStatsBloc>().add(const LoadParkingStats());
             });
           }
 
@@ -165,7 +160,7 @@ class DashboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<ParkingCubit>().loadDashboardStats();
+        context.read<ParkingStatsBloc>().add(const LoadParkingStats());
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

@@ -10,7 +10,7 @@ import '../../../../core/widgets/error_state_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../cubit/parking_cubit.dart';
+import '../../bloc/parking_list/parking_list_bloc.dart';
 import '../../core/enums/parking_filter.dart';
 import '../../models/parking_model.dart';
 import '../utils/parking_error_handler.dart';
@@ -51,9 +51,9 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
     super.initState();
     // Load parkings when screen is first created
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final cubit = context.read<ParkingCubit>();
-      if (cubit.state.parkings.isEmpty && !cubit.state.isLoading) {
-        cubit.loadParkings();
+      final bloc = context.read<ParkingListBloc>();
+      if (bloc.state is! ParkingListLoaded) {
+        bloc.add(const LoadOwnerParkings());
       }
     });
   }
@@ -68,41 +68,55 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: BlocBuilder<ParkingCubit, ParkingState>(
+      body: BlocBuilder<ParkingListBloc, ParkingListState>(
         builder: (context, state) {
           // Loading state
-          if (state.isLoading && state.parkings.isEmpty) {
+          if (state is ParkingListLoading) {
             return const Center(child: LoadingWidget());
           }
 
-          // Error state (only show if we have no data)
-          if (state.error != null && state.parkings.isEmpty) {
+          // Error state
+          if (state is ParkingListError) {
             final errorMessage = ParkingErrorHandler.handleErrorState(
-              state.error!,
+              state.message,
               state.statusCode ?? 500,
               l10n,
             );
             return ErrorStateWidget(
               message: errorMessage,
               onRetry: () {
-                context.read<ParkingCubit>().loadParkings();
+                context.read<ParkingListBloc>().add(const LoadOwnerParkings());
               },
             );
           }
 
           // Empty state
-          if (state.parkings.isEmpty && !state.isLoading) {
+          if (state is ParkingListLoaded && state.isEmpty) {
             return ParkingEmptyState(
               onCreateTap: () => context.push(Routes.parkingCreatePath),
             );
           }
 
-          // Filter parkings
-          final filteredParkings = ParkingFilterService.filterParkings(
-            parkings: state.parkings,
-            searchQuery: _searchQuery,
-            filter: _selectedFilter,
-          );
+          // Loaded state
+          if (state is! ParkingListLoaded) {
+            return const Center(child: LoadingWidget());
+          }
+
+          // Update filter
+          if (_selectedFilter != state.filter) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<ParkingListBloc>().add(FilterParkings(_selectedFilter));
+            });
+          }
+
+          // Update search
+          if (_searchQuery != (state.searchQuery ?? '')) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<ParkingListBloc>().add(SearchParkings(_searchQuery));
+            });
+          }
+
+          final filteredParkings = state.filteredParkings;
 
           return Stack(
             children: [
@@ -123,7 +137,7 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        context.read<ParkingCubit>().loadParkings();
+                        context.read<ParkingListBloc>().add(const RefreshParkings());
                       },
                       child: filteredParkings.isEmpty
                           ? const ParkingNoResultsState()

@@ -27,6 +27,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
   bool _isBottomSheetOpen = false; // Track if bottom sheet is open
   final Map<int, AnimationController> _markerAnimationControllers =
       {}; // Track marker animations
+  final Set<int> _addedMarkerLotIds = {}; // Track which parking lots have markers
 
   @override
   void initState() {
@@ -61,6 +62,17 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
       setState(() {
         _mapIsReady = isReady;
       });
+      
+      // When map is ready, add markers if we have parking lots
+      final state = context.read<ParkingMapBloc>().state;
+      if (state.hasParkingLots) {
+        // Small delay to ensure map is fully initialized
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (mounted && _mapIsReady) {
+            _addParkingMarkers(state.parkingLots, state.selectedLot?.lotId);
+          }
+        });
+      }
     }
   }
 
@@ -112,9 +124,23 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
     List<dynamic> parkingLots,
     int? selectedLotId,
   ) async {
-    if (_mapController == null || !_mapIsReady) return;
+    if (_mapController == null || !_mapIsReady) {
+      debugPrint('⚠️ Cannot add markers: mapController=${_mapController != null}, mapIsReady=$_mapIsReady');
+      return;
+    }
 
     try {
+      // Get current lot IDs
+      final currentLotIds = parkingLots.map((lot) => lot.lotId).toSet();
+      
+      // Remove markers for lots that no longer exist
+      final lotsToRemove = _addedMarkerLotIds.difference(currentLotIds);
+      for (final lotId in lotsToRemove) {
+        _addedMarkerLotIds.remove(lotId);
+        // Note: flutter_osm_plugin doesn't have direct removeMarker by ID
+        // We'll rely on addMarker overwriting for same location
+      }
+
       // Initialize animation controllers for new markers
       for (final lot in parkingLots) {
         if (!_markerAnimationControllers.containsKey(lot.lotId)) {
@@ -126,42 +152,57 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
       }
 
       // Remove animation controllers for markers that no longer exist
-      final existingLotIds = parkingLots.map((lot) => lot.lotId).toSet();
       final controllersToRemove = _markerAnimationControllers.keys
-          .where((id) => !existingLotIds.contains(id))
+          .where((id) => !currentLotIds.contains(id))
           .toList();
       for (final id in controllersToRemove) {
         _markerAnimationControllers[id]?.dispose();
         _markerAnimationControllers.remove(id);
       }
 
-      // Add markers for each parking lot
+      // Add markers for each parking lot (only if not already added)
       for (final lot in parkingLots) {
+        // Skip if marker already added for this lot
+        if (_addedMarkerLotIds.contains(lot.lotId)) {
+          continue;
+        }
+
         final marker = MapAdapter.parkingLotToMapMarker(lot);
         final geoPoint = MapAdapter.markerToGeoPoint(marker);
         final isSelected = selectedLotId != null && lot.lotId == selectedLotId;
 
-        // Large parking icon with better visibility
-        await _mapController!.addMarker(
-          geoPoint,
-          markerIcon: MarkerIcon(
-            icon: Icon(
-              Icons.local_parking,
-              color: AppColors.primary,
-              size: isSelected ? 72 : 64, // Much larger size
+        try {
+          // Large parking icon with better visibility
+          await _mapController!.addMarker(
+            geoPoint,
+            markerIcon: MarkerIcon(
+              icon: Icon(
+                Icons.local_parking,
+                color: AppColors.primary,
+                size: isSelected ? 72 : 64, // Much larger size
+              ),
             ),
-          ),
-        );
+          );
 
-        // Animate marker when selected
-        if (isSelected) {
-          _markerAnimationControllers[lot.lotId]?.forward().then((_) {
-            _markerAnimationControllers[lot.lotId]?.reverse();
-          });
+          // Mark as added
+          _addedMarkerLotIds.add(lot.lotId);
+          
+          debugPrint('✅ Added marker for parking lot ${lot.lotId} at (${geoPoint.latitude}, ${geoPoint.longitude})');
+
+          // Animate marker when selected
+          if (isSelected) {
+            _markerAnimationControllers[lot.lotId]?.forward().then((_) {
+              _markerAnimationControllers[lot.lotId]?.reverse();
+            });
+          }
+        } catch (markerError) {
+          debugPrint('❌ Error adding marker for lot ${lot.lotId}: $markerError');
         }
       }
+      
+      debugPrint('📍 Total markers added: ${_addedMarkerLotIds.length}');
     } catch (e) {
-      debugPrint('Error adding parking markers: $e');
+      debugPrint('❌ Error in _addParkingMarkers: $e');
     }
   }
 
@@ -215,6 +256,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(AppLocalizations.of(context)!.parkingMapTitle),
         actions: [
           IconButton(
@@ -233,7 +275,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
           }
 
           // Handle parking lots updates
-          if (state.hasParkingLots) {
+          if (state.hasParkingLots && _mapIsReady) {
             _addParkingMarkers(state.parkingLots, state.selectedLot?.lotId);
           }
 

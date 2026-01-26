@@ -200,9 +200,17 @@
   "@authErrorAccountBlocked": {
     "description": "Message for blocked user account"
   },
+  "authSuccessRegister": "Account created successfully! Please login to continue.",
+  "@authSuccessRegister": {
+    "description": "Success message for user registration"
+  },
+  "authSuccessRegisterOwner": "Account created successfully! Your account is pending admin approval.",
+  "@authSuccessRegisterOwner": {
+    "description": "Success message for owner registration pending approval"
+  },
   "authSuccessRegisterPending": "Your account is pending admin approval. You will be notified once approved.",
   "@authSuccessRegisterPending": {
-    "description": "Success message for owner registration pending approval"
+    "description": "Success message for owner registration pending approval (deprecated)"
   },
   "authSuccessLogout": "Logged out successfully",
   "@authSuccessLogout": {
@@ -988,6 +996,354 @@
   "routingFailed": "Failed to get directions. Please try again.",
   "@routingFailed": {
     "description": "Generic error message when routing fails"
+  },
+  "bookingTitle": "Booking",
+  "@bookingTitle": {
+    "description": "Booking feature title"
+  },
+  "createBooking": "Create Booking",
+  "@createBooking": {
+    "description": "Create booking action"
+  },
+  "bookingCreatedSuccess": "Booking created successfully! Please complete payment to activate.",
+  "@bookingCreatedSuccess": {
+    "description": "Success message after creating booking"
+  },
+  "bookingCancelledSuccess": "Booking cancelled successfully",
+  "@bookingCancelledSuccess": {
+    "description": "Success message after cancelling booking"
+  },
+  "bookingExtendedSuccess": "Booking extension requested. Please complete payment to apply.",
+  "@bookingExtendedSuccess": {
+    "description": "Success message after requesting extension"
+  },
+  "paymentProcessedSuccess": "Payment processed successfully",
+  "@paymentProcessedSuccess": {
+    "description": "Success message after payment"
+  },
+  "paymentFailureRecorded": "Payment failure recorded",
+  "@paymentFailureRecorded": {
+    "description": "Message after payment failure"
+  },
+  "cancelBooking": "Cancel Booking",
+  "@cancelBooking": {
+    "description": "Cancel booking action"
+  },
+  "extendBooking": "Extend Booking",
+  "@extendBooking": {
+    "description": "Extend booking action"
+  },
+  "activeBookings": "Active Bookings",
+  "@activeBookings": {
+    "description": "Active bookings section title"
+  },
+  "finishedBookings": "Finished Bookings",
+  "@finishedBookings": {
+    "description": "Finished bookings section title"
+  },
+  "bookingDetails": "Booking Details",
+  "@bookingDetails": {
+    "description": "Booking details screen title"
+  },
+  "noActiveBookings": "No active bookings",
+  "@noActiveBookings": {
+    "description": "Message when there are no active bookings"
+  },
+  "noFinishedBookings": "No finished bookings",
+  "@noFinishedBookings": {
+    "description": "Message when there are no finished bookings"
+  },
+  "noPaymentsYet": "No payments yet",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments"
+  },
+  "bookingId": "Booking ID",
+  "@bookingId": {
+    "description": "Booking ID label"
+  },
+  "startTime": "Start Time",
+  "@startTime": {
+    "description": "Start time label"
+  },
+  "endTime": "End Time",
+  "@endTime": {
+    "description": "End time label"
+  },
+  "totalAmount": "Total Amount",
+  "@totalAmount": {
+    "description": "Total amount label"
+  },
+  "bookingStatus": "Status",
+  "@bookingStatus": {
+    "description": "Booking status label"
+  },
+  "statusActive": "Active",
+  "@statusActive": {
+    "description": "Active status"
+  },
+  "statusPending": "Pending Payment",
+  "@statusPending": {
+    "description": "Pending status"
+  },
+  "statusInactive": "Cancelled",
+  "@statusInactive": {
+    "description": "Inactive/cancelled status"
+  },
+  "remainingTime": "Remaining Time",
+  "@remainingTime": {
+    "description": "Remaining time label"
+  },
+  "timeExpired": "Time Expired",
+  "@timeExpired": {
+    "description": "Message when booking time has expired"
+  },
+  "timeWarning": "Less than 10 minutes remaining!",
+  "@timeWarning": {
+    "description": "Warning when time is running out"
+  },
+  "selectVehicle": "Select Vehicle",
+  "@selectVehicle": {
+    "description": "Select vehicle label"
+  },
+  "selectParkingLot": "Select Parking Lot",
+  "@selectParkingLot": {
+    "description": "Select parking lot label"
+  },
+  "numberOfHours": "Number of Hours",
+  "@numberOfHours": {
+    "description": "Number of hours label"
+  },
+  "extraHours": "Extra Hours",
+  "@extraHours": {
+    "description": "Extra hours for extension label"
+  },
+  "hourlyRate": "Hourly Rate",
+  "@hourlyRate": {
+    "description": "Hourly rate label"
+  },
+  "paymentMethod": "Payment Method",
+  "@paymentMethod": {
+    "description": "Payment method label"
+  },
+  "paymentMethodCash": "Cash",
+  "@paymentMethodCash": {
+    "description": "Cash payment method"
+  },
+  "paymentMethodCredit": "Credit Card",
+  "@paymentMethodCredit": {
+    "description": "Credit card payment method"
+  },
+  "paymentMethodOnline": "Online Payment",
+  "@paymentMethodOnline": {
+    "description": "Online payment method"
+  },
+  "transactionId": "Transaction ID",
+  "@transactionId": {
+    "description": "Transaction ID label"
+  },
+  "paymentHistory": "Payment History",
+  "@paymentHistory": {
+    "description": "Payment history screen title"
+  },
+  "downloadInvoice": "Download Invoice",
+  "@downloadInvoice": {
+    "description": "Download invoice action"
+  },
+  "invoiceDownloadSuccess": "Invoice downloaded successfully",
+  "@invoiceDownloadSuccess": {
+    "description": "Success message after downloading invoice"
+  },
+  "invoiceDownloadFailed": "Failed to download invoice",
+  "@invoiceDownloadFailed": {
+    "description": "Error message when invoice download fails"
+  },
+  "confirmCancelBooking": "Are you sure you want to cancel this booking?",
+  "@confirmCancelBooking": {
+    "description": "Confirmation message for cancelling booking"
+  },
+  "cancelBookingWarning": "This action cannot be undone",
+  "@cancelBookingWarning": {
+    "description": "Warning message when cancelling booking"
+  },
+  "bookingNotFound": "Booking not found or doesn't belong to you",
+  "@bookingNotFound": {
+    "description": "Error message when booking is not found"
+  },
+  "bookingMustBeActive": "Booking must be active (paid) to extend",
+  "@bookingMustBeActive": {
+    "description": "Error message when trying to extend non-active booking"
+  },
+  "parkingLotFull": "Parking lot is full",
+  "@parkingLotFull": {
+    "description": "Error message when parking lot is full"
+  },
+  "parkingLotUnavailable": "Parking lot is unavailable",
+  "@parkingLotUnavailable": {
+    "description": "Error message when parking lot is unavailable"
+  },
+  "vehicleNotOwned": "Vehicle does not belong to you",
+  "@vehicleNotOwned": {
+    "description": "Error message when vehicle is not owned by user"
+  },
+  "invalidHours": "Invalid number of hours. Must be at least 1 hour.",
+  "@invalidHours": {
+    "description": "Validation error for hours"
+  },
+  "bookingAlreadyCancelled": "Booking is already cancelled",
+  "@bookingAlreadyCancelled": {
+    "description": "Error message when booking is already cancelled"
+  },
+  "bookingCannotBeCancelled": "Booking cannot be cancelled",
+  "@bookingCannotBeCancelled": {
+    "description": "Error message when booking cannot be cancelled"
+  },
+  "remainingSpaces": "Remaining Spaces",
+  "@remainingSpaces": {
+    "description": "Remaining spaces label"
+  },
+  "proceedToPayment": "Proceed to Payment",
+  "@proceedToPayment": {
+    "description": "Proceed to payment button"
+  },
+  "completePayment": "Complete Payment",
+  "@completePayment": {
+    "description": "Complete payment button"
+  },
+  "viewBookingDetails": "View Details",
+  "@viewBookingDetails": {
+    "description": "View booking details action"
+  },
+  "bookingPrePaymentTitle": "Parking Details",
+  "@bookingPrePaymentTitle": {
+    "description": "Title for booking pre-payment screen"
+  },
+  "bookingPrePaymentChooseTime": "Choose Time",
+  "@bookingPrePaymentChooseTime": {
+    "description": "Section title for time selection"
+  },
+  "bookingPrePaymentChooseVehicle": "Choose Vehicle",
+  "@bookingPrePaymentChooseVehicle": {
+    "description": "Section title for vehicle selection"
+  },
+  "bookingPrePaymentChooseVehicleRequired": "Choose Vehicle *",
+  "@bookingPrePaymentChooseVehicleRequired": {
+    "description": "Section title for vehicle selection with required indicator"
+  },
+  "bookingPrePaymentTimeCustom": "Custom",
+  "@bookingPrePaymentTimeCustom": {
+    "description": "Custom time option"
+  },
+  "bookingPrePaymentTime1Hour": "1 Hour",
+  "@bookingPrePaymentTime1Hour": {
+    "description": "1 hour time option"
+  },
+  "bookingPrePaymentTime2Hours": "2 Hours",
+  "@bookingPrePaymentTime2Hours": {
+    "description": "2 hours time option"
+  },
+  "bookingPrePaymentPaymentHours": "Payment hours apply",
+  "@bookingPrePaymentPaymentHours": {
+    "description": "Text indicating payment hours apply"
+  },
+  "bookingPrePaymentAmountValue": "Amount Value:",
+  "@bookingPrePaymentAmountValue": {
+    "description": "Label for total amount"
+  },
+  "bookingPrePaymentVatIncluded": "Including Value Added Tax",
+  "@bookingPrePaymentVatIncluded": {
+    "description": "Text indicating VAT is included"
+  },
+  "bookingPrePaymentContinue": "Continue",
+  "@bookingPrePaymentContinue": {
+    "description": "Continue button text"
+  },
+  "bookingPrePaymentTotalAvailable": "Total Available Parking Spots",
+  "@bookingPrePaymentTotalAvailable": {
+    "description": "Label for total available parking spots"
+  },
+  "paymentTitle": "Payment",
+  "@paymentTitle": {
+    "description": "Payment screen title"
+  },
+  "paymentStarts": "Starts",
+  "@paymentStarts": {
+    "description": "Label for booking start time"
+  },
+  "paymentEnds": "Ends",
+  "@paymentEnds": {
+    "description": "Label for booking end time"
+  },
+  "paymentParkingFees": "Parking Fees",
+  "@paymentParkingFees": {
+    "description": "Label for parking fees"
+  },
+  "paymentSelectedMethod": "Selected Payment Method",
+  "@paymentSelectedMethod": {
+    "description": "Label for selected payment method"
+  },
+  "paymentRequiredAmount": "Required Amount:",
+  "@paymentRequiredAmount": {
+    "description": "Label for required amount"
+  },
+  "paymentConfirm": "Confirm",
+  "@paymentConfirm": {
+    "description": "Confirm payment button text"
+  },
+  "paymentAddCard": "Add Credit Card",
+  "@paymentAddCard": {
+    "description": "Add credit card option text"
+  },
+  "paymentCardEnding": "Card ending in",
+  "@paymentCardEnding": {
+    "description": "Card ending text"
+  },
+  "paymentExpiryDate": "Expiry Date",
+  "@paymentExpiryDate": {
+    "description": "Card expiry date label"
+  },
+  "paymentAcceptCards": "We accept Mada, Visa, or Mastercard",
+  "@paymentAcceptCards": {
+    "description": "Text about accepted payment cards"
+  },
+  "paymentSimulationNote": "Payment Simulation",
+  "@paymentSimulationNote": {
+    "description": "Title for payment simulation note section"
+  },
+  "paymentSimulationDescription": "All payments are simulation only. No real money is charged. No card or wallet information is required. Payment amount is auto-calculated from booking.",
+  "@paymentSimulationDescription": {
+    "description": "Description explaining payment simulation"
+  },
+  "paymentSimulateSuccess": "Simulate Success",
+  "@paymentSimulateSuccess": {
+    "description": "Button text to simulate successful payment"
+  },
+  "paymentSimulateFailure": "Simulate Failure",
+  "@paymentSimulateFailure": {
+    "description": "Button text to simulate failed payment"
+  },
+  "errorInvalidBookingId": "Invalid booking ID. Please try again.",
+  "@errorInvalidBookingId": {
+    "description": "Error message when booking ID is invalid or missing"
+  },
+  "errorBookingIdMissing": "Booking ID is missing. Please try again.",
+  "@errorBookingIdMissing": {
+    "description": "Error message when booking ID is missing from response"
+  },
+  "paymentSuccessMessage": "Payment successful!",
+  "@paymentSuccessMessage": {
+    "description": "Success message shown in payment success dialog"
+  },
+  "paymentSuccessQuestion": "Do you want to view booking details or return to the main page?",
+  "@paymentSuccessQuestion": {
+    "description": "Question text in payment success dialog"
+  },
+  "paymentViewDetails": "View Details",
+  "@paymentViewDetails": {
+    "description": "Button text to view booking details"
+  },
+  "paymentGoToHome": "Go to Main Page",
+  "@paymentGoToHome": {
+    "description": "Button text to go to main/home page"
   }
 }
 

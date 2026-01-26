@@ -4,7 +4,10 @@ import '../../features/auth/bloc/register/register_bloc.dart';
 import '../../features/auth/bloc/logout/logout_bloc.dart';
 import '../../features/splash/bloc/splash_routing_bloc.dart';
 import '../../features/profile/bloc/profile/profile_bloc.dart';
-import '../../features/parking/cubit/parking_cubit.dart';
+import '../../features/parking/bloc/create_parking/create_parking_bloc.dart';
+import '../../features/parking/bloc/update_parking/update_parking_bloc.dart';
+import '../../features/parking/bloc/parking_list/parking_list_bloc.dart';
+import '../../features/parking/bloc/parking_stats/parking_stats_bloc.dart';
 import '../../features/main_screen/bloc/owner_main/owner_main_bloc.dart';
 import '../../features/main_screen/bloc/user_main/user_main_bloc.dart';
 import '../../core/bloc/locale_cubit.dart';
@@ -24,13 +27,14 @@ import '../../features/parking_map/domain/repositories/parking_map_repository.da
 import '../../features/parking_map/domain/usecases/get_all_parking_lots_usecase.dart';
 import '../../features/parking_map/domain/usecases/get_parking_details_usecase.dart';
 import '../../features/parking_map/presentation/bloc/parking_map_bloc.dart';
+import '../../features/booking/bloc/payment/payment_bloc.dart';
 import '../../core/location/location_repository.dart';
 import '../../core/location/location_service.dart';
 import '../../core/location/get_current_location_usecase.dart';
 
 /// Service Locator
 /// Centralized Dependency Injection using GetIt
-/// 
+///
 /// This is the single source of truth for all dependencies in the app.
 /// All features should get their dependencies from here, not create them directly.
 final getIt = GetIt.instance;
@@ -42,7 +46,7 @@ Future<void> setupServiceLocator() async {
   // DioProvider is already a singleton, but we register it for consistency
   // Note: DioProvider.instance is used directly in APIRequest, so we keep that pattern
   // We register it here for potential future use or testing
-  
+
   // Data Sources
   getIt.registerLazySingleton<VehiclesRemoteDataSource>(
     () => VehiclesRemoteDataSource(),
@@ -53,9 +57,7 @@ Future<void> setupServiceLocator() async {
   );
 
   // Location Service
-  getIt.registerLazySingleton<LocationRepository>(
-    () => LocationService(),
-  );
+  getIt.registerLazySingleton<LocationRepository>(() => LocationService());
 
   // Repositories
   getIt.registerLazySingleton<VehiclesRepository>(
@@ -105,44 +107,32 @@ Future<void> setupServiceLocator() async {
   // These are registered as factories because each screen needs its own instance
   // However, some blocs are app-wide (like LocaleCubit, SplashRoutingBloc)
   // and should be singletons
-  
-  // App-wide blocs (singletons)
-  getIt.registerLazySingleton<LocaleCubit>(
-    () => LocaleCubit(),
-  );
 
-  getIt.registerLazySingleton<SplashRoutingBloc>(
-    () => SplashRoutingBloc(),
-  );
+  // App-wide blocs (singletons)
+  getIt.registerLazySingleton<LocaleCubit>(() => LocaleCubit());
+
+  getIt.registerLazySingleton<SplashRoutingBloc>(() => SplashRoutingBloc());
 
   // Feature blocs (factories - new instance per screen)
-  getIt.registerFactory<LoginBloc>(
-    () => LoginBloc(),
-  );
+  getIt.registerFactory<LoginBloc>(() => LoginBloc());
 
-  getIt.registerFactory<RegisterBloc>(
-    () => RegisterBloc(),
-  );
+  getIt.registerFactory<RegisterBloc>(() => RegisterBloc());
 
-  getIt.registerFactory<LogoutBloc>(
-    () => LogoutBloc(),
-  );
+  getIt.registerFactory<LogoutBloc>(() => LogoutBloc());
 
-  getIt.registerFactory<ProfileBloc>(
-    () => ProfileBloc(),
-  );
+  getIt.registerFactory<ProfileBloc>(() => ProfileBloc());
 
-  getIt.registerFactory<ParkingCubit>(
-    () => ParkingCubit(),
-  );
+  getIt.registerFactory<CreateParkingBloc>(() => CreateParkingBloc());
 
-  getIt.registerFactory<OwnerMainBloc>(
-    () => OwnerMainBloc(),
-  );
+  getIt.registerFactory<UpdateParkingBloc>(() => UpdateParkingBloc());
 
-  getIt.registerFactory<UserMainBloc>(
-    () => UserMainBloc(),
-  );
+  getIt.registerFactory<ParkingListBloc>(() => ParkingListBloc());
+
+  getIt.registerFactory<ParkingStatsBloc>(() => ParkingStatsBloc());
+
+  getIt.registerFactory<OwnerMainBloc>(() => OwnerMainBloc());
+
+  getIt.registerFactory<UserMainBloc>(() => UserMainBloc());
 
   getIt.registerFactory<VehiclesBloc>(
     () => VehiclesBloc(
@@ -153,13 +143,9 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
-  getIt.registerFactory<FileDownloadBloc>(
-    () => FileDownloadBloc(),
-  );
+  getIt.registerFactory<FileDownloadBloc>(() => FileDownloadBloc());
 
-  getIt.registerFactory<ImageDownloadBloc>(
-    () => ImageDownloadBloc(),
-  );
+  getIt.registerFactory<ImageDownloadBloc>(() => ImageDownloadBloc());
 
   getIt.registerFactory<ParkingMapBloc>(
     () => ParkingMapBloc(
@@ -168,10 +154,11 @@ Future<void> setupServiceLocator() async {
       getCurrentLocationUseCase: getIt<GetCurrentLocationUseCase>(),
     ),
   );
+
+  getIt.registerFactory<PaymentBloc>(() => PaymentBloc());
 }
 
 /// Reset service locator (useful for testing)
 Future<void> resetServiceLocator() async {
   await getIt.reset();
 }
-

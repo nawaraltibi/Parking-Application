@@ -200,9 +200,17 @@
   "@authErrorAccountBlocked": {
     "description": "Message for blocked user account"
   },
+  "authSuccessRegister": "تم إنشاء الحساب بنجاح! يرجى تسجيل الدخول للمتابعة.",
+  "@authSuccessRegister": {
+    "description": "Success message for user registration"
+  },
+  "authSuccessRegisterOwner": "تم إنشاء الحساب بنجاح! حسابك في انتظار موافقة المدير.",
+  "@authSuccessRegisterOwner": {
+    "description": "Success message for owner registration pending approval"
+  },
   "authSuccessRegisterPending": "حسابك في انتظار موافقة المدير. سيتم إشعارك عند الموافقة.",
   "@authSuccessRegisterPending": {
-    "description": "Success message for owner registration pending approval"
+    "description": "Success message for owner registration pending approval (deprecated)"
   },
   "authSuccessLogout": "تم تسجيل الخروج بنجاح",
   "@authSuccessLogout": {
@@ -988,6 +996,354 @@
   "routingFailed": "فشل الحصول على الاتجاهات. يرجى المحاولة مرة أخرى.",
   "@routingFailed": {
     "description": "Generic error message when routing fails"
+  },
+  "bookingTitle": "الحجز",
+  "@bookingTitle": {
+    "description": "Booking feature title"
+  },
+  "createBooking": "إنشاء حجز",
+  "@createBooking": {
+    "description": "Create booking action"
+  },
+  "bookingCreatedSuccess": "تم إنشاء الحجز بنجاح! يرجى إكمال الدفع للتفعيل.",
+  "@bookingCreatedSuccess": {
+    "description": "Success message after creating booking"
+  },
+  "bookingCancelledSuccess": "تم إلغاء الحجز بنجاح",
+  "@bookingCancelledSuccess": {
+    "description": "Success message after cancelling booking"
+  },
+  "bookingExtendedSuccess": "تم طلب تمديد الحجز. يرجى إكمال الدفع للتطبيق.",
+  "@bookingExtendedSuccess": {
+    "description": "Success message after requesting extension"
+  },
+  "paymentProcessedSuccess": "تمت معالجة الدفع بنجاح",
+  "@paymentProcessedSuccess": {
+    "description": "Success message after payment"
+  },
+  "paymentFailureRecorded": "تم تسجيل فشل الدفع",
+  "@paymentFailureRecorded": {
+    "description": "Message after payment failure"
+  },
+  "cancelBooking": "إلغاء الحجز",
+  "@cancelBooking": {
+    "description": "Cancel booking action"
+  },
+  "extendBooking": "تمديد الحجز",
+  "@extendBooking": {
+    "description": "Extend booking action"
+  },
+  "activeBookings": "الحجوزات النشطة",
+  "@activeBookings": {
+    "description": "Active bookings section title"
+  },
+  "finishedBookings": "الحجوزات المنتهية",
+  "@finishedBookings": {
+    "description": "Finished bookings section title"
+  },
+  "bookingDetails": "تفاصيل الحجز",
+  "@bookingDetails": {
+    "description": "Booking details screen title"
+  },
+  "noActiveBookings": "لا توجد حجوزات نشطة",
+  "@noActiveBookings": {
+    "description": "Message when there are no active bookings"
+  },
+  "noFinishedBookings": "لا توجد حجوزات منتهية",
+  "@noFinishedBookings": {
+    "description": "Message when there are no finished bookings"
+  },
+  "noPaymentsYet": "لا توجد دفعات بعد",
+  "@noPaymentsYet": {
+    "description": "Message when there are no payments"
+  },
+  "bookingId": "رقم الحجز",
+  "@bookingId": {
+    "description": "Booking ID label"
+  },
+  "startTime": "وقت البداية",
+  "@startTime": {
+    "description": "Start time label"
+  },
+  "endTime": "وقت الانتهاء",
+  "@endTime": {
+    "description": "End time label"
+  },
+  "totalAmount": "المبلغ الإجمالي",
+  "@totalAmount": {
+    "description": "Total amount label"
+  },
+  "bookingStatus": "الحالة",
+  "@bookingStatus": {
+    "description": "Booking status label"
+  },
+  "statusActive": "نشط",
+  "@statusActive": {
+    "description": "Active status"
+  },
+  "statusPending": "بانتظار الدفع",
+  "@statusPending": {
+    "description": "Pending status"
+  },
+  "statusInactive": "ملغى",
+  "@statusInactive": {
+    "description": "Inactive/cancelled status"
+  },
+  "remainingTime": "الوقت المتبقي",
+  "@remainingTime": {
+    "description": "Remaining time label"
+  },
+  "timeExpired": "انتهى الوقت",
+  "@timeExpired": {
+    "description": "Message when booking time has expired"
+  },
+  "timeWarning": "أقل من 10 دقائق متبقية!",
+  "@timeWarning": {
+    "description": "Warning when time is running out"
+  },
+  "selectVehicle": "اختر مركبة",
+  "@selectVehicle": {
+    "description": "Select vehicle label"
+  },
+  "selectParkingLot": "اختر موقف سيارات",
+  "@selectParkingLot": {
+    "description": "Select parking lot label"
+  },
+  "numberOfHours": "عدد الساعات",
+  "@numberOfHours": {
+    "description": "Number of hours label"
+  },
+  "extraHours": "ساعات إضافية",
+  "@extraHours": {
+    "description": "Extra hours for extension label"
+  },
+  "hourlyRate": "السعر بالساعة",
+  "@hourlyRate": {
+    "description": "Hourly rate label"
+  },
+  "paymentMethod": "طريقة الدفع",
+  "@paymentMethod": {
+    "description": "Payment method label"
+  },
+  "paymentMethodCash": "نقداً",
+  "@paymentMethodCash": {
+    "description": "Cash payment method"
+  },
+  "paymentMethodCredit": "بطاقة ائتمان",
+  "@paymentMethodCredit": {
+    "description": "Credit card payment method"
+  },
+  "paymentMethodOnline": "دفع إلكتروني",
+  "@paymentMethodOnline": {
+    "description": "Online payment method"
+  },
+  "transactionId": "رقم المعاملة",
+  "@transactionId": {
+    "description": "Transaction ID label"
+  },
+  "paymentHistory": "سجل الدفعات",
+  "@paymentHistory": {
+    "description": "Payment history screen title"
+  },
+  "downloadInvoice": "تحميل الفاتورة",
+  "@downloadInvoice": {
+    "description": "Download invoice action"
+  },
+  "invoiceDownloadSuccess": "تم تحميل الفاتورة بنجاح",
+  "@invoiceDownloadSuccess": {
+    "description": "Success message after downloading invoice"
+  },
+  "invoiceDownloadFailed": "فشل تحميل الفاتورة",
+  "@invoiceDownloadFailed": {
+    "description": "Error message when invoice download fails"
+  },
+  "confirmCancelBooking": "هل أنت متأكد أنك تريد إلغاء هذا الحجز؟",
+  "@confirmCancelBooking": {
+    "description": "Confirmation message for cancelling booking"
+  },
+  "cancelBookingWarning": "لا يمكن التراجع عن هذا الإجراء",
+  "@cancelBookingWarning": {
+    "description": "Warning message when cancelling booking"
+  },
+  "bookingNotFound": "الحجز غير موجود أو لا ينتمي لك",
+  "@bookingNotFound": {
+    "description": "Error message when booking is not found"
+  },
+  "bookingMustBeActive": "يجب أن يكون الحجز نشطاً (مدفوع) للتمديد",
+  "@bookingMustBeActive": {
+    "description": "Error message when trying to extend non-active booking"
+  },
+  "parkingLotFull": "موقف السيارات ممتلئ",
+  "@parkingLotFull": {
+    "description": "Error message when parking lot is full"
+  },
+  "parkingLotUnavailable": "موقف السيارات غير متاح",
+  "@parkingLotUnavailable": {
+    "description": "Error message when parking lot is unavailable"
+  },
+  "vehicleNotOwned": "المركبة لا تنتمي لك",
+  "@vehicleNotOwned": {
+    "description": "Error message when vehicle is not owned by user"
+  },
+  "invalidHours": "عدد ساعات غير صالح. يجب أن يكون ساعة واحدة على الأقل.",
+  "@invalidHours": {
+    "description": "Validation error for hours"
+  },
+  "bookingAlreadyCancelled": "الحجز ملغى بالفعل",
+  "@bookingAlreadyCancelled": {
+    "description": "Error message when booking is already cancelled"
+  },
+  "bookingCannotBeCancelled": "لا يمكن إلغاء الحجز",
+  "@bookingCannotBeCancelled": {
+    "description": "Error message when booking cannot be cancelled"
+  },
+  "remainingSpaces": "الأماكن المتبقية",
+  "@remainingSpaces": {
+    "description": "Remaining spaces label"
+  },
+  "proceedToPayment": "المتابعة للدفع",
+  "@proceedToPayment": {
+    "description": "Proceed to payment button"
+  },
+  "completePayment": "إتمام الدفع",
+  "@completePayment": {
+    "description": "Complete payment button"
+  },
+  "viewBookingDetails": "عرض التفاصيل",
+  "@viewBookingDetails": {
+    "description": "View booking details action"
+  },
+  "bookingPrePaymentTitle": "تفاصيل الموقف",
+  "@bookingPrePaymentTitle": {
+    "description": "Title for booking pre-payment screen"
+  },
+  "bookingPrePaymentChooseTime": "اختر الوقت",
+  "@bookingPrePaymentChooseTime": {
+    "description": "Section title for time selection"
+  },
+  "bookingPrePaymentChooseVehicle": "اختر المركبة",
+  "@bookingPrePaymentChooseVehicle": {
+    "description": "Section title for vehicle selection"
+  },
+  "bookingPrePaymentChooseVehicleRequired": "اختر المركبة *",
+  "@bookingPrePaymentChooseVehicleRequired": {
+    "description": "Section title for vehicle selection with required indicator"
+  },
+  "bookingPrePaymentTimeCustom": "مخصص",
+  "@bookingPrePaymentTimeCustom": {
+    "description": "Custom time option"
+  },
+  "bookingPrePaymentTime1Hour": "1 ساعة",
+  "@bookingPrePaymentTime1Hour": {
+    "description": "1 hour time option"
+  },
+  "bookingPrePaymentTime2Hours": "2 ساعتين",
+  "@bookingPrePaymentTime2Hours": {
+    "description": "2 hours time option"
+  },
+  "bookingPrePaymentPaymentHours": "الساعات الخاضعة للدفع",
+  "@bookingPrePaymentPaymentHours": {
+    "description": "Text indicating payment hours apply"
+  },
+  "bookingPrePaymentAmountValue": "قيمة المبلغ:",
+  "@bookingPrePaymentAmountValue": {
+    "description": "Label for total amount"
+  },
+  "bookingPrePaymentVatIncluded": "شامل ضريبة القيمة المضافة",
+  "@bookingPrePaymentVatIncluded": {
+    "description": "Text indicating VAT is included"
+  },
+  "bookingPrePaymentContinue": "استمر",
+  "@bookingPrePaymentContinue": {
+    "description": "Continue button text"
+  },
+  "bookingPrePaymentTotalAvailable": "إجمالي المواقف المتاحة",
+  "@bookingPrePaymentTotalAvailable": {
+    "description": "Label for total available parking spots"
+  },
+  "paymentTitle": "الدفع",
+  "@paymentTitle": {
+    "description": "Payment screen title"
+  },
+  "paymentStarts": "تبدأ",
+  "@paymentStarts": {
+    "description": "Label for booking start time"
+  },
+  "paymentEnds": "تنتهي",
+  "@paymentEnds": {
+    "description": "Label for booking end time"
+  },
+  "paymentParkingFees": "رسوم الموقف",
+  "@paymentParkingFees": {
+    "description": "Label for parking fees"
+  },
+  "paymentSelectedMethod": "طريقة الدفع المختارة",
+  "@paymentSelectedMethod": {
+    "description": "Label for selected payment method"
+  },
+  "paymentRequiredAmount": "المبلغ المطلوب:",
+  "@paymentRequiredAmount": {
+    "description": "Label for required amount"
+  },
+  "paymentConfirm": "تأكيد",
+  "@paymentConfirm": {
+    "description": "Confirm payment button text"
+  },
+  "paymentAddCard": "إضافة بطاقة إئتمانية",
+  "@paymentAddCard": {
+    "description": "Add credit card option text"
+  },
+  "paymentCardEnding": "تنتهي البطاقة في",
+  "@paymentCardEnding": {
+    "description": "Card ending text"
+  },
+  "paymentExpiryDate": "تاريخ الإنتهاء",
+  "@paymentExpiryDate": {
+    "description": "Card expiry date label"
+  },
+  "paymentAcceptCards": "نحن نقبل مدى أو فيزا أو ماستر كارد",
+  "@paymentAcceptCards": {
+    "description": "Text about accepted payment cards"
+  },
+  "paymentSimulationNote": "ملاحظة هامة",
+  "@paymentSimulationNote": {
+    "description": "Title for payment simulation note section"
+  },
+  "paymentSimulationDescription": "هذه عملية محاكاة للدفع فقط. لن يتم خصم أي أموال حقيقية من حسابك. لا حاجة لإدخال بيانات بطاقة أو محفظة إلكترونية. يتم حساب المبلغ تلقائياً بناءً على تفاصيل الحجز.",
+  "@paymentSimulationDescription": {
+    "description": "Description explaining payment simulation"
+  },
+  "paymentSimulateSuccess": "نجاح الدفع",
+  "@paymentSimulateSuccess": {
+    "description": "Button text to simulate successful payment"
+  },
+  "paymentSimulateFailure": "فشل الدفع",
+  "@paymentSimulateFailure": {
+    "description": "Button text to simulate failed payment"
+  },
+  "errorInvalidBookingId": "رقم الحجز غير صحيح. يرجى المحاولة مرة أخرى.",
+  "@errorInvalidBookingId": {
+    "description": "Error message when booking ID is invalid or missing"
+  },
+  "errorBookingIdMissing": "رقم الحجز مفقود. يرجى المحاولة مرة أخرى.",
+  "@errorBookingIdMissing": {
+    "description": "Error message when booking ID is missing from response"
+  },
+  "paymentSuccessMessage": "تم الدفع بنجاح!",
+  "@paymentSuccessMessage": {
+    "description": "Success message shown in payment success dialog"
+  },
+  "paymentSuccessQuestion": "هل تود استعراض تفاصيل الحجز أو العودة للصفحة الرئيسية؟",
+  "@paymentSuccessQuestion": {
+    "description": "Question text in payment success dialog"
+  },
+  "paymentViewDetails": "عرض التفاصيل",
+  "@paymentViewDetails": {
+    "description": "Button text to view booking details"
+  },
+  "paymentGoToHome": "الذهاب للرئيسية",
+  "@paymentGoToHome": {
+    "description": "Button text to go to main/home page"
   }
 }
 

@@ -65,39 +65,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: true,
         child: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
+            final l10n = AppLocalizations.of(context)!;
+            
             if (state is RegisterSuccess) {
+              // Show single translated success message based on user type
+              final successMessage = state.response.requiresApproval
+                  ? l10n.authSuccessRegisterOwner  // Owner - pending approval
+                  : l10n.authSuccessRegister;      // Regular user
+
               UnifiedSnackbar.success(
                 context,
-                message: state.message,
+                message: successMessage,
               );
 
-              // Show appropriate message based on user type
-              if (state.response.requiresApproval) {
-                // Owner registration - pending approval
-                final l10n = AppLocalizations.of(context)!;
-                Future.delayed(const Duration(seconds: 1), () {
-                  if (mounted) {
-                    UnifiedSnackbar.info(
-                      context,
-                      message: l10n.authSuccessRegisterPending,
-                    );
-                  }
-                });
-              }
-
               // Navigate to login after a short delay
+              // Clear entire navigation stack
               Future.delayed(const Duration(seconds: 2), () {
                 if (mounted) {
-                  context.pushReplacement(Routes.loginPath);
+                  context.go(Routes.loginPath);
                 }
               });
             } else if (state is RegisterFailure) {
-              final l10n = AppLocalizations.of(context)!;
               final errorMessage = AuthErrorHandler.handleRegisterError(
                 state.error,
                 state.statusCode,
@@ -118,22 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 20.h),
-
-                      // Back button
-                      Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () => context.pushReplacement(Routes.loginPath),
-                          color: AppColors.primaryText,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
-                      ),
-
-                      SizedBox(height: 10.h),
-
+                      SizedBox(height: 40.h),
                       // Sign Up Image
                       Center(
                         child: Image.asset(

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/map/map_point.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/map/map_adapter.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/parking_lot_entity.dart';
 import '../../domain/entities/parking_details_entity.dart';
+import '../../../../features/parking/models/parking_model.dart';
+import '../../../../features/vehicles/data/models/vehicle_model.dart';
+import '../../../../features/vehicles/domain/entities/vehicle_entity.dart';
+import '../../../../features/vehicles/domain/usecases/get_vehicles_usecase.dart';
 
 /// Parking Details Bottom Sheet
 /// Modern bottom sheet inspired by reference designs
@@ -131,18 +138,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: widget.details != null
-                          ? () {
-                              // TODO: Navigate to booking screen
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    AppLocalizations.of(
-                                      context,
-                                    )!.parkingCreateButton,
-                                  ),
-                                ),
-                              );
-                            }
+                          ? () => _handleSelectAndPay(context)
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
@@ -338,6 +334,122 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
         ),
       );
     }
+  }
+
+  /// Handle select and pay button - Navigate to booking pre payment screen
+  Future<void> _handleSelectAndPay(BuildContext context) async {
+    if (widget.details == null) return;
+
+    // Get GoRouter before closing bottom sheet
+    final router = GoRouter.of(context);
+    
+    try {
+      // Close bottom sheet first
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+
+      // Wait a bit for bottom sheet to close
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      // Get the root context for dialogs
+      final rootContext = router.routerDelegate.navigatorKey.currentContext;
+      if (rootContext == null) {
+        debugPrint('❌ Root context is null');
+        return;
+      }
+
+      // Show loading indicator
+      showDialog(
+        context: rootContext,
+        barrierDismissible: false,
+        builder: (dialogContext) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
+      // Fetch vehicles
+      final getVehiclesUseCase = getIt<GetVehiclesUseCase>();
+      final vehiclesEntities = await getVehiclesUseCase();
+
+      // Convert entities to models
+      final vehicles = vehiclesEntities
+          .map((entity) => _vehicleEntityToModel(entity))
+          .toList();
+
+      // Convert parking details to parking model
+      final parking = _parkingDetailsToModel(widget.details!);
+
+      // Close loading dialog
+      if (rootContext.mounted && Navigator.of(rootContext).canPop()) {
+        Navigator.of(rootContext).pop();
+      }
+
+      // Navigate to booking pre payment screen
+      router.push(
+        Routes.bookingPrePaymentPath,
+        extra: {
+          'parking': parking,
+          'vehicles': vehicles,
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ Error in _handleSelectAndPay: $e');
+      
+      // Close loading dialog if still open
+      final rootContext = router.routerDelegate.navigatorKey.currentContext;
+      if (rootContext != null && rootContext.mounted) {
+        if (Navigator.of(rootContext).canPop()) {
+          Navigator.of(rootContext).pop();
+        }
+
+        // Show error message
+        final l10n = AppLocalizations.of(rootContext);
+        ScaffoldMessenger.of(rootContext).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n?.error ?? 'حدث خطأ',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Convert ParkingDetailsEntity to ParkingModel
+  ParkingModel _parkingDetailsToModel(ParkingDetailsEntity details) {
+    return ParkingModel(
+      lotId: details.lotId,
+      lotName: details.lotName,
+      address: details.address,
+      latitude: details.latitude,
+      longitude: details.longitude,
+      totalSpaces: details.totalSpaces,
+      availableSpaces: details.availableSpaces,
+      hourlyRate: details.hourlyRate,
+      status: details.status,
+      statusRequest: details.statusRequest,
+      userId: details.userId,
+      createdAt: details.createdAt,
+      updatedAt: details.updatedAt,
+    );
+  }
+
+  /// Convert VehicleEntity to VehicleModel
+  VehicleModel _vehicleEntityToModel(VehicleEntity entity) {
+    return VehicleModel(
+      vehicleId: entity.vehicleId,
+      platNumber: entity.platNumber,
+      carMake: entity.carMake,
+      carModel: entity.carModel,
+      color: entity.color,
+      status: entity.status,
+      requestStatus: entity.requestStatus,
+      userId: entity.userId,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    );
   }
 
   Widget _buildErrorState(BuildContext context, String error) {

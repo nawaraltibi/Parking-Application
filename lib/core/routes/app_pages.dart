@@ -20,8 +20,11 @@ import '../../features/vehicles/presentation/pages/edit_vehicle_page.dart';
 import '../../features/vehicles/presentation/pages/vehicles_page.dart';
 import '../../features/vehicles/domain/entities/vehicle_entity.dart';
 import '../../features/booking/presentation/pages/booking_pre_payment_screen.dart';
+import '../../features/booking/presentation/pages/payment_screen.dart';
+import '../../features/booking/presentation/pages/booking_details_screen.dart';
 import '../../features/booking/bloc/create_booking/create_booking_bloc.dart';
 import '../../features/vehicles/data/models/vehicle_model.dart';
+import '../../l10n/app_localizations.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -138,6 +141,50 @@ final appPages = GoRouter(
             vehicles: vehicles,
           ),
         );
+      },
+    ),
+    GoRoute(
+      path: Routes.paymentPath,
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        final parking = data['parking'] as ParkingModel;
+        final vehicle = data['vehicle'] as VehicleModel;
+        final hours = data['hours'] as int;
+        final totalAmount = data['totalAmount'] as double;
+        final bookingId = data['bookingId'] as int? ?? 0;
+        final startTime = data['startTime'] as DateTime?;
+        final endTime = data['endTime'] as DateTime?;
+        
+        // Validate booking_id is present
+        if (bookingId == 0) {
+          // This should not happen if flow is correct, but handle gracefully
+          final l10n = AppLocalizations.of(context);
+          return Scaffold(
+            body: Center(
+              child: Text(
+                l10n?.errorInvalidBookingId ?? 'Invalid booking. Please try again.',
+              ),
+            ),
+          );
+        }
+        
+        return PaymentScreen(
+          parking: parking,
+          vehicle: vehicle,
+          hours: hours,
+          totalAmount: totalAmount,
+          bookingId: bookingId,
+          startTime: startTime,
+          endTime: endTime,
+        );
+      },
+    ),
+    GoRoute(
+      path: Routes.bookingDetailsPath,
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>?;
+        final bookingId = data?['bookingId'] as int? ?? 0;
+        return BookingDetailsScreen(bookingId: bookingId);
       },
     ),
   ],

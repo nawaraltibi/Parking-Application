@@ -6,14 +6,17 @@
 /// - Dashboard with statistics
 /// 
 /// Architecture:
-/// - cubit/: State management (Cubit pattern)
+/// - bloc/: State management (Bloc pattern)
 /// - models/: Data models and DTOs
 /// - presentation/: UI components (pages, widgets, utils)
 /// - repository/: Data layer for API calls
 /// - core/: Feature-specific enums and constants
 
-// Export cubit
-export 'cubit/parking_cubit.dart';
+// Export Blocs
+export 'bloc/create_parking/create_parking_bloc.dart';
+export 'bloc/parking_list/parking_list_bloc.dart';
+export 'bloc/update_parking/update_parking_bloc.dart';
+export 'bloc/parking_stats/parking_stats_bloc.dart';
 
 // Export models
 export 'models/create_parking_request.dart';

@@ -171,6 +171,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authErrorAccountBlocked => 'تم حظر حسابك. الرجاء التواصل مع الدعم';
 
   @override
+  String get authSuccessRegister =>
+      'تم إنشاء الحساب بنجاح! يرجى تسجيل الدخول للمتابعة.';
+
+  @override
+  String get authSuccessRegisterOwner =>
+      'تم إنشاء الحساب بنجاح! حسابك في انتظار موافقة المدير.';
+
+  @override
   String get authSuccessRegisterPending =>
       'حسابك في انتظار موافقة المدير. سيتم إشعارك عند الموافقة.';
 
@@ -885,4 +893,272 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get routingFailed =>
       'فشل الحصول على الاتجاهات. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get bookingTitle => 'الحجز';
+
+  @override
+  String get createBooking => 'إنشاء حجز';
+
+  @override
+  String get bookingCreatedSuccess =>
+      'تم إنشاء الحجز بنجاح! يرجى إكمال الدفع للتفعيل.';
+
+  @override
+  String get bookingCancelledSuccess => 'تم إلغاء الحجز بنجاح';
+
+  @override
+  String get bookingExtendedSuccess =>
+      'تم طلب تمديد الحجز. يرجى إكمال الدفع للتطبيق.';
+
+  @override
+  String get paymentProcessedSuccess => 'تمت معالجة الدفع بنجاح';
+
+  @override
+  String get paymentFailureRecorded => 'تم تسجيل فشل الدفع';
+
+  @override
+  String get cancelBooking => 'إلغاء الحجز';
+
+  @override
+  String get extendBooking => 'تمديد الحجز';
+
+  @override
+  String get activeBookings => 'الحجوزات النشطة';
+
+  @override
+  String get finishedBookings => 'الحجوزات المنتهية';
+
+  @override
+  String get bookingDetails => 'تفاصيل الحجز';
+
+  @override
+  String get noActiveBookings => 'لا توجد حجوزات نشطة';
+
+  @override
+  String get noFinishedBookings => 'لا توجد حجوزات منتهية';
+
+  @override
+  String get noPaymentsYet => 'لا توجد دفعات بعد';
+
+  @override
+  String get bookingId => 'رقم الحجز';
+
+  @override
+  String get startTime => 'وقت البداية';
+
+  @override
+  String get endTime => 'وقت الانتهاء';
+
+  @override
+  String get totalAmount => 'المبلغ الإجمالي';
+
+  @override
+  String get bookingStatus => 'الحالة';
+
+  @override
+  String get statusActive => 'نشط';
+
+  @override
+  String get statusPending => 'بانتظار الدفع';
+
+  @override
+  String get statusInactive => 'ملغى';
+
+  @override
+  String get remainingTime => 'الوقت المتبقي';
+
+  @override
+  String get timeExpired => 'انتهى الوقت';
+
+  @override
+  String get timeWarning => 'أقل من 10 دقائق متبقية!';
+
+  @override
+  String get selectVehicle => 'اختر مركبة';
+
+  @override
+  String get selectParkingLot => 'اختر موقف سيارات';
+
+  @override
+  String get numberOfHours => 'عدد الساعات';
+
+  @override
+  String get extraHours => 'ساعات إضافية';
+
+  @override
+  String get hourlyRate => 'السعر بالساعة';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get paymentMethodCash => 'نقداً';
+
+  @override
+  String get paymentMethodCredit => 'بطاقة ائتمان';
+
+  @override
+  String get paymentMethodOnline => 'دفع إلكتروني';
+
+  @override
+  String get transactionId => 'رقم المعاملة';
+
+  @override
+  String get paymentHistory => 'سجل الدفعات';
+
+  @override
+  String get downloadInvoice => 'تحميل الفاتورة';
+
+  @override
+  String get invoiceDownloadSuccess => 'تم تحميل الفاتورة بنجاح';
+
+  @override
+  String get invoiceDownloadFailed => 'فشل تحميل الفاتورة';
+
+  @override
+  String get confirmCancelBooking => 'هل أنت متأكد أنك تريد إلغاء هذا الحجز؟';
+
+  @override
+  String get cancelBookingWarning => 'لا يمكن التراجع عن هذا الإجراء';
+
+  @override
+  String get bookingNotFound => 'الحجز غير موجود أو لا ينتمي لك';
+
+  @override
+  String get bookingMustBeActive => 'يجب أن يكون الحجز نشطاً (مدفوع) للتمديد';
+
+  @override
+  String get parkingLotFull => 'موقف السيارات ممتلئ';
+
+  @override
+  String get parkingLotUnavailable => 'موقف السيارات غير متاح';
+
+  @override
+  String get vehicleNotOwned => 'المركبة لا تنتمي لك';
+
+  @override
+  String get invalidHours =>
+      'عدد ساعات غير صالح. يجب أن يكون ساعة واحدة على الأقل.';
+
+  @override
+  String get bookingAlreadyCancelled => 'الحجز ملغى بالفعل';
+
+  @override
+  String get bookingCannotBeCancelled => 'لا يمكن إلغاء الحجز';
+
+  @override
+  String get remainingSpaces => 'الأماكن المتبقية';
+
+  @override
+  String get proceedToPayment => 'المتابعة للدفع';
+
+  @override
+  String get completePayment => 'إتمام الدفع';
+
+  @override
+  String get viewBookingDetails => 'عرض التفاصيل';
+
+  @override
+  String get bookingPrePaymentTitle => 'تفاصيل الموقف';
+
+  @override
+  String get bookingPrePaymentChooseTime => 'اختر الوقت';
+
+  @override
+  String get bookingPrePaymentChooseVehicle => 'اختر المركبة';
+
+  @override
+  String get bookingPrePaymentChooseVehicleRequired => 'اختر المركبة *';
+
+  @override
+  String get bookingPrePaymentTimeCustom => 'مخصص';
+
+  @override
+  String get bookingPrePaymentTime1Hour => '1 ساعة';
+
+  @override
+  String get bookingPrePaymentTime2Hours => '2 ساعتين';
+
+  @override
+  String get bookingPrePaymentPaymentHours => 'الساعات الخاضعة للدفع';
+
+  @override
+  String get bookingPrePaymentAmountValue => 'قيمة المبلغ:';
+
+  @override
+  String get bookingPrePaymentVatIncluded => 'شامل ضريبة القيمة المضافة';
+
+  @override
+  String get bookingPrePaymentContinue => 'استمر';
+
+  @override
+  String get bookingPrePaymentTotalAvailable => 'إجمالي المواقف المتاحة';
+
+  @override
+  String get paymentTitle => 'الدفع';
+
+  @override
+  String get paymentStarts => 'تبدأ';
+
+  @override
+  String get paymentEnds => 'تنتهي';
+
+  @override
+  String get paymentParkingFees => 'رسوم الموقف';
+
+  @override
+  String get paymentSelectedMethod => 'طريقة الدفع المختارة';
+
+  @override
+  String get paymentRequiredAmount => 'المبلغ المطلوب:';
+
+  @override
+  String get paymentConfirm => 'تأكيد';
+
+  @override
+  String get paymentAddCard => 'إضافة بطاقة إئتمانية';
+
+  @override
+  String get paymentCardEnding => 'تنتهي البطاقة في';
+
+  @override
+  String get paymentExpiryDate => 'تاريخ الإنتهاء';
+
+  @override
+  String get paymentAcceptCards => 'نحن نقبل مدى أو فيزا أو ماستر كارد';
+
+  @override
+  String get paymentSimulationNote => 'ملاحظة هامة';
+
+  @override
+  String get paymentSimulationDescription =>
+      'هذه عملية محاكاة للدفع فقط. لن يتم خصم أي أموال حقيقية من حسابك. لا حاجة لإدخال بيانات بطاقة أو محفظة إلكترونية. يتم حساب المبلغ تلقائياً بناءً على تفاصيل الحجز.';
+
+  @override
+  String get paymentSimulateSuccess => 'نجاح الدفع';
+
+  @override
+  String get paymentSimulateFailure => 'فشل الدفع';
+
+  @override
+  String get errorInvalidBookingId =>
+      'رقم الحجز غير صحيح. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorBookingIdMissing =>
+      'رقم الحجز مفقود. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get paymentSuccessMessage => 'تم الدفع بنجاح!';
+
+  @override
+  String get paymentSuccessQuestion =>
+      'هل تود استعراض تفاصيل الحجز أو العودة للصفحة الرئيسية؟';
+
+  @override
+  String get paymentViewDetails => 'عرض التفاصيل';
+
+  @override
+  String get paymentGoToHome => 'الذهاب للرئيسية';
 }

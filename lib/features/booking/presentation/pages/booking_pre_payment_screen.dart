@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/core.dart';
 import '../../../../core/injection/service_locator.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../bloc/create_booking/create_booking_bloc.dart';
 import '../../../parking/models/parking_model.dart';
@@ -147,12 +148,21 @@ class _BookingPrePaymentScreenState extends State<BookingPrePaymentScreen> {
   void _onContinue() {
     if (_selectedVehicleId == null) {
       // Show error - vehicle must be selected
+      final l10n = AppLocalizations.of(context);
+      if (l10n != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.bookingPrePaymentChooseVehicleRequired),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
       return;
     }
 
-    // Navigate to payment or submit booking
-    // The bloc will handle the booking creation
-    context.read<CreateBookingBloc>().add(SubmitCreateBooking());
+    // Submit create booking request
+    // This will trigger CreateBookingSuccess state, which will navigate to payment
+    context.read<CreateBookingBloc>().add(const SubmitCreateBooking());
   }
 
   double _calculateTotalPrice() {
@@ -172,22 +182,114 @@ class _BookingPrePaymentScreenState extends State<BookingPrePaymentScreen> {
       body: BlocListener<CreateBookingBloc, CreateBookingState>(
         listener: (context, state) {
           if (state is CreateBookingSuccess) {
-            // Navigate to payment or booking details
-            context.pop();
-            // Show success message
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(l10n.bookingCreatedSuccess),
-                backgroundColor: AppColors.success,
-              ),
+            // Extract booking_id from response
+            final bookingId = state.response.data?.bookingId;
+            final bookingData = state.response.data;
+
+            if (bookingId == null || bookingId == 0) {
+              // Show error if booking_id is missing
+              UnifiedSnackbar.error(
+                context,
+                message: l10n.errorBookingIdMissing,
+              );
+              return;
+            }
+
+            // Find selected vehicle
+            final selectedVehicle = _vehicles.firstWhere(
+              (v) => v.vehicleId == _selectedVehicleId,
+              orElse: () => _vehicles.first,
+            );
+
+            // Use total_amount from booking response if available, otherwise calculate
+            final totalAmount = bookingData?.totalAmount ?? _calculateTotalPrice();
+
+            // Parse start_time and end_time from booking response if available
+            DateTime? startTime;
+            DateTime? endTime;
+            if (bookingData != null) {
+              try {
+                startTime = DateTime.parse(bookingData.startTime);
+                endTime = DateTime.parse(bookingData.endTime);
+              } catch (e) {
+                // If parsing fails, calculate from hours
+                startTime = DateTime.now();
+                endTime = startTime.add(Duration(hours: bookingData.hours));
+              }
+            }
+
+            // Navigate to payment screen with booking_id
+            context.push(
+              Routes.paymentPath,
+              extra: {
+                'parking': widget.parking,
+                'vehicle': selectedVehicle,
+                'hours': bookingData?.hours ?? _selectedHours,
+                'totalAmount': totalAmount,
+                'bookingId': bookingId, // Pass booking_id from API response
+                if (startTime != null) 'startTime': startTime,
+                if (endTime != null) 'endTime': endTime,
+              },
             );
           } else if (state is CreateBookingFailure) {
-            // Show error message
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                backgroundColor: AppColors.error,
-              ),
+            // Handle 409 Conflict - existing booking with same details
+            // The API returns booking_id in the error response data
+            if (state.statusCode == 409 && state.responseData != null) {
+              final responseData = state.responseData!;
+              final existingBookingId = responseData['data']?['booking_id'] as int?;
+              
+              if (existingBookingId != null && existingBookingId > 0) {
+                // Extract booking data from error response
+                final bookingDataMap = responseData['data'] as Map<String, dynamic>?;
+                
+                // Find selected vehicle
+                final selectedVehicle = _vehicles.firstWhere(
+                  (v) => v.vehicleId == _selectedVehicleId,
+                  orElse: () => _vehicles.first,
+                );
+
+                // Calculate total amount (may not be in error response)
+                final totalAmount = _calculateTotalPrice();
+                
+                // Parse times if available
+                DateTime? startTime;
+                DateTime? endTime;
+                if (bookingDataMap?['end_time'] != null) {
+                  try {
+                    // Try to parse end_time to calculate start_time
+                    final endTimeStr = bookingDataMap!['end_time'] as String;
+                    endTime = DateTime.parse(endTimeStr);
+                    startTime = endTime.subtract(Duration(hours: _selectedHours));
+                  } catch (e) {
+                    startTime = DateTime.now();
+                    endTime = startTime.add(Duration(hours: _selectedHours));
+                  }
+                } else {
+                  startTime = DateTime.now();
+                  endTime = startTime.add(Duration(hours: _selectedHours));
+                }
+
+                // Navigate to payment screen with existing booking_id
+                context.push(
+                  Routes.paymentPath,
+                  extra: {
+                    'parking': widget.parking,
+                    'vehicle': selectedVehicle,
+                    'hours': _selectedHours,
+                    'totalAmount': totalAmount,
+                    'bookingId': existingBookingId,
+                    'startTime': startTime,
+                    'endTime': endTime,
+                  },
+                );
+                return; // Exit early, navigation handled
+              }
+            }
+            
+            // Show error message for other failures
+            UnifiedSnackbar.error(
+              context,
+              message: state.error,
             );
           }
         },

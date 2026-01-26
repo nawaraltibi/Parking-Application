@@ -237,6 +237,7 @@ class DioProvider {
           errorCode: errorCode,
           message: errorMessage,
           errors: parsedErrors,
+          responseData: data, // Include full response data for special handling (e.g., 409 with booking_id)
         );
     }
   }

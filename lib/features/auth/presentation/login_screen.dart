@@ -66,17 +66,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Navigate to appropriate main screen based on user type
               // Only navigate if user is active (inactive owners are blocked before LoginSuccess)
+              // Clear entire navigation stack
               final userType = state.response.userType;
-              final navigator = GoRouter.of(context);
               Future.delayed(const Duration(seconds: 1), () {
                 if (mounted) {
                   if (userType == 'owner') {
-                    navigator.pushReplacement(Routes.ownerMainPath);
+                    context.go(Routes.ownerMainPath);
                   } else if (userType == 'user') {
-                    navigator.pushReplacement(Routes.userMainPath);
+                    context.go(Routes.userMainPath);
                   } else {
                     // Fallback to user main screen for unknown types
-                    navigator.pushReplacement(Routes.userMainPath);
+                    context.go(Routes.userMainPath);
                   }
                 }
               });

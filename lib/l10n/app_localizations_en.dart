@@ -172,6 +172,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account has been blocked. Please contact support';
 
   @override
+  String get authSuccessRegister =>
+      'Account created successfully! Please login to continue.';
+
+  @override
+  String get authSuccessRegisterOwner =>
+      'Account created successfully! Your account is pending admin approval.';
+
+  @override
   String get authSuccessRegisterPending =>
       'Your account is pending admin approval. You will be notified once approved.';
 
@@ -888,4 +896,272 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get routingFailed => 'Failed to get directions. Please try again.';
+
+  @override
+  String get bookingTitle => 'Booking';
+
+  @override
+  String get createBooking => 'Create Booking';
+
+  @override
+  String get bookingCreatedSuccess =>
+      'Booking created successfully! Please complete payment to activate.';
+
+  @override
+  String get bookingCancelledSuccess => 'Booking cancelled successfully';
+
+  @override
+  String get bookingExtendedSuccess =>
+      'Booking extension requested. Please complete payment to apply.';
+
+  @override
+  String get paymentProcessedSuccess => 'Payment processed successfully';
+
+  @override
+  String get paymentFailureRecorded => 'Payment failure recorded';
+
+  @override
+  String get cancelBooking => 'Cancel Booking';
+
+  @override
+  String get extendBooking => 'Extend Booking';
+
+  @override
+  String get activeBookings => 'Active Bookings';
+
+  @override
+  String get finishedBookings => 'Finished Bookings';
+
+  @override
+  String get bookingDetails => 'Booking Details';
+
+  @override
+  String get noActiveBookings => 'No active bookings';
+
+  @override
+  String get noFinishedBookings => 'No finished bookings';
+
+  @override
+  String get noPaymentsYet => 'No payments yet';
+
+  @override
+  String get bookingId => 'Booking ID';
+
+  @override
+  String get startTime => 'Start Time';
+
+  @override
+  String get endTime => 'End Time';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get bookingStatus => 'Status';
+
+  @override
+  String get statusActive => 'Active';
+
+  @override
+  String get statusPending => 'Pending Payment';
+
+  @override
+  String get statusInactive => 'Cancelled';
+
+  @override
+  String get remainingTime => 'Remaining Time';
+
+  @override
+  String get timeExpired => 'Time Expired';
+
+  @override
+  String get timeWarning => 'Less than 10 minutes remaining!';
+
+  @override
+  String get selectVehicle => 'Select Vehicle';
+
+  @override
+  String get selectParkingLot => 'Select Parking Lot';
+
+  @override
+  String get numberOfHours => 'Number of Hours';
+
+  @override
+  String get extraHours => 'Extra Hours';
+
+  @override
+  String get hourlyRate => 'Hourly Rate';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get paymentMethodCash => 'Cash';
+
+  @override
+  String get paymentMethodCredit => 'Credit Card';
+
+  @override
+  String get paymentMethodOnline => 'Online Payment';
+
+  @override
+  String get transactionId => 'Transaction ID';
+
+  @override
+  String get paymentHistory => 'Payment History';
+
+  @override
+  String get downloadInvoice => 'Download Invoice';
+
+  @override
+  String get invoiceDownloadSuccess => 'Invoice downloaded successfully';
+
+  @override
+  String get invoiceDownloadFailed => 'Failed to download invoice';
+
+  @override
+  String get confirmCancelBooking =>
+      'Are you sure you want to cancel this booking?';
+
+  @override
+  String get cancelBookingWarning => 'This action cannot be undone';
+
+  @override
+  String get bookingNotFound => 'Booking not found or doesn\'t belong to you';
+
+  @override
+  String get bookingMustBeActive => 'Booking must be active (paid) to extend';
+
+  @override
+  String get parkingLotFull => 'Parking lot is full';
+
+  @override
+  String get parkingLotUnavailable => 'Parking lot is unavailable';
+
+  @override
+  String get vehicleNotOwned => 'Vehicle does not belong to you';
+
+  @override
+  String get invalidHours =>
+      'Invalid number of hours. Must be at least 1 hour.';
+
+  @override
+  String get bookingAlreadyCancelled => 'Booking is already cancelled';
+
+  @override
+  String get bookingCannotBeCancelled => 'Booking cannot be cancelled';
+
+  @override
+  String get remainingSpaces => 'Remaining Spaces';
+
+  @override
+  String get proceedToPayment => 'Proceed to Payment';
+
+  @override
+  String get completePayment => 'Complete Payment';
+
+  @override
+  String get viewBookingDetails => 'View Details';
+
+  @override
+  String get bookingPrePaymentTitle => 'Parking Details';
+
+  @override
+  String get bookingPrePaymentChooseTime => 'Choose Time';
+
+  @override
+  String get bookingPrePaymentChooseVehicle => 'Choose Vehicle';
+
+  @override
+  String get bookingPrePaymentChooseVehicleRequired => 'Choose Vehicle *';
+
+  @override
+  String get bookingPrePaymentTimeCustom => 'Custom';
+
+  @override
+  String get bookingPrePaymentTime1Hour => '1 Hour';
+
+  @override
+  String get bookingPrePaymentTime2Hours => '2 Hours';
+
+  @override
+  String get bookingPrePaymentPaymentHours => 'Payment hours apply';
+
+  @override
+  String get bookingPrePaymentAmountValue => 'Amount Value:';
+
+  @override
+  String get bookingPrePaymentVatIncluded => 'Including Value Added Tax';
+
+  @override
+  String get bookingPrePaymentContinue => 'Continue';
+
+  @override
+  String get bookingPrePaymentTotalAvailable => 'Total Available Parking Spots';
+
+  @override
+  String get paymentTitle => 'Payment';
+
+  @override
+  String get paymentStarts => 'Starts';
+
+  @override
+  String get paymentEnds => 'Ends';
+
+  @override
+  String get paymentParkingFees => 'Parking Fees';
+
+  @override
+  String get paymentSelectedMethod => 'Selected Payment Method';
+
+  @override
+  String get paymentRequiredAmount => 'Required Amount:';
+
+  @override
+  String get paymentConfirm => 'Confirm';
+
+  @override
+  String get paymentAddCard => 'Add Credit Card';
+
+  @override
+  String get paymentCardEnding => 'Card ending in';
+
+  @override
+  String get paymentExpiryDate => 'Expiry Date';
+
+  @override
+  String get paymentAcceptCards => 'We accept Mada, Visa, or Mastercard';
+
+  @override
+  String get paymentSimulationNote => 'Payment Simulation';
+
+  @override
+  String get paymentSimulationDescription =>
+      'All payments are simulation only. No real money is charged. No card or wallet information is required. Payment amount is auto-calculated from booking.';
+
+  @override
+  String get paymentSimulateSuccess => 'Simulate Success';
+
+  @override
+  String get paymentSimulateFailure => 'Simulate Failure';
+
+  @override
+  String get errorInvalidBookingId => 'Invalid booking ID. Please try again.';
+
+  @override
+  String get errorBookingIdMissing =>
+      'Booking ID is missing. Please try again.';
+
+  @override
+  String get paymentSuccessMessage => 'Payment successful!';
+
+  @override
+  String get paymentSuccessQuestion =>
+      'Do you want to view booking details or return to the main page?';
+
+  @override
+  String get paymentViewDetails => 'View Details';
+
+  @override
+  String get paymentGoToHome => 'Go to Main Page';
 }

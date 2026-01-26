@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/injection/service_locator.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../parking/cubit/parking_cubit.dart';
+import '../../../parking/bloc/parking_list/parking_list_bloc.dart';
+import '../../../parking/bloc/parking_stats/parking_stats_bloc.dart';
 import '../../../parking/presentation/pages/parking_list_screen.dart';
 import '../../../parking/presentation/pages/parking_dashboard_screen.dart';
 
@@ -41,12 +41,23 @@ class _OwnerParkingManagementPageState
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return BlocProvider(
-      create: (context) {
-        final cubit = getIt<ParkingCubit>();
-        debugPrint('🏗️ OwnerParkingManagementPage: Created ParkingCubit instance: ${cubit.hashCode}');
-        return cubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ParkingListBloc>(
+          create: (context) {
+            final bloc = ParkingListBloc();
+            debugPrint('🏗️ OwnerParkingManagementPage: Created ParkingListBloc instance: ${bloc.hashCode}');
+            return bloc;
+          },
+        ),
+        BlocProvider<ParkingStatsBloc>(
+          create: (context) {
+            final bloc = ParkingStatsBloc();
+            debugPrint('🏗️ OwnerParkingManagementPage: Created ParkingStatsBloc instance: ${bloc.hashCode}');
+            return bloc;
+          },
+        ),
+      ],
       child: DefaultTabController(
         length: 2,
         child: Column(
