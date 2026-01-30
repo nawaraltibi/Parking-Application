@@ -3,7 +3,7 @@ import '../../../data/datasources/network/dio_provider.dart';
 
 /// File Downloader Repository
 /// Handles file download operations
-/// 
+///
 /// Why this is valuable:
 /// - Centralized file download logic
 /// - Progress tracking support
@@ -17,13 +17,14 @@ class FileDownloaderRepository {
     String savePath, {
     Function(int received, int total)? onProgress,
     CancelToken? cancelToken,
+    Map<String, String>? headers,
   }) async {
     await DioProvider.instance.downloadFile(
       url,
       savePath,
       cancelToken: cancelToken,
       onProgress: onProgress,
+      headers: headers,
     );
   }
 }
-

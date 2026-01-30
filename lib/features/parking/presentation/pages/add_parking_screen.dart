@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/parking_list_refresh_notifier.dart';
+import '../../../../core/utils/auth_route_transitions.dart';
+import '../../../../core/utils/navigation_utils.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -14,16 +17,16 @@ import '../utils/parking_error_handler.dart';
 import '../widgets/parking_form_fields.dart';
 import 'map_location_picker_screen.dart';
 
-/// Create Parking Screen
-/// Form for creating a new parking lot
-class CreateParkingScreen extends StatefulWidget {
-  const CreateParkingScreen({super.key});
+/// Add Parking Screen
+/// Form for adding a new parking lot
+class AddParkingScreen extends StatefulWidget {
+  const AddParkingScreen({super.key});
 
   @override
-  State<CreateParkingScreen> createState() => _CreateParkingScreenState();
+  State<AddParkingScreen> createState() => _AddParkingScreenState();
 }
 
-class _CreateParkingScreenState extends State<CreateParkingScreen> {
+class _AddParkingScreenState extends State<AddParkingScreen> {
   final _formKey = GlobalKey<FormState>();
   final _lotNameController = TextEditingController();
   final _addressController = TextEditingController();
@@ -45,8 +48,8 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
   Future<void> _openMapPicker() async {
     final result = await Navigator.push<GeoPoint>(
       context,
-      MaterialPageRoute(
-        builder: (context) => MapLocationPickerScreen(
+      AuthRouteTransitions.buildPageRoute<GeoPoint>(
+        child: MapLocationPickerScreen(
           initialLatitude: _selectedLocation?.latitude,
           initialLongitude: _selectedLocation?.longitude,
         ),
@@ -57,6 +60,10 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
       setState(() {
         _selectedLocation = result;
       });
+      // Unfocus so keyboard does not open on address field after closing map
+      if (mounted) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
     }
   }
 
@@ -107,10 +114,12 @@ class _CreateParkingScreenState extends State<CreateParkingScreen> {
                 message: l10n.parkingSuccessCreate,
               );
 
-              // Navigate to owner main screen using pushReplacement
+              // طلب تحديث القائمة قبل الانتقال حتى تُستدعى الـ API وتظهر آخر موقف
+              getIt<ParkingListRefreshNotifier>().requestRefresh();
+
               Future.delayed(const Duration(milliseconds: 100), () {
                 if (mounted) {
-                  context.pushReplacement(Routes.ownerMainPath);
+                  context.goAndClearStack(Routes.ownerMainPath);
                 }
               });
             }

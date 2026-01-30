@@ -13,18 +13,19 @@ abstract class FileDownloadEvent extends Equatable {
 class FileDownloadStarted extends FileDownloadEvent {
   final String url;
   final String savePath;
+  final Map<String, String>? headers;
 
   const FileDownloadStarted({
     required this.url,
     required this.savePath,
+    this.headers,
   });
 
   @override
-  List<Object?> get props => [url, savePath];
+  List<Object?> get props => [url, savePath, headers];
 }
 
 /// File Download Cancelled Event
 class FileDownloadCancelled extends FileDownloadEvent {
   const FileDownloadCancelled();
 }
-

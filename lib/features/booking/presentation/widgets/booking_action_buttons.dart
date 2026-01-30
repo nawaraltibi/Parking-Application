@@ -10,6 +10,7 @@ class BookingActionButtons extends StatelessWidget {
   final VoidCallback? onViewInvoice;
   final VoidCallback? onCancelBooking;
   final bool isActive;
+  final bool invoiceDownloading;
 
   const BookingActionButtons({
     super.key,
@@ -17,6 +18,7 @@ class BookingActionButtons extends StatelessWidget {
     this.onViewInvoice,
     this.onCancelBooking,
     this.isActive = true,
+    this.invoiceDownloading = false,
   });
 
   @override
@@ -66,39 +68,45 @@ class BookingActionButtons extends StatelessWidget {
                   ),
                 ),
               ),
-            
+
             if (isActive && onExtendBooking != null) SizedBox(height: 12.h),
-            
+
             // View Invoice Button
             if (onViewInvoice != null)
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: onViewInvoice,
+                  onPressed: invoiceDownloading ? null : onViewInvoice,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primary,
-                    side: BorderSide(
-                      color: AppColors.border,
-                      width: 1,
-                    ),
+                    side: BorderSide(color: AppColors.border, width: 1),
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
-                  child: Text(
-                    l10n.downloadInvoice,
-                    style: AppTextStyles.buttonText(
-                      context,
-                      color: AppColors.primary,
-                    ),
-                  ),
+                  child: invoiceDownloading
+                      ? SizedBox(
+                          height: 20.h,
+                          width: 20.w,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.primary,
+                          ),
+                        )
+                      : Text(
+                          l10n.downloadInvoice,
+                          style: AppTextStyles.buttonText(
+                            context,
+                            color: AppColors.primary,
+                          ),
+                        ),
                 ),
               ),
-            
-            if (onViewInvoice != null && onCancelBooking != null) 
+
+            if (onViewInvoice != null && onCancelBooking != null)
               SizedBox(height: 12.h),
-            
+
             // Cancel Booking Button
             if (onCancelBooking != null)
               SizedBox(
@@ -107,10 +115,7 @@ class BookingActionButtons extends StatelessWidget {
                   onPressed: onCancelBooking,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.error,
-                    side: BorderSide(
-                      color: AppColors.error,
-                      width: 1,
-                    ),
+                    side: BorderSide(color: AppColors.error, width: 1),
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
@@ -131,4 +136,3 @@ class BookingActionButtons extends StatelessWidget {
     );
   }
 }
-

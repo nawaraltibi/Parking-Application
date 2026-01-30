@@ -15,8 +15,8 @@ class BookingsListBloc extends Bloc<BookingsListEvent, BookingsListState> {
   final GetVehiclesUseCase? _getVehiclesUseCase;
 
   BookingsListBloc({GetVehiclesUseCase? getVehiclesUseCase})
-      : _getVehiclesUseCase = getVehiclesUseCase ?? getIt<GetVehiclesUseCase>(),
-        super(const BookingsListInitial()) {
+    : _getVehiclesUseCase = getVehiclesUseCase ?? getIt<GetVehiclesUseCase>(),
+      super(const BookingsListInitial()) {
     on<LoadActiveBookings>(_onLoadActiveBookings);
     on<LoadFinishedBookings>(_onLoadFinishedBookings);
     on<RefreshBookings>(_onRefreshBookings);
@@ -32,22 +32,19 @@ class BookingsListBloc extends Bloc<BookingsListEvent, BookingsListState> {
   ) async {
     emit(const BookingsListLoading());
     _currentTabIsActive = true;
+    // إعادة جلب قائمة المركبات عند كل تحميل للحجوزات النشطة لضمان إظهار اسم السيارة ورقم اللوحة
+    _cachedVehicles = null;
 
     try {
       final response = await BookingRepository.getActiveBookings();
       final bookings = response.data ?? [];
-      
-      // Enrich bookings with vehicle information
+
+      // الاعتماد على الـ API: /booking/active يرجع الحجوزات النشطة فقط، لا نطبق فلتر إضافي
       final enrichedBookings = await _enrichBookingsWithVehicles(bookings);
-      
-      emit(BookingsListLoaded(
-        bookings: enrichedBookings,
-        isActiveTab: true,
-      ));
+
+      emit(BookingsListLoaded(bookings: enrichedBookings, isActiveTab: true));
     } catch (e) {
-      emit(BookingsListError(
-        message: e.toString(),
-      ));
+      emit(BookingsListError(message: e.toString()));
     }
   }
 
@@ -61,18 +58,13 @@ class BookingsListBloc extends Bloc<BookingsListEvent, BookingsListState> {
     try {
       final response = await BookingRepository.getFinishedBookings();
       final bookings = response.data ?? [];
-      
+
       // Enrich bookings with vehicle information
       final enrichedBookings = await _enrichBookingsWithVehicles(bookings);
-      
-      emit(BookingsListLoaded(
-        bookings: enrichedBookings,
-        isActiveTab: false,
-      ));
+
+      emit(BookingsListLoaded(bookings: enrichedBookings, isActiveTab: false));
     } catch (e) {
-      emit(BookingsListError(
-        message: e.toString(),
-      ));
+      emit(BookingsListError(message: e.toString()));
     }
   }
 
@@ -136,10 +128,7 @@ class BookingsListBloc extends Bloc<BookingsListEvent, BookingsListState> {
     }
   }
 
-  void _onSwitchTab(
-    SwitchTab event,
-    Emitter<BookingsListState> emit,
-  ) {
+  void _onSwitchTab(SwitchTab event, Emitter<BookingsListState> emit) {
     if (event.isActiveTab) {
       add(const LoadActiveBookings());
     } else {

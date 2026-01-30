@@ -14,12 +14,8 @@ class ParkingNoResultsState extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return const SizedBox.shrink();
 
-    final title = l10n.parkingStatusActive == 'Active'
-        ? 'No results'
-        : 'لا توجد نتائج';
-    final subtitle = l10n.parkingStatusActive == 'Active'
-        ? 'Try searching with different keywords'
-        : 'جرب البحث بكلمات مختلفة';
+    final title = l10n.parkingNoResultsTitle;
+    final subtitle = l10n.parkingNoResultsSubtitle;
 
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -40,10 +36,7 @@ class ParkingNoResultsState extends StatelessWidget {
                   color: AppColors.secondaryText,
                 ),
                 SizedBox(height: 16.h),
-                Text(
-                  title,
-                  style: AppTextStyles.titleMedium(context),
-                ),
+                Text(title, style: AppTextStyles.titleMedium(context)),
                 SizedBox(height: 8.h),
                 Text(
                   subtitle,
@@ -60,4 +53,3 @@ class ParkingNoResultsState extends StatelessWidget {
     );
   }
 }
-

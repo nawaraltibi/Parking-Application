@@ -9,9 +9,10 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// Map Location Picker Screen
-/// 
+///
 /// A modern, clean map picker screen using flutter_osm_plugin.
 /// Features:
 /// - Fixed center marker: User pans the map underneath a fixed centered marker
@@ -22,7 +23,7 @@ import '../../../../core/widgets/unified_snackbar.dart';
 class MapLocationPickerScreen extends StatefulWidget {
   /// Initial latitude (for edit mode)
   final double? initialLatitude;
-  
+
   /// Initial longitude (for edit mode)
   final double? initialLongitude;
 
@@ -47,10 +48,8 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
   String? _errorMessage;
 
   /// Default fallback location (Damascus, Syria)
-  static GeoPoint get _defaultLocation => GeoPoint(
-        latitude: 33.5138,
-        longitude: 36.2765,
-      );
+  static GeoPoint get _defaultLocation =>
+      GeoPoint(latitude: 33.5138, longitude: 36.2765);
 
   /// Source of truth: Current map center (where the fixed pin points)
   /// Updated via onRegionChanged callback from OSMMixinObserver
@@ -86,9 +85,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
           longitude: widget.initialLongitude!,
         );
 
-        _mapController = MapController.withPosition(
-          initPosition: point,
-        );
+        _mapController = MapController.withPosition(initPosition: point);
         _currentMapCenter = point;
       } else {
         // CREATE MODE: Request permission and use user location or default
@@ -133,12 +130,13 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
   Future<void> _requestLocationPermission() async {
     try {
       _permissionStatus = await Permission.location.request();
-      
+
       if (_permissionStatus.isPermanentlyDenied) {
         if (mounted) {
           UnifiedSnackbar.show(
             context,
-            message: 'Location permission is permanently denied. Please enable it in settings.',
+            message:
+                'Location permission is permanently denied. Please enable it in settings.',
             type: SnackbarType.warning,
           );
         }
@@ -167,47 +165,51 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
       try {
         _currentMapCenter = await _mapController!.centerMap;
         if (kDebugMode) {
-          debugPrint('MapLocationPickerScreen: Initial center set -> '
-              '${_currentMapCenter!.latitude}, ${_currentMapCenter!.longitude}');
+          debugPrint(
+            'MapLocationPickerScreen: Initial center set -> '
+            '${_currentMapCenter!.latitude}, ${_currentMapCenter!.longitude}',
+          );
         }
       } catch (e) {
         debugPrint('MapLocationPickerScreen: Error getting initial center: $e');
       }
-      
+
       // Also setup listenerRegionIsChanging as a backup/additional tracking method
       _mapController!.listenerRegionIsChanging.addListener(_onRegionChanging);
     }
 
     // Center on user location if permission granted (CREATE mode only)
-    if (_permissionStatus.isGranted && 
-        widget.initialLatitude == null && 
+    if (_permissionStatus.isGranted &&
+        widget.initialLatitude == null &&
         _mapController != null) {
       _centerOnUserLocation();
-    } else if (widget.initialLatitude != null && 
-               widget.initialLongitude != null &&
-               _mapController != null) {
+    } else if (widget.initialLatitude != null &&
+        widget.initialLongitude != null &&
+        _mapController != null) {
       // EDIT MODE: Ensure we're centered on initial position
       _centerOnInitialPosition();
     }
   }
-  
+
   /// Additional listener for region changes (backup method)
   /// This ensures we track map center even if onRegionChanged doesn't fire
   Future<void> _onRegionChanging() async {
     if (_isDisposed || _mapController == null || !mounted) return;
-    
+
     try {
       final center = await _mapController!.centerMap;
-      
+
       // Only update if coordinates actually changed
       if (_currentMapCenter == null ||
           (_currentMapCenter!.latitude != center.latitude ||
-           _currentMapCenter!.longitude != center.longitude)) {
+              _currentMapCenter!.longitude != center.longitude)) {
         _currentMapCenter = center;
-        
+
         if (kDebugMode) {
-          debugPrint('MapLocationPickerScreen: Region changing -> '
-              '${center.latitude}, ${center.longitude}');
+          debugPrint(
+            'MapLocationPickerScreen: Region changing -> '
+            '${center.latitude}, ${center.longitude}',
+          );
         }
       }
     } catch (e) {
@@ -225,7 +227,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: const Duration(seconds: 10),
       );
-      
+
       final userPoint = GeoPoint(
         latitude: position.latitude,
         longitude: position.longitude,
@@ -233,10 +235,12 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
 
       await _mapController!.goToLocation(userPoint);
       _currentMapCenter = userPoint;
-      
+
       if (mounted) {
-        debugPrint('MapLocationPickerScreen: Centered on user location: '
-            '${userPoint.latitude}, ${userPoint.longitude}');
+        debugPrint(
+          'MapLocationPickerScreen: Centered on user location: '
+          '${userPoint.latitude}, ${userPoint.longitude}',
+        );
       }
     } catch (e) {
       // If user location fails, use default location
@@ -261,7 +265,9 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
       _currentMapCenter = initialPoint;
     } catch (e) {
       if (mounted) {
-        debugPrint('MapLocationPickerScreen: Error centering on initial position: $e');
+        debugPrint(
+          'MapLocationPickerScreen: Error centering on initial position: $e',
+        );
       }
     }
   }
@@ -271,22 +277,24 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
   @override
   void onRegionChanged(Region region) {
     super.onRegionChanged(region);
-    
+
     if (_isDisposed || !mounted) return;
 
     // Update the tracked center from the region
     // Note: This callback fires very frequently during panning (normal behavior)
     final newCenter = region.center;
-    
+
     // Only update if coordinates actually changed (avoid unnecessary updates)
     if (_currentMapCenter == null ||
         (_currentMapCenter!.latitude != newCenter.latitude ||
-         _currentMapCenter!.longitude != newCenter.longitude)) {
+            _currentMapCenter!.longitude != newCenter.longitude)) {
       _currentMapCenter = newCenter;
-      
+
       if (kDebugMode) {
-        debugPrint('MapLocationPickerScreen: Center updated -> '
-            '${newCenter.latitude}, ${newCenter.longitude}');
+        debugPrint(
+          'MapLocationPickerScreen: Center updated -> '
+          '${newCenter.latitude}, ${newCenter.longitude}',
+        );
       }
     }
   }
@@ -318,19 +326,21 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: const Duration(seconds: 10),
       );
-      
+
       final userPoint = GeoPoint(
         latitude: position.latitude,
         longitude: position.longitude,
       );
-      
+
       // Move map to user location
       await _mapController!.goToLocation(userPoint);
       _currentMapCenter = userPoint;
-      
+
       if (mounted) {
-        debugPrint('MapLocationPickerScreen: Moved to my location: '
-            '${userPoint.latitude}, ${userPoint.longitude}');
+        debugPrint(
+          'MapLocationPickerScreen: Moved to my location: '
+          '${userPoint.latitude}, ${userPoint.longitude}',
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -355,30 +365,38 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
     try {
       // First, try to get the latest center from the map controller
       final mapCenter = await _mapController!.centerMap;
-      
+
       // Use the most recent value (either from controller or tracked)
       final finalCenter = _currentMapCenter ?? mapCenter;
-      
+
       if (kDebugMode) {
-        debugPrint('MapLocationPickerScreen: Confirming location -> '
-            'Lat: ${finalCenter.latitude}, Lon: ${finalCenter.longitude}');
-        debugPrint('MapLocationPickerScreen: Tracked center -> '
-            '${_currentMapCenter?.latitude}, ${_currentMapCenter?.longitude}');
-        debugPrint('MapLocationPickerScreen: Controller center -> '
-            '${mapCenter.latitude}, ${mapCenter.longitude}');
+        debugPrint(
+          'MapLocationPickerScreen: Confirming location -> '
+          'Lat: ${finalCenter.latitude}, Lon: ${finalCenter.longitude}',
+        );
+        debugPrint(
+          'MapLocationPickerScreen: Tracked center -> '
+          '${_currentMapCenter?.latitude}, ${_currentMapCenter?.longitude}',
+        );
+        debugPrint(
+          'MapLocationPickerScreen: Controller center -> '
+          '${mapCenter.latitude}, ${mapCenter.longitude}',
+        );
       }
-      
+
       if (mounted) {
         Navigator.of(context).pop(finalCenter);
       }
     } catch (e) {
       debugPrint('MapLocationPickerScreen: Error getting center: $e');
-      
+
       // Fallback: Use tracked center if centerMap fails
       if (_currentMapCenter != null) {
         if (kDebugMode) {
-          debugPrint('MapLocationPickerScreen: Using tracked center (fallback): '
-              '${_currentMapCenter!.latitude}, ${_currentMapCenter!.longitude}');
+          debugPrint(
+            'MapLocationPickerScreen: Using tracked center (fallback): '
+            '${_currentMapCenter!.latitude}, ${_currentMapCenter!.longitude}',
+          );
         }
         if (mounted) {
           Navigator.of(context).pop(_currentMapCenter);
@@ -397,9 +415,10 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Location'),
+        title: Text(l10n?.parkingMapScreenTitle ?? 'Select Location'),
         actions: [
           IconButton(
             icon: const Icon(EvaIcons.navigation2),
@@ -413,9 +432,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
           // Map widget or loading/error state
           if (_isLoading)
             const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-              ),
+              child: CircularProgressIndicator(color: AppColors.primary),
             )
           else if (_errorMessage != null)
             Center(
@@ -430,10 +447,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
                       color: AppColors.error,
                     ),
                     SizedBox(height: 16.h),
-                    Text(
-                      'Error',
-                      style: AppTextStyles.titleLarge(context),
-                    ),
+                    Text('Error', style: AppTextStyles.titleLarge(context)),
                     SizedBox(height: 8.h),
                     Text(
                       _errorMessage!,
@@ -472,9 +486,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
                   maxZoomLevel: 19.0,
                   stepZoom: 1.0,
                 ),
-                roadConfiguration: RoadOption(
-                  roadColor: AppColors.primary,
-                ),
+                roadConfiguration: RoadOption(roadColor: AppColors.primary),
                 userLocationMarker: UserLocationMaker(
                   personMarker: const MarkerIcon(
                     icon: Icon(
@@ -497,8 +509,10 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
               onGeoPointClicked: (GeoPoint point) {
                 if (!_isDisposed && mounted) {
                   _currentMapCenter = point;
-                  debugPrint('MapLocationPickerScreen: Point clicked -> '
-                      '${point.latitude}, ${point.longitude}');
+                  debugPrint(
+                    'MapLocationPickerScreen: Point clicked -> '
+                    '${point.latitude}, ${point.longitude}',
+                  );
                 }
               },
             ),
@@ -521,7 +535,7 @@ class _MapLocationPickerScreenState extends State<MapLocationPickerScreen>
         child: Padding(
           padding: EdgeInsets.all(16.w),
           child: CustomElevatedButton(
-            title: 'Confirm Location',
+            title: l10n?.parkingConfirmLocationButton ?? 'Confirm Location',
             onPressed: _mapIsReady ? _confirmLocation : null,
           ),
         ),

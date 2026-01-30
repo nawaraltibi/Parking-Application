@@ -7,10 +7,11 @@ import '../../models/create_booking_response.dart';
 
 /// Booking Navigation Helper
 /// Centralizes navigation logic for booking flows
-/// 
+///
 /// Separates navigation concerns from UI screens
 class BookingNavigationHelper {
   /// Navigate to payment screen after booking creation
+  /// [openedFrom] يحدد أين نرجع بعد تفاصيل الحجز: 'pre_payment' | 'home' | 'bookings'
   static void navigateToPayment({
     required BuildContext context,
     required ParkingModel parking,
@@ -20,9 +21,10 @@ class BookingNavigationHelper {
     required int bookingId,
     DateTime? startTime,
     DateTime? endTime,
+    String openedFrom = 'pre_payment',
   }) {
     context.push(
-      Routes.paymentPath,
+      Routes.userMainBookingsPaymentPath,
       extra: {
         'parking': parking,
         'vehicle': vehicle,
@@ -31,6 +33,7 @@ class BookingNavigationHelper {
         'bookingId': bookingId,
         if (startTime != null) 'startTime': startTime,
         if (endTime != null) 'endTime': endTime,
+        'openedFrom': openedFrom,
       },
     );
   }
@@ -46,11 +49,11 @@ class BookingNavigationHelper {
     final bookingData = response.data;
     final bookingId = bookingData?.bookingId ?? 0;
     final totalAmount = bookingData?.totalAmount ?? calculatedTotal;
-    
+
     // Parse times
     DateTime? startTime;
     DateTime? endTime;
-    
+
     if (bookingData != null) {
       try {
         if (bookingData.startTime.isNotEmpty) {
@@ -89,17 +92,17 @@ class BookingNavigationHelper {
     required double calculatedTotal,
   }) {
     final existingBookingId = responseData['data']?['booking_id'] as int?;
-    
+
     if (existingBookingId == null || existingBookingId <= 0) {
       return null;
     }
 
     final bookingDataMap = responseData['data'] as Map<String, dynamic>?;
-    
+
     // Parse times if available
     DateTime? startTime;
     DateTime? endTime;
-    
+
     if (bookingDataMap?['end_time'] != null) {
       try {
         final endTimeStr = bookingDataMap!['end_time'] as String;
@@ -125,4 +128,3 @@ class BookingNavigationHelper {
     };
   }
 }
-

@@ -77,10 +77,6 @@ class BookingDetailsBloc
         ));
       }
     } catch (e, stackTrace) {
-      // Print error for debugging
-      print('Error loading booking details: $e');
-      print('Stack trace: $stackTrace');
-      
       if (!emit.isDone) {
         emit(BookingDetailsError(
           bookingId: event.bookingId,

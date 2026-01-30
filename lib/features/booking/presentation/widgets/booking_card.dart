@@ -12,10 +12,7 @@ import 'shared/shared_widgets.dart';
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
 
-  const BookingCard({
-    super.key,
-    required this.booking,
-  });
+  const BookingCard({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +50,11 @@ class BookingCard extends StatelessWidget {
           onTap: () {
             // Navigate to booking details
             context.push(
-              Routes.bookingDetailsPath,
-              extra: {'bookingId': booking.bookingId},
+              Routes.userMainBookingsDetailsPath,
+              extra: {
+                'bookingId': booking.bookingId,
+                'openedFrom': 'bookings',
+              },
             );
           },
           borderRadius: BorderRadius.circular(16.r),
@@ -103,9 +103,7 @@ class BookingCard extends StatelessWidget {
                           style: AppTextStyles.titleMedium(
                             context,
                             color: AppColors.primaryText,
-                          ).copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          ).copyWith(fontWeight: FontWeight.w600),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -137,23 +135,25 @@ class BookingCard extends StatelessWidget {
                       // Date
                       IconWithText(
                         icon: Icons.calendar_today,
-                        text: DateTimeFormatter.formatDate(booking.startTime, context),
+                        text: DateTimeFormatter.formatDate(
+                          booking.startTime,
+                          context,
+                        ),
                         iconSize: 14.sp,
                         spacing: 4.w,
                       ),
                       SizedBox(height: 8.h),
                       // Vehicle info with enhanced design
                       if (vehicle != null)
-                        VehicleDisplayWidget(
-                          vehicle: vehicle,
-                          compact: true,
-                        ),
+                        VehicleDisplayWidget(vehicle: vehicle, compact: true),
                       SizedBox(height: 10.h),
                       // Amount with enhanced design
                       PriceDisplayWidget(
                         amount: booking.totalAmount,
                         label: l10n.amount,
-                        backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                        backgroundColor: AppColors.primary.withValues(
+                          alpha: 0.1,
+                        ),
                       ),
                     ],
                   ),
@@ -165,5 +165,4 @@ class BookingCard extends StatelessWidget {
       ),
     );
   }
-
 }

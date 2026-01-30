@@ -28,20 +28,18 @@ class BookingPrePaymentVehicleSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (vehicles.isEmpty) {
       return Container(
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1,
-          ),
+          border: Border.all(color: AppColors.border, width: 1),
         ),
         child: Center(
           child: Text(
-            'No vehicles available',
+            l10n?.bookingNoVehiclesAvailable ?? 'No vehicles available',
             style: AppTextStyles.bodyMedium(
               context,
               color: AppColors.secondaryText,
@@ -63,22 +61,19 @@ class BookingPrePaymentVehicleSelector extends StatelessWidget {
               onTap: () => onVehicleSelected(vehicle.vehicleId),
             ),
           );
-        }).toList(),
-        
+        }),
+
         // Add New Vehicle Button
         Padding(
           padding: EdgeInsets.only(top: 4.h),
           child: InkWell(
             onTap: () async {
               await context.push(
-                Routes.vehiclesAddPath,
+                Routes.userMainVehiclesAddPath,
                 extra: {
                   'source': 'booking_pre_payment',
                   'returnData': parking != null
-                      ? {
-                          'parking': parking,
-                          'vehicles': vehicles,
-                        }
+                      ? {'parking': parking, 'vehicles': vehicles}
                       : null,
                 },
               );
@@ -89,10 +84,7 @@ class BookingPrePaymentVehicleSelector extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: AppColors.border,
-                  width: 1,
-                ),
+                border: Border.all(color: AppColors.border, width: 1),
               ),
               child: Row(
                 children: [
@@ -103,7 +95,7 @@ class BookingPrePaymentVehicleSelector extends StatelessWidget {
                   ),
                   SizedBox(width: 12.w),
                   Text(
-                    'إضافة مركبة جديدة',
+                    l10n?.bookingAddNewVehicle ?? 'Add New Vehicle',
                     style: AppTextStyles.bodyMedium(
                       context,
                       color: AppColors.primary,
@@ -142,9 +134,7 @@ class _VehicleCard extends StatelessWidget {
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : AppColors.border,
+            color: isSelected ? AppColors.primary : AppColors.border,
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -157,14 +147,10 @@ class _VehicleCard extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected
-                      ? AppColors.primary
-                      : AppColors.border,
+                  color: isSelected ? AppColors.primary : AppColors.border,
                   width: 2,
                 ),
-                color: isSelected
-                    ? AppColors.primary
-                    : AppColors.surface,
+                color: isSelected ? AppColors.primary : AppColors.surface,
               ),
               child: isSelected
                   ? Icon(
@@ -175,7 +161,7 @@ class _VehicleCard extends StatelessWidget {
                   : null,
             ),
             SizedBox(width: 16.w),
-            
+
             // Vehicle Icon (Car instead of truck)
             Container(
               padding: EdgeInsets.all(12.w),
@@ -190,7 +176,7 @@ class _VehicleCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 16.w),
-            
+
             // Vehicle Details - Better text alignment
             Expanded(
               child: Column(
@@ -223,4 +209,3 @@ class _VehicleCard extends StatelessWidget {
     );
   }
 }
-

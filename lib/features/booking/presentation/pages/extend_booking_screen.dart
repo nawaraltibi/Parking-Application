@@ -28,10 +28,13 @@ import '../../../vehicles/data/models/vehicle_model.dart';
 /// 6. After payment, return to booking details
 class ExtendBookingScreen extends StatefulWidget {
   final BookingModel booking;
+  /// مصدر الدخول لتفاصيل الحجز: 'home' | 'bookings' | 'pre_payment' — يمرر للدفع ثم لتفاصيل الحجز للرجوع الصحيح
+  final String openedFrom;
 
   const ExtendBookingScreen({
     super.key,
     required this.booking,
+    this.openedFrom = 'home',
   });
 
   @override
@@ -70,10 +73,11 @@ class _ExtendBookingScreenState extends State<ExtendBookingScreen> {
             }
           } else if (state is BookingActionFailure) {
             setState(() => _isLoading = false);
-            UnifiedSnackbar.error(
-              context,
-              message: state.error,
-            );
+            final l10n = AppLocalizations.of(context);
+            final message = state.error == 'invalid_hours'
+                ? (l10n?.errorInvalidHours ?? state.error)
+                : state.error;
+            UnifiedSnackbar.error(context, message: message);
           }
         },
         child: Builder(
@@ -155,20 +159,17 @@ class _ExtendBookingScreenState extends State<ExtendBookingScreen> {
     if (_selectedHours < 1) {
       final l10n = AppLocalizations.of(context);
       if (l10n != null) {
-        UnifiedSnackbar.error(
-          context,
-          message: l10n.errorInvalidHours,
-        );
+        UnifiedSnackbar.error(context, message: l10n.errorInvalidHours);
       }
       return;
     }
 
     context.read<BookingActionBloc>().add(
-          ExtendBooking(
-            bookingId: widget.booking.bookingId,
-            extraHours: _selectedHours,
-          ),
-        );
+      ExtendBooking(
+        bookingId: widget.booking.bookingId,
+        extraHours: _selectedHours,
+      ),
+    );
   }
 
   void _navigateToPayment(
@@ -184,10 +185,7 @@ class _ExtendBookingScreenState extends State<ExtendBookingScreen> {
     if (parkingLot == null || vehicle == null) {
       final l10n = AppLocalizations.of(context);
       if (l10n != null) {
-        UnifiedSnackbar.error(
-          context,
-          message: l10n.errorInvalidBookingId,
-        );
+        UnifiedSnackbar.error(context, message: l10n.errorInvalidBookingId);
       }
       return;
     }
@@ -217,16 +215,16 @@ class _ExtendBookingScreenState extends State<ExtendBookingScreen> {
     );
 
     context.push(
-      Routes.paymentPath,
+      Routes.userMainBookingsPaymentPath,
       extra: {
         'parking': parking,
         'vehicle': vehicleModel,
         'hours': _selectedHours,
         'totalAmount': totalAmount,
         'bookingId': bookingId,
-        'isExtension': true, // Flag to indicate this is an extension payment
+        'isExtension': true,
+        'openedFrom': widget.openedFrom,
       },
     );
   }
 }
-

@@ -7,7 +7,7 @@ import '../repository/file_downloader_repository.dart';
 
 /// File Download BLoC
 /// Manages file download state and business logic
-/// 
+///
 /// Why this is valuable:
 /// - Reactive state management for downloads
 /// - Progress tracking
@@ -37,6 +37,7 @@ class FileDownloadBloc extends Bloc<FileDownloadEvent, FileDownloadState> {
         event.url,
         event.savePath,
         cancelToken: _cancelToken,
+        headers: event.headers,
         onProgress: (received, total) {
           // Only emit progress if not cancelled
           if (!(_cancelToken?.isCancelled ?? true)) {
@@ -83,4 +84,3 @@ class FileDownloadBloc extends Bloc<FileDownloadEvent, FileDownloadState> {
     return super.close();
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/utils/auth_route_transitions.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../bloc/owner_main/owner_main_bloc.dart';
 import '../models/owner_tab.dart';
@@ -22,16 +23,16 @@ class _OwnerMainScreenState extends State<OwnerMainScreen>
   int _currentIndex = 0;
 
   static List<OwnerTab> get _bottomNavTabs => [
-        OwnerTab.parkingManagement,
-        OwnerTab.profile,
-      ];
+    OwnerTab.parkingManagement,
+    OwnerTab.profile,
+  ];
 
   void _goToPage(int index) {
     if (_currentIndex == index) return;
-    
+
     // Update BLoC first for immediate UI feedback
     context.read<OwnerMainBloc>().add(ChangeOwnerTab(index));
-    
+
     // Update index for smooth transition
     setState(() {
       _currentIndex = index;
@@ -54,46 +55,52 @@ class _OwnerMainScreenState extends State<OwnerMainScreen>
             }
           });
         }
-        
+
         return Scaffold(
-            extendBody: true,
-            body: SafeArea(
-              bottom: true,
-              child: IndexedStack(
-                index: _currentIndex,
-                children: [
-                  RepaintBoundary(
-                    child: const OwnerParkingManagementPage(),
+          extendBody: true,
+          body: SafeArea(
+            bottom: true,
+            child: AnimatedSwitcher(
+              duration: AuthRouteTransitions.duration,
+              switchInCurve: AuthRouteTransitions.curve,
+              switchOutCurve: AuthRouteTransitions.curve,
+              transitionBuilder: (child, animation) =>
+                  AuthRouteTransitions.buildTabTransition(
+                    context,
+                    child,
+                    animation,
                   ),
-                  RepaintBoundary(
-                    child: const ProfilePage(),
-                  ),
-                ],
+              child: RepaintBoundary(
+                key: ValueKey<int>(_currentIndex),
+                child: _currentIndex == 0
+                    ? const OwnerParkingManagementPage()
+                    : const ProfilePage(),
               ),
             ),
-            bottomNavigationBar: ModernBottomNavBar(
-              items: _bottomNavTabs.map((tab) {
-                return ModernNavItem(
-                  icon: tab.icon,
-                  label: tab.label(l10n),
-                  // Use filled icons for active state
-                  activeIcon: _getActiveIcon(tab.icon, tab),
-                );
-              }).toList(),
-              selectedIndex: _mapBottomNavIndex(selectedIndex),
-              onTap: (index) {
-                final tab = _bottomNavTabs[index];
-                final actualIndex = tab.index;
-                _goToPage(actualIndex);
-              },
-              backgroundColor: AppColors.surface,
-              selectedColor: AppColors.primary,
-              unselectedColor: AppColors.secondaryText,
-              height: 58,
-              showLabels: true,
-              elevation: 12,
-            ),
-          );
+          ),
+          bottomNavigationBar: ModernBottomNavBar(
+            items: _bottomNavTabs.map((tab) {
+              return ModernNavItem(
+                icon: tab.icon,
+                label: tab.label(l10n),
+                // Use filled icons for active state
+                activeIcon: _getActiveIcon(tab.icon, tab),
+              );
+            }).toList(),
+            selectedIndex: _mapBottomNavIndex(selectedIndex),
+            onTap: (index) {
+              final tab = _bottomNavTabs[index];
+              final actualIndex = tab.index;
+              _goToPage(actualIndex);
+            },
+            backgroundColor: AppColors.surface,
+            selectedColor: AppColors.primary,
+            unselectedColor: AppColors.secondaryText,
+            height: 58,
+            showLabels: true,
+            elevation: 12,
+          ),
+        );
       },
     );
   }
@@ -117,4 +124,3 @@ IconData _getActiveIcon(IconData outlinedIcon, OwnerTab tab) {
   // Use active icon from OwnerTab extension
   return tab.activeIcon;
 }
-

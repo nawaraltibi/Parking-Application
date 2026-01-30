@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import '../../../core/utils/api_connection_error_handler.dart';
 import '../../../core/utils/app_exception.dart';
 import '../../repositories/auth_local_repository.dart';
 import 'api_config.dart';
@@ -97,6 +98,20 @@ class DioProvider {
 
       return _handleResponse(response);
     } on DioException catch (e) {
+      // When dynamic host is enabled, show Retry / Change IP dialog on connection error
+      if (APIConfig.useDynamicApiHost &&
+          (e.type == DioExceptionType.connectionTimeout ||
+              e.type == DioExceptionType.connectionError)) {
+        final message = e.message ?? 'Connection failed';
+        final result = await showConnectionErrorDialog(message);
+        if (result is ConnectionErrorRetryWithNewHost) {
+          await APIConfig.setHost(result.host);
+        }
+        if (result is ConnectionErrorRetry ||
+            result is ConnectionErrorRetryWithNewHost) {
+          return this.request(request, cancelToken: cancelToken);
+        }
+      }
       return _handleDioException(e);
     } catch (e) {
       throw Exception('Unexpected error occurred: $e');

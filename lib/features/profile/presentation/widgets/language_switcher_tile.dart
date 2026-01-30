@@ -72,7 +72,7 @@ class _LanguageSwitcherTileState extends State<LanguageSwitcherTile> {
         final currentLanguage = localeState.locale.languageCode;
         
         return Container(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsetsDirectional.all(20.w),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16.r),
@@ -88,7 +88,7 @@ class _LanguageSwitcherTileState extends State<LanguageSwitcherTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            currentLanguage == 'en' ? 'Language' : 'اللغة',
+            l10n.profileLanguageTitle,
             style: AppTextStyles.titleMedium(context),
           ),
           SizedBox(height: 16.h),
@@ -97,7 +97,7 @@ class _LanguageSwitcherTileState extends State<LanguageSwitcherTile> {
               Expanded(
                 child: _LanguageOption(
                   languageCode: 'en',
-                  languageName: 'English',
+                  languageName: l10n.profileLanguageEnglish,
                   flag: '🇬🇧',
                   isSelected: currentLanguage == 'en',
                   isPending: _selectedLanguage == 'en',
@@ -108,7 +108,7 @@ class _LanguageSwitcherTileState extends State<LanguageSwitcherTile> {
               Expanded(
                 child: _LanguageOption(
                   languageCode: 'ar',
-                  languageName: 'العربية',
+                  languageName: l10n.profileLanguageArabic,
                   flag: '🇸🇦',
                   isSelected: currentLanguage == 'ar',
                   isPending: _selectedLanguage == 'ar',

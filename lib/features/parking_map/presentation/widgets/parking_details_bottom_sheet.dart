@@ -45,16 +45,16 @@ class ParkingDetailsBottomSheet extends StatefulWidget {
 
 class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
   static GeoPoint?
-      _lastDrawnRoadDestination; // Track last drawn road (static to share across instances)
+  _lastDrawnRoadDestination; // Track last drawn road (static to share across instances)
   static GeoPoint?
-      _lastDestinationPin; // Track last destination pin location to remove it
+  _lastDestinationPin; // Track last destination pin location to remove it
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SingleChildScrollView(
         controller: widget.scrollController,
@@ -128,7 +128,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                       child: _buildSecondaryButton(
                         context,
                         icon: Icons.directions,
-                        label: AppLocalizations.of(context)!.getDirections,
+                        label: AppLocalizations.of(context)?.getDirections ?? 'Get Directions',
                         onPressed: _handleGetDirections,
                       ),
                     ),
@@ -144,7 +144,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.textOnPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -155,7 +155,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.selectAndPay,
+                            AppLocalizations.of(context)?.selectAndPay ?? 'Select and Pay',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -164,7 +164,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                           if (widget.details != null) ...[
                             const SizedBox(width: 8),
                             Text(
-                              '${widget.details!.hourlyRate.toStringAsFixed(2)} ${AppLocalizations.of(context)!.perHour}',
+                              '${widget.details!.hourlyRate.toStringAsFixed(2)} ${AppLocalizations.of(context)?.perHour ?? 'per hour'}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.normal,
@@ -228,7 +228,10 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
         widget.details == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.parkingLocationError),
+          content: Text(
+            AppLocalizations.of(context)?.parkingLocationError ??
+                'Unable to get your location. Please select a location on the map.',
+          ),
         ),
       );
       return;
@@ -270,8 +273,6 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
           break; // Success, exit retry loop
         } catch (retryError) {
           retryCount++;
-          debugPrint('Retry $retryCount/$maxRetries failed: $retryError');
-
           if (retryCount > maxRetries) {
             // All retries failed, rethrow the last error
             rethrow;
@@ -290,12 +291,9 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       // Use a small offset for red pin to avoid removing parking lot marker (P)
       if (_lastDestinationPin != null) {
         try {
-          // Remove marker at previous offset location (not the exact parking location)
           await widget.mapController!.removeMarker(_lastDestinationPin!);
-          debugPrint('✅ Removed previous destination pin');
         } catch (removeError) {
           // If removeMarker doesn't work, we'll add the new marker anyway
-          debugPrint('⚠️ Could not remove previous marker: $removeError');
         }
       }
 
@@ -309,7 +307,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
           latitude: parkingGeoPoint.latitude + offset,
           longitude: parkingGeoPoint.longitude,
         );
-        
+
         await widget.mapController!.addMarker(
           pinLocation,
           markerIcon: MarkerIcon(
@@ -320,11 +318,9 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
             ),
           ),
         );
-        // Track this pin location (with offset) for future removal
         _lastDestinationPin = pinLocation;
-        debugPrint('✅ Added new destination pin at offset location: ${pinLocation.latitude}, ${pinLocation.longitude}');
       } catch (markerError) {
-        debugPrint('❌ Error adding destination marker: $markerError');
+        debugPrint('Error adding destination marker: $markerError');
       }
 
       // Close bottom sheet to show the map with directions
@@ -336,10 +332,11 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
           final distanceKm = (roadInfo!.distance ?? 0).toStringAsFixed(2);
+          final loc = AppLocalizations.of(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                '${AppLocalizations.of(context)!.getDirections}: $distanceKm km',
+                '${loc?.getDirections ?? 'Get Directions'}: $distanceKm km',
               ),
               duration: const Duration(seconds: 2),
             ),
@@ -350,24 +347,21 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       debugPrint('Error drawing road: $e');
       if (!mounted) return;
 
-      // Check if it's a JSON parsing error from OSRM
+      final loc = AppLocalizations.of(context);
       final errorMessage = e.toString().toLowerCase();
       String userMessage;
 
       if (errorMessage.contains('json') ||
           errorMessage.contains('exit') ||
           errorMessage.contains('parsing')) {
-        // OSRM API error - routing service unavailable or invalid response
-        userMessage = AppLocalizations.of(context)!.routingServiceError;
+        userMessage = loc?.routingServiceError ?? 'Routing service is temporarily unavailable.';
       } else if (errorMessage.contains('network') ||
           errorMessage.contains('connection') ||
           errorMessage.contains('timeout')) {
-        // Network error
-        userMessage = AppLocalizations.of(context)!.routingNetworkError;
+        userMessage = loc?.routingNetworkError ?? 'Network error. Please check your connection.';
       } else {
-        // Generic error
         userMessage =
-            '${AppLocalizations.of(context)!.error}: ${AppLocalizations.of(context)!.routingFailed}';
+            '${loc?.error ?? 'Error'}: ${loc?.routingFailed ?? 'Failed to get directions.'}';
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -384,32 +378,24 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
   Future<void> _handleSelectAndPay(BuildContext context) async {
     if (widget.details == null) return;
 
-    // Get GoRouter before closing bottom sheet
-    final router = GoRouter.of(context);
-    
+      final router = GoRouter.of(context);
+
     try {
-      // Close bottom sheet first
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
 
-      // Wait a bit for bottom sheet to close
       await Future.delayed(const Duration(milliseconds: 200));
 
-      // Get the root context for dialogs
       final rootContext = router.routerDelegate.navigatorKey.currentContext;
-      if (rootContext == null) {
-        debugPrint('❌ Root context is null');
-        return;
-      }
+      if (rootContext == null) return;
 
       // Show loading indicator
       showDialog(
         context: rootContext,
         barrierDismissible: false,
-        builder: (dialogContext) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (dialogContext) =>
+            const Center(child: CircularProgressIndicator()),
       );
 
       // Fetch vehicles
@@ -431,30 +417,22 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
 
       // Navigate to booking pre payment screen
       router.push(
-        Routes.bookingPrePaymentPath,
-        extra: {
-          'parking': parking,
-          'vehicles': vehicles,
-        },
+        Routes.userMainBookingsPrePaymentPath,
+        extra: {'parking': parking, 'vehicles': vehicles},
       );
     } catch (e) {
-      debugPrint('❌ Error in _handleSelectAndPay: $e');
-      
-      // Close loading dialog if still open
+      debugPrint('Error in _handleSelectAndPay: $e');
+
       final rootContext = router.routerDelegate.navigatorKey.currentContext;
       if (rootContext != null && rootContext.mounted) {
         if (Navigator.of(rootContext).canPop()) {
           Navigator.of(rootContext).pop();
         }
-
-        // Show error message
         final l10n = AppLocalizations.of(rootContext);
         ScaffoldMessenger.of(rootContext).showSnackBar(
           SnackBar(
-            content: Text(
-              l10n?.error ?? 'حدث خطأ',
-            ),
-            backgroundColor: Colors.red,
+            content: Text(l10n?.error ?? 'Error'),
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -716,9 +694,7 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
       label: Text(label),
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

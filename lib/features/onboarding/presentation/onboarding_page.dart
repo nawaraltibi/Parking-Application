@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../../l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../core/widgets/custom_elevated_button.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../data/repositories/settings_local_repository.dart';
+import '../models/onboarding_page_model.dart';
 import 'widgets/onboarding_content.dart';
 import 'widgets/onboarding_indicator.dart';
 
@@ -49,37 +52,36 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   /// Complete onboarding and navigate to login screen
   void _completeOnboarding() {
-    // Mark onboarding as completed
     SettingsLocalRepository.markOnboardingCompleted();
-    
-    // Navigate to login screen
     if (mounted) {
       context.go(Routes.loginPath);
     }
   }
 
+  List<OnboardingPageModel> _buildPages(AppLocalizations l10n) {
+    return [
+      OnboardingPageModel(
+        title: l10n.onboardingTitle1,
+        description: l10n.onboardingDescription1,
+        icon: 'location',
+      ),
+      OnboardingPageModel(
+        title: l10n.onboardingTitle2,
+        description: l10n.onboardingDescription2,
+        icon: 'reserve',
+      ),
+      OnboardingPageModel(
+        title: l10n.onboardingTitle3,
+        description: l10n.onboardingDescription3,
+        icon: 'manage',
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
-    // Get onboarding content based on current page
-    List<Map<String, String>> pages = [
-      {
-        'title': l10n.onboardingTitle1,
-        'description': l10n.onboardingDescription1,
-        'icon': 'location',
-      },
-      {
-        'title': l10n.onboardingTitle2,
-        'description': l10n.onboardingDescription2,
-        'icon': 'reserve',
-      },
-      {
-        'title': l10n.onboardingTitle3,
-        'description': l10n.onboardingDescription3,
-        'icon': 'manage',
-      },
-    ];
+    final pages = _buildPages(l10n);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -89,9 +91,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
             // Skip button at the top
             if (_currentPage < _totalPages - 1)
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Align(
-                  alignment: AlignmentDirectional.centerEnd,
+                  alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: _skipOnboarding,
                     child: Text(
@@ -118,9 +120,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 itemBuilder: (context, index) {
                   final page = pages[index];
                   return OnboardingContent(
-                    title: page['title']!,
-                    description: page['description']!,
-                    icon: page['icon'],
+                    title: page.title,
+                    description: page.description,
+                    icon: page.icon,
                   );
                 },
               ),
@@ -128,7 +130,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
             // Bottom section with indicators and navigation button
             Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.all(32),
               child: Column(
                 children: [
                   // Page indicators
@@ -137,29 +139,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     currentPage: _currentPage,
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
 
-                  // Next/Get Started button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _nextPage,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: AppColors.textOnPrimary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text(
-                        _currentPage < _totalPages - 1
-                            ? l10n.next
-                            : l10n.getStarted,
-                        style: AppTextStyles.buttonText(context),
-                      ),
-                    ),
+                  // Next/Get Started button - matches app buttons (gradient, shadow, white text)
+                  CustomElevatedButton(
+                    title: _currentPage < _totalPages - 1
+                        ? l10n.next
+                        : l10n.getStarted,
+                    onPressed: _nextPage,
+                    useGradient: true,
+                    borderRadius: 16,
+                    padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 24.w),
                   ),
                 ],
               ),

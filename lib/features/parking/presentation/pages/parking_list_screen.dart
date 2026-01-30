@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import '../../../../core/injection/service_locator.dart';
+import '../../../../core/services/parking_list_refresh_notifier.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/error_state_widget.dart';
@@ -56,6 +58,20 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
         bloc.add(const LoadOwnerParkings());
       }
     });
+
+    // استماع لطلب التحديث (بعد إضافة/تحديث موقف) لاستدعاء الـ API وعرض آخر موقف
+    getIt<ParkingListRefreshNotifier>().addListener(_onRefreshRequested);
+  }
+
+  void _onRefreshRequested() {
+    if (!mounted) return;
+    context.read<ParkingListBloc>().add(const RefreshParkings());
+  }
+
+  @override
+  void dispose() {
+    getIt<ParkingListRefreshNotifier>().removeListener(_onRefreshRequested);
+    super.dispose();
   }
 
   @override
@@ -93,7 +109,7 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
           // Empty state
           if (state is ParkingListLoaded && state.isEmpty) {
             return ParkingEmptyState(
-              onCreateTap: () => context.push(Routes.parkingCreatePath),
+              onCreateTap: () => context.push(Routes.parkingAddPath),
             );
           }
 
@@ -105,7 +121,9 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
           // Update filter
           if (_selectedFilter != state.filter) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              context.read<ParkingListBloc>().add(FilterParkings(_selectedFilter));
+              context.read<ParkingListBloc>().add(
+                FilterParkings(_selectedFilter),
+              );
             });
           }
 
@@ -137,7 +155,9 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        context.read<ParkingListBloc>().add(const RefreshParkings());
+                        context.read<ParkingListBloc>().add(
+                          const RefreshParkings(),
+                        );
                       },
                       child: filteredParkings.isEmpty
                           ? const ParkingNoResultsState()
@@ -145,7 +165,8 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
                               padding: EdgeInsets.only(
                                 left: 16.w,
                                 right: 16.w,
-                                bottom: 50.h, // Space for FAB (95.h) + bottom nav (58) + extra padding (27.h)
+                                bottom: 50
+                                    .h, // Space for FAB (95.h) + bottom nav (58) + extra padding (27.h)
                               ),
                               itemCount: filteredParkings.length,
                               itemBuilder: (context, index) {
@@ -171,7 +192,7 @@ class _ParkingListScreenState extends State<ParkingListScreen> {
               ),
               // Custom FloatingActionButton positioned with Stack
               _CustomFloatingActionButton(
-                onPressed: () => context.push(Routes.parkingCreatePath),
+                onPressed: () => context.push(Routes.parkingAddPath),
               ),
             ],
           );
@@ -209,7 +230,10 @@ class ModernParkingCard extends StatelessWidget {
     final totalSpaces = parking.totalSpaces > 0 ? parking.totalSpaces : 1;
     // Use availableSpaces from API if available, otherwise calculate from total
     final availableSpaces = parking.availableSpaces ?? totalSpaces;
-    final occupiedSpaces = (totalSpaces - availableSpaces).clamp(0, totalSpaces);
+    final occupiedSpaces = (totalSpaces - availableSpaces).clamp(
+      0,
+      totalSpaces,
+    );
     final occupancyPercent = (occupiedSpaces / totalSpaces).clamp(0.0, 1.0);
 
     return Card(
@@ -421,7 +445,11 @@ class ModernParkingCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, {required IconData icon, required String text}) {
+  Widget _buildInfoRow(
+    BuildContext context, {
+    required IconData icon,
+    required String text,
+  }) {
     return Row(
       children: [
         Icon(icon, size: 16.sp, color: AppColors.secondaryText),
@@ -448,13 +476,10 @@ class ModernParkingCard extends StatelessWidget {
 class _CustomFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const _CustomFloatingActionButton({
-    required this.onPressed,
-  });
+  const _CustomFloatingActionButton({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-
     return Positioned(
       bottom: 15,
       right: 15,

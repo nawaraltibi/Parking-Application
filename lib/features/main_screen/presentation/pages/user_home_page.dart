@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
 import '../../../../core/core.dart';
 import '../../../../core/injection/service_locator.dart';
+import '../../../../core/services/home_refresh_notifier.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../parking_map/presentation/pages/parking_map_page.dart';
 import '../../../booking/bloc/bookings_list/bookings_list_bloc.dart';
@@ -32,10 +33,21 @@ class _UserHomePageState extends State<UserHomePage> {
   @override
   void initState() {
     super.initState();
+    getIt<HomeRefreshNotifier>().addListener(_onHomeRefreshRequested);
+  }
+
+  /// عند طلب تحديث الهوم (مثلاً بعد تمديد الحجز) نمسح كاش الوقت المتبقي ليعاد جلب القيم الجديدة من الـ API
+  void _onHomeRefreshRequested() {
+    if (!mounted) return;
+    setState(() {
+      _remainingSecondsCache.clear();
+      _lastFetchTime.clear();
+    });
   }
 
   @override
   void dispose() {
+    getIt<HomeRefreshNotifier>().removeListener(_onHomeRefreshRequested);
     _countdownTimer?.cancel();
     super.dispose();
   }
@@ -47,11 +59,13 @@ class _UserHomePageState extends State<UserHomePage> {
     // استدعاء API مرة واحدة فقط لكل booking جديد أو لم يتم تحميله بعد
     for (final booking in activeBookings) {
       final bookingId = booking.bookingId;
-      
+
       // استدعاء API فقط إذا لم يتم تحميله من قبل أو مر أكثر من دقيقة
-      final shouldFetch = !_remainingSecondsCache.containsKey(bookingId) ||
+      final shouldFetch =
+          !_remainingSecondsCache.containsKey(bookingId) ||
           (_lastFetchTime[bookingId] != null &&
-              DateTime.now().difference(_lastFetchTime[bookingId]!).inMinutes > 1);
+              DateTime.now().difference(_lastFetchTime[bookingId]!).inMinutes >
+                  1);
 
       if (shouldFetch) {
         _fetchRemainingTime(bookingId);
@@ -133,68 +147,104 @@ class _UserHomePageState extends State<UserHomePage> {
     return BlocProvider<BookingsListBloc>(
       create: (_) {
         final bloc = getIt<BookingsListBloc>();
-        // Load active bookings when bloc is created
         bloc.add(const LoadActiveBookings());
         if (kDebugMode) {
-          print('🔵 [UserHomePage] BookingsListBloc created, LoadActiveBookings dispatched');
+          print(
+            '🔵 [UserHomePage] BookingsListBloc created, LoadActiveBookings dispatched',
+          );
         }
         return bloc;
       },
-      child: Stack(
-        children: [
-          // Map in the background
-          const ParkingMapPage(),
-          // Active bookings horizontal list overlay above bottom nav bar
-          Positioned(
-            bottom: 10.h, // المسافة من bottom nav bar (يمكن تعديلها)
-            left: -10,
-            right: -10,
-            child: BlocBuilder<BookingsListBloc, BookingsListState>(
-              builder: (context, state) {
-                if (state is BookingsListLoaded && state.isActiveTab) {
-                  final activeBookings = state.bookings;
-                  
-                  // استدعاء API مرة واحدة فقط عند تحميل الحجوزات
-                  if (activeBookings.isNotEmpty) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _fetchRemainingTimeOnce(activeBookings);
-                    });
+      child: _HomeRefreshListener(
+        child: Stack(
+          children: [
+            // Map in the background
+            const ParkingMapPage(),
+            // Active bookings horizontal list overlay above bottom nav bar
+            Positioned(
+              bottom: 10.h, // المسافة من bottom nav bar (يمكن تعديلها)
+              left: -10,
+              right: -10,
+              child: BlocBuilder<BookingsListBloc, BookingsListState>(
+                builder: (context, state) {
+                  if (state is BookingsListLoaded && state.isActiveTab) {
+                    final activeBookings = state.bookings;
+
+                    // استدعاء API مرة واحدة فقط عند تحميل الحجوزات
+                    if (activeBookings.isNotEmpty) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _fetchRemainingTimeOnce(activeBookings);
+                      });
+                    }
+
+                    if (activeBookings.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+
+                    // Horizontal bookings list with shrinkWrap for dynamic height
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: 155.h, // Maximum height constraint
+                      ),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        itemCount: activeBookings.length,
+                        itemBuilder: (context, index) {
+                          final booking = activeBookings[index];
+                          final remainingTime = _getRemainingTimeResponse(
+                            booking.bookingId,
+                          );
+
+                          return ActiveBookingCard(
+                            booking: booking,
+                            remainingTime: remainingTime,
+                          );
+                        },
+                      ),
+                    );
                   }
 
-                  if (activeBookings.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
-
-                  // Horizontal bookings list with shrinkWrap for dynamic height
-                  return ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 155.h, // Maximum height constraint
-                    ),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      itemCount: activeBookings.length,
-                      itemBuilder: (context, index) {
-                        final booking = activeBookings[index];
-                        final remainingTime = _getRemainingTimeResponse(booking.bookingId);
-                        
-                        return ActiveBookingCard(
-                          booking: booking,
-                          remainingTime: remainingTime,
-                        );
-                      },
-                    ),
-                  );
-                }
-
-                return const SizedBox.shrink();
-              },
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
+/// يستمع لـ [HomeRefreshNotifier] ويطلق [LoadActiveBookings] عند الطلب (مثلاً بعد نجاح الدفع).
+class _HomeRefreshListener extends StatefulWidget {
+  final Widget child;
+
+  const _HomeRefreshListener({required this.child});
+
+  @override
+  State<_HomeRefreshListener> createState() => _HomeRefreshListenerState();
+}
+
+class _HomeRefreshListenerState extends State<_HomeRefreshListener> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<HomeRefreshNotifier>().addListener(_onRefreshRequested);
+  }
+
+  void _onRefreshRequested() {
+    if (!mounted) return;
+    context.read<BookingsListBloc>().add(const LoadActiveBookings());
+  }
+
+  @override
+  void dispose() {
+    getIt<HomeRefreshNotifier>().removeListener(_onRefreshRequested);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}

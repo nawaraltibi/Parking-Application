@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import '../../../../core/injection/service_locator.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/vehicles_list_refresh_notifier.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/loading_widget.dart';
@@ -28,6 +31,23 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
   bool _cachedEmpty = false;
 
   @override
+  void initState() {
+    super.initState();
+    getIt<VehiclesListRefreshNotifier>().addListener(_onRefreshRequested);
+  }
+
+  void _onRefreshRequested() {
+    if (!mounted) return;
+    context.read<VehiclesBloc>().add(GetVehiclesRequested());
+  }
+
+  @override
+  void dispose() {
+    getIt<VehiclesListRefreshNotifier>().removeListener(_onRefreshRequested);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) {
@@ -35,10 +55,9 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
     }
 
     return Scaffold(
-
       backgroundColor: AppColors.background,
       appBar: AppBar(
-automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         title: Text(
           l10n.vehiclesMyVehiclesTitle,
           style: AppTextStyles.titleLarge(context),
@@ -84,7 +103,7 @@ automaticallyImplyLeading: false,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => context.push('/vehicles/add'),
+            onTap: () => context.push(Routes.userMainVehiclesAddPath),
             borderRadius: BorderRadius.circular(28.0),
             child: Center(
               child: Icon(
@@ -115,7 +134,7 @@ automaticallyImplyLeading: false,
               _cachedVehicles = const [];
               _cachedEmpty = true;
               child = VehiclesEmptyState(
-                onAddTap: () => context.push('/vehicles/add'),
+                onAddTap: () => context.push(Routes.userMainVehiclesAddPath),
               );
             } else if (state is VehiclesError) {
               final errorMessage = VehiclesErrorHandler.handleErrorState(
@@ -143,7 +162,7 @@ automaticallyImplyLeading: false,
                 );
               } else if (_cachedEmpty) {
                 child = VehiclesEmptyState(
-                  onAddTap: () => context.push('/vehicles/add'),
+                  onAddTap: () => context.push(Routes.userMainVehiclesAddPath),
                 );
               } else {
                 child = const _VehiclesSkeleton();
@@ -170,10 +189,7 @@ class _VehiclesList extends StatelessWidget {
   final List<VehicleEntity> vehicles;
   final Future<void> Function() onRefresh;
 
-  const _VehiclesList({
-    required this.vehicles,
-    required this.onRefresh,
-  });
+  const _VehiclesList({required this.vehicles, required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +197,9 @@ class _VehiclesList extends StatelessWidget {
       onRefresh: onRefresh,
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.only(
-          left: 16.w,
-          right: 16.w,
+        padding: EdgeInsetsDirectional.only(
+          start: 16.w,
+          end: 16.w,
           bottom: 60.h,
           top: 12.h,
         ),
@@ -216,7 +232,7 @@ class _VehiclesSkeleton extends StatelessWidget {
         SizedBox(height: 16.h),
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsetsDirectional.only(start: 16.w, end: 16.w),
             itemCount: 6,
             itemBuilder: (context, index) {
               return Padding(
@@ -252,7 +268,7 @@ class _VehicleCardSkeleton extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.all(20.w),
+          padding: EdgeInsetsDirectional.all(20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -288,5 +304,3 @@ class _SkeletonLine extends StatelessWidget {
     );
   }
 }
-
-

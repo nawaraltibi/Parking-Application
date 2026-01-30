@@ -38,6 +38,7 @@ class ProfileErrorState extends StatelessWidget {
               color: AppColors.error,
             ),
             textAlign: TextAlign.center,
+            softWrap: true,
           ),
           if (onRetry != null) ...[
             SizedBox(height: 24.h),

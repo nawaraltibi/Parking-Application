@@ -1,44 +1,95 @@
-  import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-  /// API Configuration
-  /// Base URL configuration for parking app API
-  ///
-  /// Why this is valuable:
-  /// - Centralized API configuration
-  /// - Easy switching between debug and production environments
-  /// - Helper methods for URL construction
-  class APIConfig {
-    // Production and Debug hosts
-    // Backend API endpoints
-    static const String _prodHost = "127.0.0.1:8000"; // TODO: Update with production URL when available
-    // 10.0.2.2 is the special IP that Android Emulator uses to access the host machine's localhost
-    // For iOS Simulator, 127.0.0.1 works, but 10.0.2.2 also works
-    // For physical devices, use the host machine's local network IP (e.g., 192.168.x.x:8000)
-    // 192.168.1.9
-    static const String _debugHost = "192.168.1.6:8000";
-    static String get host => kDebugMode ? _debugHost : _prodHost;
+/// API configuration for the parking app.
+///
+/// The API host is loaded from SharedPreferences at startup when
+/// [useDynamicApiHost] is true. When false, [host] is always [_debugHostFallback].
+///
+/// **Initialization:** Call [init] once before using any getters (e.g. in [main]).
+class APIConfig {
+  APIConfig._();
 
-    /// Base URL for the API
-    static String get baseUrl => "http://$host";
+  static const String _hostKey = 'api_config_host';
 
-    /// Full API endpoint URL
-    static String get appAPI => "$baseUrl/api";
+  /// When **true**: show dialog to enter server host on first launch and on
+  /// connection error (Change IP). Host is saved in SharedPreferences.
+  /// When **false**: base URL is fixed ([_debugHostFallback]), no dialog.
+  /// Change to false if the client wants a fixed API URL only.
+  static const bool useDynamicApiHost = true;
 
-    /// Get full image URL from a relative path
-    ///
-    /// If the imagePath already starts with 'https://', it returns as is.
-    /// Otherwise, it prepends the baseUrl to the path.
-    ///
-    /// Example:
-    /// ```dart
-    /// APIConfig.getFullImageUrl('/images/logo.png')
-    /// // Returns: 'https://api.parkingapp.com/images/logo.png'
-    /// ```
-    static String getFullImageUrl(String imagePath) {
-      if (imagePath.startsWith('https://') || imagePath.startsWith('http://')) {
-        return imagePath;
-      }
-      return "$baseUrl$imagePath";
+  /// Fallback when no host is stored, or when [useDynamicApiHost] is false (fixed URL).
+  static const String _debugHostFallback =
+      'unchildlike-yolonda-nonelementary.ngrok-free.dev:443';
+
+  /// Default host for getters when init not called or no stored value.
+  static String get defaultHost => _debugHostFallback;
+
+  static String? _host;
+  static bool _initialized = false;
+  static bool _hasStoredHost = false;
+
+  // ---------------------------------------------------------------------------
+  // Initialization
+  // ---------------------------------------------------------------------------
+
+  /// Loads the host and caches it.
+  /// When [useDynamicApiHost] is false: always uses [_debugHostFallback] (fixed URL).
+  /// When true: loads from SharedPreferences; if none stored, uses fallback (splash shows dialog).
+  static Future<void> init() async {
+    if (_initialized) return;
+    if (!useDynamicApiHost) {
+      _host = _debugHostFallback;
+      _hasStoredHost = true; // treat as fixed, no dialog
+      _initialized = true;
+      if (kDebugMode) debugPrint('APIConfig: fixed host → $_debugHostFallback');
+      return;
     }
+    final prefs = await SharedPreferences.getInstance();
+    _host = prefs.getString(_hostKey);
+    _hasStoredHost = _host != null && _host!.isNotEmpty;
+    _host ??= _debugHostFallback;
+    _initialized = true;
+    if (kDebugMode) debugPrint('APIConfig: host → $host (stored: $_hasStoredHost)');
   }
 
+  /// True if a host has been saved in SharedPreferences (user has set it at least once).
+  static bool get hasStoredHost => _hasStoredHost;
+
+  // ---------------------------------------------------------------------------
+  // Async host access
+  // ---------------------------------------------------------------------------
+
+  static Future<String> getHostAsync() async {
+    await init();
+    return _host!;
+  }
+
+  static Future<void> setHost(String host) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_hostKey, host);
+    _host = host;
+    _hasStoredHost = true;
+    _initialized = true;
+    if (kDebugMode) debugPrint('APIConfig: host updated to $host');
+  }
+
+  // ---------------------------------------------------------------------------
+  // Synchronous getters
+  // ---------------------------------------------------------------------------
+
+  static String get host => _host ?? defaultHost;
+
+  /// Base URL: HTTPS for ngrok (port 443), HTTP for local.
+  static String get baseUrl =>
+      host.contains(':443') ? 'https://$host' : 'http://$host';
+
+  static String get appAPI => '$baseUrl/api';
+
+  static String getFullImageUrl(String imagePath) {
+    if (imagePath.startsWith('https://') || imagePath.startsWith('http://')) {
+      return imagePath;
+    }
+    return '$baseUrl$imagePath';
+  }
+}

@@ -28,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordConfirmationController =
-  TextEditingController();
+      TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String selectedUserType = 'user';
 
@@ -43,7 +43,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     passwordConfirmationController.dispose();
     super.dispose();
   }
-
 
   void _handleRegister() {
     if (formKey.currentState!.validate()) {
@@ -62,27 +61,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  void _goBackToLogin() {
+    // Pop back to Login (stack: Login → Register); system back button does the same
+    context.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: AppColors.primary),
+          onPressed: _goBackToLogin,
+        ),
+      ),
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: true,
         child: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             final l10n = AppLocalizations.of(context)!;
-            
+
             if (state is RegisterSuccess) {
               // Show single translated success message based on user type
               final successMessage = state.response.requiresApproval
-                  ? l10n.authSuccessRegisterOwner  // Owner - pending approval
-                  : l10n.authSuccessRegister;      // Regular user
+                  ? l10n
+                        .authSuccessRegisterOwner // Owner - pending approval
+                  : l10n.authSuccessRegister; // Regular user
 
-              UnifiedSnackbar.success(
-                context,
-                message: successMessage,
-              );
+              UnifiedSnackbar.success(context, message: successMessage);
 
               // Navigate to login after a short delay
               // Clear entire navigation stack
@@ -148,7 +157,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         emailController: emailController,
                         phoneController: phoneController,
                         passwordController: passwordController,
-                        passwordConfirmationController: passwordConfirmationController,
+                        passwordConfirmationController:
+                            passwordConfirmationController,
                         selectedUserType: selectedUserType,
                         onUserTypeChanged: (value) {
                           setState(() {
@@ -182,10 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () =>
-                                context.pushReplacement(
-                                  Routes.loginPath,
-                                ),
+                            onPressed: _goBackToLogin,
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 4.w,
@@ -215,5 +222,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/core.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../../core/utils/navigation_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../data/repositories/auth_local_repository.dart';
 import '../../../parking/models/parking_model.dart';
@@ -96,15 +96,13 @@ class BookingPrePaymentHeader extends StatelessWidget {
                     size: 24.sp,
                   ),
                   onPressed: () async {
-                    // Get user type and navigate to appropriate main screen
                     final userType = await AuthLocalRepository.getUserType();
-                    final mainScreenPath = userType == 'owner'
-                        ? Routes.ownerMainPath
-                        : Routes.userMainPath;
-
-                    // Use pushReplacement to navigate to main screen
                     if (context.mounted) {
-                      GoRouter.of(context).pushReplacement(mainScreenPath);
+                      if (userType == 'owner') {
+                        context.goAndClearStack(Routes.ownerMainPath);
+                      } else {
+                        context.goAndClearStack(Routes.userMainHomePath);
+                      }
                     }
                   },
                 ),

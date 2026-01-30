@@ -8,11 +8,11 @@ class ProfileErrorHandler {
     if (error is AppException) {
       // Handle specific status codes
       if (error.statusCode == 401) {
-        return 'Unauthorized access';
+        return l10n.profileErrorUnauthorized;
       }
       
       if (error.statusCode == 404) {
-        return 'Profile not found';
+        return l10n.profileErrorNotFound;
       }
       
       // Handle validation errors

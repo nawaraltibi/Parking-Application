@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/foundation.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/assets/assets.dart';
@@ -83,21 +83,40 @@ class VehicleCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            // Enhanced vertical bar with vehicle color and gradient
-            Container(
-              width: 6.w,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [vehicleColor, vehicleColor.withValues(alpha: 0.8)],
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.r),
-                  bottomLeft: Radius.circular(24.r),
-                ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isRTL = Directionality.of(context) == TextDirection.rtl;
+            final barRadius = isRTL
+                ? BorderRadius.only(
+                    topRight: Radius.circular(24.r),
+                    bottomRight: Radius.circular(24.r),
+                  )
+                : BorderRadius.only(
+                    topLeft: Radius.circular(24.r),
+                    bottomLeft: Radius.circular(24.r),
+                  );
+            final contentRadius = isRTL
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(24.r),
+                    bottomLeft: Radius.circular(24.r),
+                  )
+                : BorderRadius.only(
+                    topRight: Radius.circular(24.r),
+                    bottomRight: Radius.circular(24.r),
+                  );
+            return Row(
+              textDirection: Directionality.of(context),
+              children: [
+                // Enhanced vertical bar with vehicle color and gradient
+                Container(
+                  width: 6.w,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [vehicleColor, vehicleColor.withValues(alpha: 0.8)],
+                    ),
+                    borderRadius: barRadius,
                 boxShadow: [
                   BoxShadow(
                     color: vehicleColor.withValues(alpha: 0.15),
@@ -110,18 +129,15 @@ class VehicleCard extends StatelessWidget {
             ),
             // Main card content
             Expanded(
-              child: Material(
+                child: Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(24.r),
-                    bottomRight: Radius.circular(24.r),
-                  ),
+                  borderRadius: contentRadius,
                   splashColor: vehicleColor.withValues(alpha: 0.06),
                   highlightColor: vehicleColor.withValues(alpha: 0.03),
                   child: Padding(
-                    padding: EdgeInsets.all(20.w),
+                    padding: EdgeInsetsDirectional.all(20.w),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +197,9 @@ class VehicleCard extends StatelessWidget {
                 ),
               ),
             ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
@@ -232,7 +250,7 @@ class _ActionsMenu extends StatelessWidget {
             ),
           ),
           onTap: () => Future.delayed(Duration.zero, () {
-            context.push('/vehicles/edit', extra: vehicle);
+            context.push(Routes.userMainVehiclesEditPath, extra: vehicle);
           }),
         ),
         PopupMenuItem<_VehicleMenuAction>(
@@ -321,19 +339,8 @@ class _ManufacturerLogo extends StatelessWidget {
     // Get the logo path based on car make
     final logoPath = Assets.getCarLogoPath(carMake);
 
-    // Debug: Log asset path to verify correct import
-    if (kDebugMode) {
-      debugPrint('🔍 Car make: $carMake');
-      debugPrint(
-        '🔍 Loading car logo from: ${logoPath ?? "null (fallback to icon)"}',
-      );
-    }
-
     // If no logo path found, show fallback icon
     if (logoPath == null) {
-      if (kDebugMode) {
-        debugPrint('⚠️ No logo found for car make: $carMake');
-      }
       return Icon(
         Icons.directions_car,
         size: 40.sp,
@@ -347,25 +354,13 @@ class _ManufacturerLogo extends StatelessWidget {
       width: 40.w,
       fit: BoxFit.contain,
       errorBuilder: (context, error, stackTrace) {
-        // Debug: Log error if image fails to load
-        if (kDebugMode) {
-          debugPrint('❌ Error loading car logo for "$carMake": $error');
-          debugPrint('❌ Attempted path: $logoPath');
-        }
-        // Fallback to icon if image not found
         return Icon(
           Icons.directions_car,
           size: 40.sp,
           color: AppColors.secondaryText,
         );
       },
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-        // Debug: Log successful image load
-        if (kDebugMode && frame != null) {
-          debugPrint('✅ Car logo loaded successfully for "$carMake"');
-        }
-        return child;
-      },
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) => child,
     );
   }
 }

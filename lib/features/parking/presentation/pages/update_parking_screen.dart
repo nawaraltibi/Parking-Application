@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import '../../../../core/injection/service_locator.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/parking_list_refresh_notifier.dart';
+import '../../../../core/utils/navigation_utils.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/utils/auth_route_transitions.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
@@ -68,8 +72,8 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
   Future<void> _openMapPicker() async {
     final result = await Navigator.push<GeoPoint>(
       context,
-      MaterialPageRoute(
-        builder: (context) => MapLocationPickerScreen(
+      AuthRouteTransitions.buildPageRoute<GeoPoint>(
+        child: MapLocationPickerScreen(
           initialLatitude: _selectedLocation?.latitude,
           initialLongitude: _selectedLocation?.longitude,
         ),
@@ -80,6 +84,9 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
       setState(() {
         _selectedLocation = result;
       });
+      if (mounted) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
     }
   }
 
@@ -261,10 +268,11 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
                 message: l10n.parkingSuccessUpdate,
               );
 
-              // Navigate to owner main screen (parking management tab) using pushReplacement
+              getIt<ParkingListRefreshNotifier>().requestRefresh();
+
               Future.delayed(const Duration(milliseconds: 100), () {
                 if (mounted) {
-                  context.pushReplacement('/owner-main');
+                  context.goAndClearStack(Routes.ownerMainPath);
                 }
               });
             }

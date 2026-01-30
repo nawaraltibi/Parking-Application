@@ -81,7 +81,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
               maxHeight: MediaQuery.of(context).size.height * 0.9,
             ),
             child: Container(
-              padding: EdgeInsets.all(24.w),
+              padding: EdgeInsetsDirectional.all(24.w),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(

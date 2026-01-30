@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import '../../../../core/injection/service_locator.dart';
+import '../../../../core/services/vehicles_list_refresh_notifier.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
@@ -20,10 +22,7 @@ import '../widgets/vehicle_form_fields.dart';
 class EditVehicleScreen extends StatefulWidget {
   final VehicleEntity vehicle;
 
-  const EditVehicleScreen({
-    super.key,
-    required this.vehicle,
-  });
+  const EditVehicleScreen({super.key, required this.vehicle});
 
   @override
   State<EditVehicleScreen> createState() => _EditVehicleScreenState();
@@ -34,7 +33,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
   late final TextEditingController _plateController;
   late final TextEditingController _typeController;
   late final TextEditingController _otherCarMakeController;
-  
+
   String? _selectedCarMake;
   Color? _selectedColor;
 
@@ -44,7 +43,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     _plateController = TextEditingController(text: widget.vehicle.platNumber);
     _typeController = TextEditingController(text: widget.vehicle.carModel);
     _otherCarMakeController = TextEditingController();
-    
+
     // Initialize car make: check if it's in the list, otherwise use "Other"
     final carMake = widget.vehicle.carMake;
     if (VehicleConstants.carMakes.contains(carMake)) {
@@ -53,7 +52,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
       _selectedCarMake = VehicleConstants.otherCarMake;
       _otherCarMakeController.text = carMake;
     }
-    
+
     // Initialize color: convert color name to Color object
     final colorName = widget.vehicle.color;
     _selectedColor = ColorNameMapper.mapNameToColor(colorName);
@@ -74,7 +73,8 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
       if (l10n != null) {
         UnifiedSnackbar.error(
           context,
-          message: '${l10n.vehiclesFormNameLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
+          message:
+              '${l10n.vehiclesFormNameLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
         );
       }
       return;
@@ -85,10 +85,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
       if (_otherCarMakeController.text.trim().isEmpty) {
         final l10n = AppLocalizations.of(context);
         if (l10n != null) {
-          UnifiedSnackbar.error(
-            context,
-            message: l10n.vehiclesErrorValidation,
-          );
+          UnifiedSnackbar.error(context, message: l10n.vehiclesErrorValidation);
         }
         return;
       }
@@ -99,7 +96,8 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
       if (l10n != null) {
         UnifiedSnackbar.error(
           context,
-          message: '${l10n.vehiclesFormColorLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
+          message:
+              '${l10n.vehiclesFormColorLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
         );
       }
       return;
@@ -109,7 +107,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     // Determine car make: use "Other" input if selected, otherwise use dropdown value
-    final carMake = _selectedCarMake == 'Other' 
+    final carMake = _selectedCarMake == 'Other'
         ? _otherCarMakeController.text.trim()
         : _selectedCarMake!;
 
@@ -117,14 +115,14 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     final colorName = ColorNameMapper.mapColorToName(_selectedColor!);
 
     context.read<VehiclesBloc>().add(
-          UpdateVehicleRequested(
-            vehicleId: widget.vehicle.vehicleId,
-            platNumber: _plateController.text.trim(),
-            carMake: carMake,
-            carModel: _typeController.text.trim(),
-            color: colorName,
-          ),
-        );
+      UpdateVehicleRequested(
+        vehicleId: widget.vehicle.vehicleId,
+        platNumber: _plateController.text.trim(),
+        carMake: carMake,
+        carModel: _typeController.text.trim(),
+        color: colorName,
+      ),
+    );
   }
 
   @override
@@ -163,7 +161,8 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
         bottom: true,
         child: BlocConsumer<VehiclesBloc, VehiclesState>(
           listenWhen: (previous, current) =>
-              current is VehicleActionSuccess || current is VehicleActionFailure,
+              current is VehicleActionSuccess ||
+              current is VehicleActionFailure,
           listener: (context, state) {
             if (state is VehicleActionSuccess) {
               UnifiedSnackbar.success(
@@ -171,6 +170,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                 message: l10n.vehiclesSuccessUpdateRequested,
               );
               context.read<VehiclesBloc>().add(ResetVehiclesState());
+              getIt<VehiclesListRefreshNotifier>().requestRefresh();
               Future.delayed(const Duration(milliseconds: 350), () {
                 if (context.mounted) {
                   context.pop();
@@ -192,23 +192,28 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
             final isLoading = state is VehicleActionLoading;
             final inlineError =
                 state is VehicleActionFailure && state.statusCode == 422
-                    ? VehiclesErrorHandler.handleErrorState(
-                        state.error,
-                        state.statusCode,
-                        l10n,
-                      )
-                    : null;
+                ? VehiclesErrorHandler.handleErrorState(
+                    state.error,
+                    state.statusCode,
+                    l10n,
+                  )
+                : null;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+              padding: EdgeInsetsDirectional.only(
+                start: 24.w,
+                end: 24.w,
+                top: 20.h,
+                bottom: 20.h,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(16.w),
+                      padding: EdgeInsetsDirectional.all(16.w),
                       decoration: BoxDecoration(
                         color: AppColors.warning.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(16.r),
@@ -247,7 +252,7 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
                     SizedBox(height: 20.h),
                     if (inlineError != null) ...[
                       Container(
-                        padding: EdgeInsets.all(16.w),
+                        padding: EdgeInsetsDirectional.all(16.w),
                         decoration: BoxDecoration(
                           color: AppColors.error.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(16.r),
@@ -323,5 +328,3 @@ class _EditVehicleScreenState extends State<EditVehicleScreen> {
     );
   }
 }
-
-

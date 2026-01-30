@@ -28,7 +28,7 @@ class VehiclesEmptyState extends StatelessWidget {
         ),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(32.w),
+            padding: EdgeInsetsDirectional.all(32.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -42,6 +42,7 @@ class VehiclesEmptyState extends StatelessWidget {
                 Text(
                   l10n.vehiclesEmptyTitle,
                   style: AppTextStyles.titleLarge(context),
+                  softWrap: true,
                 ),
                 SizedBox(height: 8.h),
                 Text(
@@ -51,6 +52,7 @@ class VehiclesEmptyState extends StatelessWidget {
                     color: AppColors.secondaryText,
                   ),
                   textAlign: TextAlign.center,
+                  softWrap: true,
                 ),
                 if (onAddTap != null) ...[
                   SizedBox(height: 32.h),

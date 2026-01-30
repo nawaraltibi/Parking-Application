@@ -32,7 +32,7 @@ class VehiclesErrorState extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsetsDirectional.only(start: 24.w, end: 24.w),
             child: Text(
               error,
               style: AppTextStyles.bodyMedium(
@@ -40,6 +40,7 @@ class VehiclesErrorState extends StatelessWidget {
                 color: AppColors.error,
               ),
               textAlign: TextAlign.center,
+              softWrap: true,
             ),
           ),
           if (onRetry != null) ...[

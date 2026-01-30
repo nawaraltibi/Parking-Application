@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -35,9 +34,9 @@ class ActiveBookingCard extends StatelessWidget {
       final startTime = DateTime.parse(booking.startTime);
       final endTime = DateTime.parse(booking.endTime);
       final totalDuration = endTime.difference(startTime).inSeconds;
-      
+
       if (totalDuration <= 0) return 0.0;
-      
+
       final progress = remainingSeconds / totalDuration;
       return progress.clamp(0.0, 1.0);
     } catch (e) {
@@ -49,21 +48,12 @@ class ActiveBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (l10n == null) {
-      if (kDebugMode) {
-        print('🔴 [ActiveBookingCard] l10n is null');
-      }
       return const SizedBox.shrink();
     }
 
     final vehicle = booking.vehicle;
     final parkingLot = booking.parkingLot;
     final progress = _calculateProgress();
-
-    if (kDebugMode) {
-      print('🔵 [ActiveBookingCard] Building card for booking ${booking.bookingId}');
-      print('🔵 [ActiveBookingCard] Vehicle: ${vehicle?.platNumber ?? 'null'}');
-      print('🔵 [ActiveBookingCard] Remaining time: ${remainingTime?.remainingSeconds ?? 'null'}');
-    }
 
     return Container(
       width: 240.w,
@@ -85,8 +75,11 @@ class ActiveBookingCard extends StatelessWidget {
         child: InkWell(
           onTap: () {
             context.push(
-              Routes.bookingDetailsPath,
-              extra: {'bookingId': booking.bookingId},
+              Routes.userMainBookingsDetailsPath,
+              extra: {
+                'bookingId': booking.bookingId,
+                'openedFrom': 'home',
+              },
             );
           },
           borderRadius: BorderRadius.circular(14.r),
@@ -98,7 +91,8 @@ class ActiveBookingCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Remaining time with progress bar
-                if (remainingTime != null && remainingTime!.remainingSeconds != null) ...[
+                if (remainingTime != null &&
+                    remainingTime!.remainingSeconds != null) ...[
                   // Remaining time text and parking icon
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,13 +116,14 @@ class ActiveBookingCard extends StatelessWidget {
                         child: Text(
                           _formatRemainingTime(remainingTime!, l10n),
                           textAlign: TextAlign.end,
-                          style: AppTextStyles.bodyLarge(
-                            context,
-                            color: AppColors.primary,
-                          ).copyWith(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
-                          ),
+                          style:
+                              AppTextStyles.bodyLarge(
+                                context,
+                                color: AppColors.primary,
+                              ).copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.sp,
+                              ),
                         ),
                       ),
                     ],
@@ -142,9 +137,7 @@ class ActiveBookingCard extends StatelessWidget {
                       minHeight: 3.h,
                       backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        progress > 0.2
-                            ? AppColors.primary
-                            : AppColors.warning,
+                        progress > 0.2 ? AppColors.primary : AppColors.warning,
                       ),
                     ),
                   ),
@@ -168,35 +161,36 @@ class ActiveBookingCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 8.w),
-                    // Vehicle details
+                    // Vehicle details: رقم اللوحة + اسم السيارة، أو بديل عند عدم توفر البيانات
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Plate number
-                          if (vehicle != null)
-                            Text(
-                              vehicle.platNumber,
-                              style: AppTextStyles.bodyMedium(
-                                context,
-                                color: AppColors.primaryText,
-                              ).copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.sp,
-                              ),
-                            ),
+                          // Plate number or fallback
+                          Text(
+                            (vehicle != null && vehicle.platNumber.isNotEmpty)
+                                ? vehicle.platNumber
+                                : l10n.vehicleIdFallback(booking.vehicleId),
+                            style:
+                                AppTextStyles.bodyMedium(
+                                  context,
+                                  color: AppColors.primaryText,
+                                ).copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.sp,
+                                ),
+                          ),
                           SizedBox(height: 1.h),
-                          // Car make and model
+                          // Car make and model (or hide when no vehicle)
                           if (vehicle != null &&
-                              (vehicle.carMake != null || vehicle.carModel != null))
+                              (vehicle.carMake != null ||
+                                  vehicle.carModel != null))
                             Text(
                               _getVehicleType(vehicle, context),
                               style: AppTextStyles.bodySmall(
                                 context,
                                 color: AppColors.secondaryText,
-                              ).copyWith(
-                                fontSize: 11.sp,
-                              ),
+                              ).copyWith(fontSize: 11.sp),
                             ),
                         ],
                       ),
@@ -220,9 +214,7 @@ class ActiveBookingCard extends StatelessWidget {
                           style: AppTextStyles.bodySmall(
                             context,
                             color: AppColors.secondaryText,
-                          ).copyWith(
-                            fontSize: 10.sp,
-                          ),
+                          ).copyWith(fontSize: 10.sp),
                         ),
                       ),
                     ],
@@ -235,9 +227,7 @@ class ActiveBookingCard extends StatelessWidget {
                     style: AppTextStyles.bodySmall(
                       context,
                       color: AppColors.secondaryText,
-                    ).copyWith(
-                      fontSize: 10.sp,
-                    ),
+                    ).copyWith(fontSize: 10.sp),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: false,
@@ -267,15 +257,20 @@ class ActiveBookingCard extends StatelessWidget {
     return parts.join(' ');
   }
 
-  String _formatRemainingTime(RemainingTimeResponse remainingTime, AppLocalizations l10n) {
+  /// تنسيق الوقت المتبقي بصيغة ساعة:دقيقة:ثانية (مثل صفحة تفاصيل الحجز)
+  String _formatRemainingTime(
+    RemainingTimeResponse remainingTime,
+    AppLocalizations l10n,
+  ) {
     final seconds = remainingTime.remainingSeconds ?? 0;
     if (seconds <= 0) {
       return l10n.expired;
     }
 
-    final minutes = (seconds / 60).round();
-
-    return '$minutes ${l10n.minutes} ${l10n.remaining}';
+    final hours = seconds ~/ 3600;
+    final minutes = (seconds % 3600) ~/ 60;
+    final secs = seconds % 60;
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
 
   String _formatEndTime(String endTimeString) {
@@ -288,4 +283,3 @@ class ActiveBookingCard extends StatelessWidget {
     }
   }
 }
-

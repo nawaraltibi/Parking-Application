@@ -14,11 +14,10 @@ import 'features/splash/bloc/splash_routing_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // إخفاء الـ system navigation bar (أزرار الرجوع والـ home والـ layers)
-  // مع إبقاء الـ status bar ظاهراً
+  // إظهار الـ status bar وشريطة التنقل السفلية (زر الرجوع، الرئيسية، المربع)
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
-    overlays: [SystemUiOverlay.top], // إبقاء الـ status bar فقط، إخفاء الـ navigation bar
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
 
   // Initialize services
@@ -27,6 +26,9 @@ void main() async {
 
   // Initialize Dependency Injection
   await setupServiceLocator();
+
+  // Load API host from SharedPreferences (defaults to 10.0.2.2:8000 if not set)
+  await APIConfig.init();
 
   // Print API configuration for debugging
   if (kDebugMode) {

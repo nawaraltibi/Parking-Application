@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:test/core/core.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/vehicles_list_refresh_notifier.dart';
+import '../../../../core/utils/navigation_utils.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -22,12 +23,8 @@ import '../../../vehicles/data/models/vehicle_model.dart';
 class AddVehicleScreen extends StatefulWidget {
   final String? source; // 'booking_pre_payment' or 'vehicles_list'
   final Map<String, dynamic>? returnData; // Data to pass back when navigating
-  
-  const AddVehicleScreen({
-    super.key,
-    this.source,
-    this.returnData,
-  });
+
+  const AddVehicleScreen({super.key, this.source, this.returnData});
 
   @override
   State<AddVehicleScreen> createState() => _AddVehicleScreenState();
@@ -38,7 +35,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
   final _plateController = TextEditingController();
   final _typeController = TextEditingController();
   final _otherCarMakeController = TextEditingController();
-  
+
   String? _selectedCarMake;
   Color? _selectedColor;
 
@@ -57,7 +54,8 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       if (l10n != null) {
         UnifiedSnackbar.error(
           context,
-          message: '${l10n.vehiclesFormNameLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
+          message:
+              '${l10n.vehiclesFormNameLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
         );
       }
       return;
@@ -68,10 +66,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       if (_otherCarMakeController.text.trim().isEmpty) {
         final l10n = AppLocalizations.of(context);
         if (l10n != null) {
-          UnifiedSnackbar.error(
-            context,
-            message: l10n.vehiclesErrorValidation,
-          );
+          UnifiedSnackbar.error(context, message: l10n.vehiclesErrorValidation);
         }
         return;
       }
@@ -82,7 +77,8 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
       if (l10n != null) {
         UnifiedSnackbar.error(
           context,
-          message: '${l10n.vehiclesFormColorLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
+          message:
+              '${l10n.vehiclesFormColorLabel} ${l10n.vehiclesErrorValidation.toLowerCase()}',
         );
       }
       return;
@@ -92,7 +88,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     // Determine car make: use "Other" input if selected, otherwise use dropdown value
-    final carMake = _selectedCarMake == 'Other' 
+    final carMake = _selectedCarMake == 'Other'
         ? _otherCarMakeController.text.trim()
         : _selectedCarMake!;
 
@@ -100,13 +96,13 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     final colorName = ColorNameMapper.mapColorToName(_selectedColor!);
 
     context.read<VehiclesBloc>().add(
-          AddVehicleRequested(
-            platNumber: _plateController.text.trim(),
-            carMake: carMake,
-            carModel: _typeController.text.trim(),
-            color: colorName,
-          ),
-        );
+      AddVehicleRequested(
+        platNumber: _plateController.text.trim(),
+        carMake: carMake,
+        carModel: _typeController.text.trim(),
+        color: colorName,
+      ),
+    );
   }
 
   @override
@@ -146,69 +142,70 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
         bottom: true,
         child: BlocConsumer<VehiclesBloc, VehiclesState>(
           listenWhen: (previous, current) =>
-              current is VehicleActionSuccess || current is VehicleActionFailure,
+              current is VehicleActionSuccess ||
+              current is VehicleActionFailure,
           listener: (context, state) async {
             if (state is VehicleActionSuccess) {
-              UnifiedSnackbar.success(context, message: l10n.vehiclesSuccessAdded);
+              UnifiedSnackbar.success(
+                context,
+                message: l10n.vehiclesSuccessAdded,
+              );
               context.read<VehiclesBloc>().add(ResetVehiclesState());
               Future.delayed(const Duration(milliseconds: 350), () async {
                 if (context.mounted) {
                   // Navigate based on source
-                  if (widget.source == 'booking_pre_payment' && widget.returnData != null) {
-                    // If came from booking pre-payment, refresh vehicles and use pushReplacement with data
+                  if (widget.source == 'booking_pre_payment' &&
+                      widget.returnData != null) {
+                    // نفس نمط العودة من إضافة مركبة لصفحة المركبات: استدعاء API ثم goAndClearStack
                     try {
                       final getVehiclesUseCase = getIt<GetVehiclesUseCase>();
                       final vehiclesEntities = await getVehiclesUseCase();
-                      
-                      // Convert entities to models
+
                       final vehicles = vehiclesEntities
-                          .map((entity) => VehicleModel(
-                            vehicleId: entity.vehicleId,
-                            platNumber: entity.platNumber,
-                            carMake: entity.carMake,
-                            carModel: entity.carModel,
-                            color: entity.color,
-                            status: entity.status,
-                            requestStatus: entity.requestStatus,
-                            userId: entity.userId,
-                            createdAt: entity.createdAt,
-                            updatedAt: entity.updatedAt,
-                          ))
+                          .map(
+                            (entity) => VehicleModel(
+                              vehicleId: entity.vehicleId,
+                              platNumber: entity.platNumber,
+                              carMake: entity.carMake,
+                              carModel: entity.carModel,
+                              color: entity.color,
+                              status: entity.status,
+                              requestStatus: entity.requestStatus,
+                              userId: entity.userId,
+                              createdAt: entity.createdAt,
+                              updatedAt: entity.updatedAt,
+                            ),
+                          )
                           .toList();
-                      
-                      // Update returnData with fresh vehicles list
-                      final updatedReturnData = Map<String, dynamic>.from(widget.returnData!);
+
+                      final updatedReturnData = Map<String, dynamic>.from(
+                        widget.returnData!,
+                      );
                       updatedReturnData['vehicles'] = vehicles;
-                      
-                      // Use pushReplacement with updated data
-                      context.pushReplacement(
-                        Routes.bookingPrePaymentPath,
-                        extra: updatedReturnData,
-                      );
+
+                      if (context.mounted) {
+                        context.goAndClearStack(
+                          Routes.userMainBookingsPrePaymentPath,
+                          extra: updatedReturnData,
+                        );
+                      }
                     } catch (e) {
-                      debugPrint('Error refreshing vehicles: $e');
-                      // Fallback to original data if refresh fails
-                      context.pushReplacement(
-                        Routes.bookingPrePaymentPath,
-                        extra: widget.returnData,
-                      );
+                      if (context.mounted) {
+                        context.goAndClearStack(
+                          Routes.userMainBookingsPrePaymentPath,
+                          extra: widget.returnData,
+                        );
+                      }
                     }
                   } else {
-                    // Default behavior: navigate to main screen with vehicles tab
+                    // طلب تحديث قائمة المركبات قبل الانتقال حتى تُستدعى الـ API وتظهر آخر مركبة
+                    getIt<VehiclesListRefreshNotifier>().requestRefresh();
+
                     final userType = await AuthLocalRepository.getUserType();
-                    final mainScreenPath = userType == 'owner' 
-                        ? Routes.ownerMainPath 
-                        : Routes.userMainPath;
-                    
-                    // Use pushReplacement to navigate to main screen
-                    // This replaces the add vehicle page in the navigation stack
-                    // so when user goes back, they'll see the main screen with bottom nav bar
-                    // Pass vehicles tab index (1) as extra parameter for user type
                     if (userType != 'owner') {
-                      context.pushReplacement(mainScreenPath, extra: 1); // UserTab.vehicles.index = 1
+                      context.goAndClearStack(Routes.userMainVehiclesPath);
                     } else {
-                      // For owner type, vehicles might not be in bottom nav, so navigate without tab index
-                      context.pushReplacement(mainScreenPath);
+                      context.goAndClearStack(Routes.ownerMainPath);
                     }
                   }
                 }
@@ -229,16 +226,21 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
             final isLoading = state is VehicleActionLoading;
             final inlineError =
                 state is VehicleActionFailure && state.statusCode == 422
-                    ? VehiclesErrorHandler.handleErrorState(
-                        state.error,
-                        state.statusCode,
-                        l10n,
-                      )
-                    : null;
+                ? VehiclesErrorHandler.handleErrorState(
+                    state.error,
+                    state.statusCode,
+                    l10n,
+                  )
+                : null;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
+              padding: EdgeInsetsDirectional.only(
+                start: 24.w,
+                end: 24.w,
+                top: 20.h,
+                bottom: 20.h,
+              ),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -246,7 +248,7 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
                   children: [
                     if (inlineError != null) ...[
                       Container(
-                        padding: EdgeInsets.all(16.w),
+                        padding: EdgeInsetsDirectional.all(16.w),
                         decoration: BoxDecoration(
                           color: AppColors.error.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(16.r),
@@ -322,5 +324,3 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
     );
   }
 }
-
-

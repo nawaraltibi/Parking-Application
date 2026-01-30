@@ -29,7 +29,7 @@ class OnboardingIndicator extends StatelessWidget {
 
   Widget _buildDot(bool isActive) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 250),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       height: 8,
       width: isActive ? 24 : 8,

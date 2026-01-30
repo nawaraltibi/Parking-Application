@@ -34,7 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-
   void _handleLogin() {
     if (formKey.currentState!.validate()) {
       final bloc = context.read<LoginBloc>();
@@ -59,10 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             final l10n = AppLocalizations.of(context)!;
 
             if (state is LoginSuccess) {
-              UnifiedSnackbar.success(
-                context,
-                message: l10n.authLoginSuccess,
-              );
+              UnifiedSnackbar.success(context, message: l10n.authLoginSuccess);
 
               // Navigate to appropriate main screen based on user type
               // Only navigate if user is active (inactive owners are blocked before LoginSuccess)
@@ -171,10 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () =>
-                                context.pushReplacement(
-                                  Routes.registerPath,
-                                ),
+                            onPressed: () => context.push(Routes.registerPath),
                             child: Text(
                               l10n.authRegisterButton,
                               style: AppTextStyles.labelLarge(

@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/core.dart';
 import '../../../../core/injection/service_locator.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/services/home_refresh_notifier.dart';
+import '../../../../core/utils/navigation_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../parking/models/parking_model.dart';
 import '../../../vehicles/data/models/vehicle_model.dart';
@@ -14,7 +17,6 @@ import '../widgets/payment_notes_section.dart';
 import '../widgets/payment_action_buttons.dart';
 import '../widgets/payment_success_dialog.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
-import '../../../../core/routes/app_routes.dart';
 
 /// Payment Screen
 /// UI screen for processing payment for booking
@@ -26,6 +28,8 @@ class PaymentScreen extends StatefulWidget {
   final int bookingId; // Required: booking_id from create booking response
   final DateTime? startTime; // Optional: from booking response
   final DateTime? endTime; // Optional: from booking response
+  /// مصدر الدخول: 'pre_payment' | 'home' | 'bookings' — يحدد أين نرجع من تفاصيل الحجز
+  final String openedFrom;
 
   const PaymentScreen({
     super.key,
@@ -36,6 +40,7 @@ class PaymentScreen extends StatefulWidget {
     required this.bookingId,
     this.startTime,
     this.endTime,
+    this.openedFrom = 'pre_payment',
   });
 
   @override
@@ -72,18 +77,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
       builder: (dialogContext) => PaymentSuccessDialog(
         bookingId: widget.bookingId,
         onViewDetails: () {
-          Navigator.of(dialogContext).pop(); // Close dialog
-          // Navigate to booking details and clear payment screen from stack
-          // Use pushReplacement to replace payment screen with booking details
+          Navigator.of(dialogContext).pop();
+          getIt<HomeRefreshNotifier>().requestRefresh();
           context.pushReplacement(
-            Routes.bookingDetailsPath,
-            extra: {'bookingId': widget.bookingId},
+            Routes.userMainBookingsDetailsPath,
+            extra: {
+              'bookingId': widget.bookingId,
+              'openedFrom': widget.openedFrom,
+            },
           );
         },
         onGoToHome: () {
-          Navigator.of(dialogContext).pop(); // Close dialog
-          // Navigate to home and clear stack
-          context.go(Routes.userMainPath);
+          Navigator.of(dialogContext).pop();
+          getIt<HomeRefreshNotifier>().requestRefresh();
+          context.goAndClearStack(Routes.userMainHomePath);
         },
       ),
     );
@@ -114,25 +121,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  void _onSimulateFailure(BuildContext blocContext) {
-    // Validate booking_id is present
+  /// محاكاة فشل الدفع: انتظار قصير ثم سناك بار فقط، بدون استدعاء API
+  Future<void> _onSimulateFailure(BuildContext blocContext) async {
     final l10n = AppLocalizations.of(context);
+    if (l10n == null) return;
     if (widget.bookingId == 0) {
-      if (l10n != null) {
-        UnifiedSnackbar.error(context, message: l10n.errorInvalidBookingId);
-      }
+      UnifiedSnackbar.error(context, message: l10n.errorInvalidBookingId);
       return;
     }
 
-    // Process payment failure (simulation)
-    blocContext.read<PaymentBloc>().add(
-      ProcessPaymentFailure(
-        bookingId: widget.bookingId,
-        amount: widget.totalAmount,
-        paymentMethod: _selectedPaymentMethod,
-        transactionId: null, // null for failed payments
-      ),
-    );
+    final message = l10n.paymentSimulateFailure;
+    // محاكاة انتظار الطلب (بدون ريكويست حقيقي)
+    await Future.delayed(const Duration(milliseconds: 1200));
+    if (!context.mounted) return;
+    // عرض السناك بار في الإطار التالي لضمان ظهوره من أول ضغطة
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) return;
+      UnifiedSnackbar.error(context, message: message);
+    });
   }
 
   @override
@@ -153,11 +159,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
             } else {
               UnifiedSnackbar.error(
                 context,
-                message: l10n.paymentFailureRecorded,
+                message: l10n.paymentSimulateFailure,
               );
             }
           } else if (state is PaymentError) {
-            UnifiedSnackbar.error(context, message: state.message);
+            final message = state.message == 'invalid_amount'
+                ? l10n.paymentErrorInvalidAmount
+                : state.message;
+            UnifiedSnackbar.error(context, message: message);
           }
         },
         child: Scaffold(
